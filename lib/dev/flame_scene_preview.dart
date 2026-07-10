@@ -12,7 +12,7 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:soul_dungeon/presentation/screens/game/combat/flame/combat_flame_game.dart';
-import 'package:soul_dungeon/presentation/theme/pixel_art_assets.dart';
+import 'package:soul_dungeon/presentation/screens/game/combat/flame/combat_sprites.dart';
 
 void main() => runApp(const _PreviewApp());
 
@@ -36,11 +36,11 @@ class _PreviewAppState extends State<_PreviewApp> {
     final g = CombatFlameGame(
       bgTop: const Color(0xFF241B33),
       bgBottom: const Color(0xFF0E0A18),
-      playerSpritePath: PixelArtAssets.jobSprite('warrior'),
+      playerSprites: CombatSprites.job('warrior'),
       playerName: '전사',
       initialEnemies: [
         (
-          path: PixelArtAssets.enemySprite('enemy_goblin'),
+          sprites: CombatSprites.enemy('enemy_goblin'),
           name: '고블린',
           hp: 20,
           maxHp: 20,

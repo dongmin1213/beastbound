@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:soul_dungeon/domain/combat/bloc/combat_bloc.dart';
 import 'package:soul_dungeon/domain/combat/bloc/combat_state.dart';
 import 'package:soul_dungeon/presentation/theme/floor_theme_visuals.dart';
-import 'package:soul_dungeon/presentation/theme/pixel_art_assets.dart';
 
 import 'flame/combat_flame_game.dart';
+import 'flame/combat_sprites.dart';
 
 /// CombatBloc 상태를 구독해 [CombatFlameGame] 연출로 변환하는 브릿지 위젯.
 ///
@@ -63,8 +63,7 @@ class _FlameCombatSceneState extends State<FlameCombatScene> {
     final game = CombatFlameGame(
       bgTop: widget.floorVisuals.backgroundColor,
       bgBottom: widget.floorVisuals.combatBackground,
-      playerSpritePath:
-          widget.playerJobId != null ? PixelArtAssets.jobSprite(widget.playerJobId!) : null,
+      playerSprites: CombatSprites.job(widget.playerJobId),
       playerName: widget.playerName,
       initialEnemies: state.enemies.map(_enemyDef).toList(),
     );
@@ -75,9 +74,8 @@ class _FlameCombatSceneState extends State<FlameCombatScene> {
   EnemyDef _enemyDef(dynamic e) {
     // EnemyBattleState: data(id, name), currentHp, maxHp.
     final id = e.data.id as String;
-    final path = PixelArtAssets.enemySprite(id) ?? PixelArtAssets.bossSprite(id);
     return (
-      path: path,
+      sprites: CombatSprites.enemy(id),
       name: e.data.name as String,
       hp: e.currentHp as int,
       maxHp: e.maxHp as int,

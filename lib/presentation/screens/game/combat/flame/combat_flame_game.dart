@@ -6,11 +6,12 @@ import 'package:flame/game.dart';
 import 'package:flame/text.dart';
 
 import 'combat_actor.dart';
+import 'combat_sprites.dart';
 import 'floating_number.dart';
 import 'slash_effect.dart';
 
 /// 전투 씬에 배치할 적 1체의 초기 정의.
-typedef EnemyDef = ({String? path, String name, int hp, int maxHp});
+typedef EnemyDef = ({ActorSprites sprites, String name, int hp, int maxHp});
 
 /// 카드 전투의 Flame 씬 — 포켓몬 골드식 대각선 대치 구도.
 ///
@@ -25,7 +26,7 @@ typedef EnemyDef = ({String? path, String name, int hp, int maxHp});
 class CombatFlameGame extends FlameGame {
   final Color bgTop;
   final Color bgBottom;
-  final String? playerSpritePath;
+  final ActorSprites playerSprites;
   final String playerName;
   final List<EnemyDef> initialEnemies;
 
@@ -42,7 +43,7 @@ class CombatFlameGame extends FlameGame {
   CombatFlameGame({
     required this.bgTop,
     required this.bgBottom,
-    required this.playerSpritePath,
+    required this.playerSprites,
     required this.playerName,
     required this.initialEnemies,
   });
@@ -68,7 +69,7 @@ class CombatFlameGame extends FlameGame {
 
     final pSize = _playerSize;
     _player = CombatActor(
-      spritePath: playerSpritePath,
+      sprites: playerSprites,
       facingRight: true,
       hp: 1,
       maxHp: 1,
@@ -91,7 +92,7 @@ class CombatFlameGame extends FlameGame {
     for (var i = 0; i < defs.length; i++) {
       final def = defs[i];
       final actor = CombatActor(
-        spritePath: def.path,
+        sprites: def.sprites,
         facingRight: false,
         hp: def.hp,
         maxHp: def.maxHp,
