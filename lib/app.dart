@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:soul_dungeon/core/app_branding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -16,6 +17,7 @@ import 'package:soul_dungeon/domain/progression/bloc/progression_bloc.dart';
 import 'package:soul_dungeon/domain/progression/bloc/progression_state.dart';
 import 'package:soul_dungeon/presentation/screens/game/game_screen.dart';
 import 'package:soul_dungeon/presentation/screens/job_codex/job_codex_screen.dart';
+import 'package:soul_dungeon/presentation/screens/bestiary/bestiary_screen.dart';
 import 'package:soul_dungeon/presentation/screens/settings/settings_screen.dart';
 import 'package:soul_dungeon/presentation/screens/soul_shop/soul_shop_screen.dart';
 import 'package:soul_dungeon/presentation/screens/title/title_screen.dart';
@@ -234,7 +236,7 @@ class _SoulDungeonAppState extends State<SoulDungeonApp> {
                 context.go('/game');
               },
               onContinue: () => context.go('/game?continue=true'),
-              onSoulShop: () => context.go('/soul-shop'),
+              onSoulShop: () => context.go('/bestiary'), // 도감(Bestiary)
               onJobCodex: () => context.go('/job-codex'),
               onSettings: () => context.go('/settings'),
             ),
@@ -296,6 +298,14 @@ class _SoulDungeonAppState extends State<SoulDungeonApp> {
           },
         ),
         GoRoute(
+          path: '/bestiary',
+          builder: (context, state) => _MobileFrame(
+            child: BestiaryScreen(
+              onBack: () => context.go('/'),
+            ),
+          ),
+        ),
+        GoRoute(
           path: '/job-codex',
           builder: (context, state) => _MobileFrame(
             child: JobCodexScreen(
@@ -346,7 +356,7 @@ class _SoulDungeonAppState extends State<SoulDungeonApp> {
         BlocProvider<AudioBloc>.value(value: _audioBloc),
       ],
       child: MaterialApp.router(
-        title: 'Soul Dungeon',
+        title: AppBranding.title,
         theme: AppTheme.dark,
         debugShowCheckedModeBanner: false,
         routerConfig: _router,

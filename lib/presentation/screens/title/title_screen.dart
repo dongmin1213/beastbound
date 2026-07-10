@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:soul_dungeon/core/app_branding.dart';
 import 'package:soul_dungeon/core/models/game_enums.dart';
 import 'package:soul_dungeon/presentation/theme/app_theme.dart';
 import 'package:soul_dungeon/presentation/theme/floor_theme_visuals.dart';
@@ -37,7 +38,7 @@ class TitleScreen extends StatefulWidget {
 class _TitleScreenState extends State<TitleScreen>
     with TickerProviderStateMixin {
   // 타자기 효과
-  static const _title = 'Soul Dungeon';
+  static const _title = AppBranding.title;
   int _titleCharCount = 0;
   Timer? _typewriterTimer;
 
@@ -50,7 +51,6 @@ class _TitleScreenState extends State<TitleScreen>
   double _menuNewGameOpacity = 0.0;
   double _menuContinueOpacity = 0.0;
   double _menuSoulShopOpacity = 0.0;
-  double _menuJobCodexOpacity = 0.0;
   double _menuSettingsOpacity = 0.0;
   double _versionOpacity = 0.0;
 
@@ -117,10 +117,6 @@ class _TitleScreenState extends State<TitleScreen>
     });
     Future.delayed(const Duration(milliseconds: 1400), () {
       if (!mounted) return;
-      setState(() => _menuJobCodexOpacity = 1.0);
-    });
-    Future.delayed(const Duration(milliseconds: 1600), () {
-      if (!mounted) return;
       setState(() => _menuSettingsOpacity = 1.0);
     });
     Future.delayed(const Duration(milliseconds: 1800), () {
@@ -163,19 +159,7 @@ class _TitleScreenState extends State<TitleScreen>
                   children: [
                     const Spacer(flex: 3),
 
-                    // 픽셀 아트 로고
-                    AnimatedOpacity(
-                      opacity: _titleCharCount >= _title.length ? 1.0 : 0.0,
-                      duration: const Duration(milliseconds: 600),
-                      child: Image.asset(
-                        'assets/pixel_art/title/soul_dungeon_logo.png',
-                        width: ResponsiveScale.scalePadding(context, 200),
-                        filterQuality: FilterQuality.none,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-
-                    // 타이틀
+                    // 타이틀 (신규 로고 아트는 추후 — 현재는 텍스트 타이틀)
                     _buildTitle(context),
                     const SizedBox(height: 12),
 
@@ -202,18 +186,10 @@ class _TitleScreenState extends State<TitleScreen>
                     const SizedBox(height: 16),
                     _buildMenuItem(
                       context: context,
-                      text: '소울 상점',
+                      text: '도감',
                       opacity: _menuSoulShopOpacity,
                       enabled: widget.onSoulShop != null,
                       onTap: widget.onSoulShop,
-                    ),
-                    const SizedBox(height: 16),
-                    _buildMenuItem(
-                      context: context,
-                      text: '직업 도감',
-                      opacity: _menuJobCodexOpacity,
-                      enabled: widget.onJobCodex != null,
-                      onTap: widget.onJobCodex,
                     ),
                     const SizedBox(height: 16),
                     _buildMenuItem(
@@ -231,7 +207,7 @@ class _TitleScreenState extends State<TitleScreen>
                       opacity: _versionOpacity,
                       duration: const Duration(milliseconds: 400),
                       child: Text(
-                        'v1.0.5',
+                        AppBranding.version,
                         style: TextStyle(
                           fontSize: ResponsiveScale.scaleFontSize(context, 11),
                           color: const Color(0xFF808080),
@@ -321,7 +297,7 @@ class _TitleScreenState extends State<TitleScreen>
       opacity: _subtitleOpacity,
       duration: const Duration(milliseconds: 600),
       child: const Text(
-        '선택이 곧 힘이 되는 던전',
+        AppBranding.tagline,
         style: TextStyle(
           fontSize: 14,
           color: AppTheme.titleSubtext,
