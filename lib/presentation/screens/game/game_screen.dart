@@ -152,6 +152,10 @@ class GameScreen extends StatefulWidget {
   final Map<String, dynamic>? initialCombatStateRaw;
   final VoidCallback? onRunDeleted;
 
+  /// 스타터 몬스터 id (신규 컨셉) — 지정 시 시작 덱을 이 몬스터의 무브풀로 구성하고
+  /// 직업 분화(성향 기반)를 비활성화한다. null이면 기존 무직업 흐름.
+  final String? starterMonsterId;
+
   const GameScreen({
     super.key,
     this.initialBlocks,
@@ -187,6 +191,7 @@ class GameScreen extends StatefulWidget {
     this.initialRunState,
     this.initialCombatStateRaw,
     this.onRunDeleted,
+    this.starterMonsterId,
   });
 
   @override
@@ -345,14 +350,21 @@ class GameScreenState extends State<GameScreen>
         }
       }
 
-      // masterDeck이 비어있으면 공통 시작 카드 5장으로 초기화
+      // 시작 덱 초기화. 스타터 몬스터가 지정되면 그 몬스터의 무브풀로,
+      // 아니면 공통 시작 카드(무직업)로.
       if (initialPlayerState.masterDeck.isEmpty) {
         final purchasedIds =
             widget.initialMeta?.purchasedUpgradeIds ?? const <String>{};
+        final starterId = widget.starterMonsterId;
         initialPlayerState = initialPlayerState.copyWith(
-          masterDeck: StartingDeckBuilder.buildCommon(
-            purchasedUpgradeIds: purchasedIds,
-          ),
+          masterDeck: starterId != null
+              ? StartingDeckBuilder.buildFromMonster(
+                  starterId,
+                  purchasedUpgradeIds: purchasedIds,
+                )
+              : StartingDeckBuilder.buildCommon(
+                  purchasedUpgradeIds: purchasedIds,
+                ),
         );
       }
 
@@ -582,15 +594,19 @@ class GameScreenState extends State<GameScreen>
       showFloorTransition: _showFloorTransition,
     );
 
-    // 성향 변화 → 전직 체크 자동 연결 (다음 프레임으로 지연 — 현재 텍스트 처리 완료 후)
-    _runController.onDispositionChanged = () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) _dungeonNavHandler.checkClassChange();
-      });
-    };
+    // 성향 변화 → 전직 체크 자동 연결 (다음 프레임으로 지연 — 현재 텍스트 처리 완료 후).
+    // 스타터 몬스터 모드에서는 직업 분화를 비활성화한다(직업 개념 폐기).
+    if (widget.starterMonsterId == null) {
+      _runController.onDispositionChanged = () {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) _dungeonNavHandler.checkClassChange();
+        });
+      };
+    }
 
     // 세이브 로드 시 전직 재평가 — 성향이 임계치 이상인데 직업 미분화인 경우 보정
-    if (initialPlayerState.currentJobId == null) {
+    if (widget.starterMonsterId == null &&
+        initialPlayerState.currentJobId == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) _dungeonNavHandler.checkClassChange();
       });

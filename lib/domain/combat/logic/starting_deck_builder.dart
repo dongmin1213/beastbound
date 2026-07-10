@@ -1,6 +1,7 @@
 import 'package:soul_dungeon/core/models/curse_modifier_pool.dart';
 import 'package:soul_dungeon/domain/combat/content/card_pool.dart';
 import 'package:soul_dungeon/domain/combat/content/curse_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/monster_cards.dart';
 import 'package:soul_dungeon/domain/combat/content/starter_cards.dart';
 import 'package:soul_dungeon/domain/combat/logic/card_upgrade_registry.dart';
 import 'package:soul_dungeon/domain/combat/logic/curse_modifier_resolver.dart';
@@ -34,6 +35,38 @@ class StartingDeckBuilder {
     }
 
     // 저주 카드 추가
+    if (activeCurseIds.isNotEmpty) {
+      final curses = CurseModifierPool.resolveIds(activeCurseIds);
+      final curseCardCount = CurseModifierResolver.resolveCurseCardCount(curses);
+      if (curseCardCount > 0) {
+        deck.addAll(CurseCards.forCount(curseCardCount));
+      }
+    }
+
+    return deck;
+  }
+
+  /// 스타터 몬스터 기반 시작 덱 — 공통 7장 + 그 몬스터의 무브풀.
+  ///
+  /// 몬스터 테이밍 컨셉: "직업" 대신 시작 몬스터가 시작 덱을 정의한다.
+  /// 무브풀이 비어 있으면(등록 안 된 몬스터) 공통 카드만 반환.
+  static List<CardData> buildFromMonster(
+    String monsterId, {
+    Set<String> purchasedUpgradeIds = const {},
+    List<String> activeCurseIds = const [],
+  }) {
+    final monsterCards = MonsterCards.movepool(monsterId);
+    var deck = [...StarterCards.all, ...monsterCards];
+
+    if (purchasedUpgradeIds.contains('soul_starting_deck_upgrade')) {
+      deck = deck.map((card) {
+        if (card.id.startsWith('starter_strike')) {
+          return CardUpgradeRegistry.upgrade(card.id) ?? card;
+        }
+        return card;
+      }).toList();
+    }
+
     if (activeCurseIds.isNotEmpty) {
       final curses = CurseModifierPool.resolveIds(activeCurseIds);
       final curseCardCount = CurseModifierResolver.resolveCurseCardCount(curses);

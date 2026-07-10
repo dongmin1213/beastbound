@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:soul_dungeon/domain/combat/content/monster_cards.dart';
 import 'package:soul_dungeon/domain/combat/content/starter_cards.dart';
 import 'package:soul_dungeon/domain/combat/content/warrior_cards.dart';
 import 'package:soul_dungeon/domain/combat/content/sage_cards.dart';
@@ -56,6 +57,22 @@ void main() {
     test('시작 덱 카드는 모두 비업그레이드', () {
       final deck = StartingDeckBuilder.build('warrior');
       expect(deck.every((c) => !c.upgraded), true);
+    });
+  });
+  group('buildFromMonster (스타터 몬스터)', () {
+    test('공통 7장 + 몬스터 무브풀', () {
+      final deck = StartingDeckBuilder.buildFromMonster('enemy_goblin');
+      final movepool = MonsterCards.movepoolIds('enemy_goblin');
+      expect(deck.length, 7 + movepool.length);
+      // 무브풀 카드가 덱에 포함
+      for (final id in movepool) {
+        expect(deck.any((c) => c.id == id), isTrue, reason: 'missing \$id');
+      }
+    });
+
+    test('무브풀 없는 몬스터 → 공통 7장만', () {
+      final deck = StartingDeckBuilder.buildFromMonster('enemy_unknown_zzz');
+      expect(deck.length, 7);
     });
   });
 }

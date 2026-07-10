@@ -18,6 +18,7 @@ import 'package:soul_dungeon/domain/progression/bloc/progression_state.dart';
 import 'package:soul_dungeon/presentation/screens/game/game_screen.dart';
 import 'package:soul_dungeon/presentation/screens/job_codex/job_codex_screen.dart';
 import 'package:soul_dungeon/presentation/screens/bestiary/bestiary_screen.dart';
+import 'package:soul_dungeon/presentation/screens/starter/starter_select_screen.dart';
 import 'package:soul_dungeon/presentation/screens/settings/settings_screen.dart';
 import 'package:soul_dungeon/presentation/screens/soul_shop/soul_shop_screen.dart';
 import 'package:soul_dungeon/presentation/screens/title/title_screen.dart';
@@ -233,7 +234,7 @@ class _SoulDungeonAppState extends State<SoulDungeonApp> {
                 await widget.saveManager?.deleteRun();
                 _currentRun = null;
                 if (!context.mounted) return;
-                context.go('/game');
+                context.go('/starter');
               },
               onContinue: () => context.go('/game?continue=true'),
               onSoulShop: () => context.go('/bestiary'), // 도감(Bestiary)
@@ -243,10 +244,20 @@ class _SoulDungeonAppState extends State<SoulDungeonApp> {
           ),
         ),
         GoRoute(
+          path: '/starter',
+          builder: (context, state) => _MobileFrame(
+            child: StarterSelectScreen(
+              onSelect: (monsterId) => context.go('/game?starter=$monsterId'),
+              onBack: () => context.go('/'),
+            ),
+          ),
+        ),
+        GoRoute(
           path: '/game',
           builder: (context, state) {
             final isContinue =
                 state.uri.queryParameters['continue'] == 'true';
+            final starterMonsterId = state.uri.queryParameters['starter'];
             final initialRunState = isContinue
                 ? _currentRun?.playerRunState
                 : null;
@@ -292,6 +303,7 @@ class _SoulDungeonAppState extends State<SoulDungeonApp> {
                 floorsConfig: widget.balanceConfig.floors,
                 initialRunState: initialRunState,
                 initialCombatStateRaw: initialCombatStateRaw,
+                starterMonsterId: starterMonsterId,
                 onRunDeleted: () => _currentRun = null,
               ),
             );
