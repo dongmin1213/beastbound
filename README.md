@@ -18,10 +18,15 @@
 ## 진행 상황
 
 - [x] 기획·통합 분석
-- [x] 원작 포크
-- [ ] **1단계: `CardCombatView` 위젯 추출** (전투 UI를 GameScreen에서 격리) ← 진행 중
-- [ ] 2단계: 전투 씬 내부를 Flame `GameWidget`으로 교체 (파일럿)
+- [x] 원작 포크 (analyze 에러 0 / 통합 테스트 120개 통과 확인)
+- [x] **1단계: `CardCombatView` 위젯 추출** — 전투 UI를 GameScreen에서 격리 (동작 보존, 테스트 통과)
+- [ ] **2단계: 전투 씬 내부를 Flame `GameWidget`으로 교체 (파일럿)** ← 다음
 - [ ] 3단계~: 멀티몹/보스/왜곡 연출, UI 리프레시, 차별화 콘텐츠
+
+### 1단계 결과
+- `lib/presentation/screens/game/combat/card_combat_view.dart` 신규 (313줄) — 적/전투로그/플레이어/카드 4개 패널
+- `game_screen.dart` 2667 → 2459줄, `build()`가 전투/탐색 두 갈래로 분리됨
+- 다음: `CardCombatView`의 적/플레이어/카드 패널을 Flame 씬 + 카드 오버레이로 교체
 
 ## 실행
 
