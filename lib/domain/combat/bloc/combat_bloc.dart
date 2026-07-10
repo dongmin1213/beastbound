@@ -129,6 +129,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     on<EndPlayerTurn>(_onEndPlayerTurn);
     on<SelectCardReward>(_onSelectCardReward);
     on<AttemptFlee>(_onAttemptFlee);
+    on<TameEnemy>(_onTameEnemy);
     on<SelectTarget>(_onSelectTarget);
     on<RestoreCardCombat>(_onRestoreCardCombat);
     // 디버그 전용
@@ -3470,6 +3471,60 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       ),
       roomType: current.roomType,
       cardRewardOptions: cardRewards,
+    ));
+  }
+
+  // ── 몬스터 테이밍: 제압된 적 길들이기 ──
+
+  /// 제압된 적 길들이기 요청 처리.
+  /// 대상이 생존 + 제압(HP ≤ 임계치) 상태일 때만 포획 종료.
+  void _onTameEnemy(TameEnemy event, Emitter<CombatState> emit) {
+    final current = state;
+    if (current is! CardCombatActive) return;
+
+    final idx = event.index;
+    if (idx < 0 || idx >= current.enemies.length) return;
+    final target = current.enemies[idx];
+    if (target.isDead) return;
+    if (target.maxHp <= 0 ||
+        target.currentHp > target.maxHp * CardCombatActive.suppressHpRatio) {
+      // 제압되지 않음 — 무시 (UI가 막지만 방어적으로).
+      return;
+    }
+
+    _emitCardCombatTame(current, target, emit);
+  }
+
+  /// 길들이기 성공 → 전투 종료. 카드 보상 대신 몬스터 포획 플래그.
+  void _emitCardCombatTame(
+    CardCombatActive current,
+    EnemyBattleState target,
+    Emitter<CombatState> emit,
+  ) {
+    gameEventBus.emit(CombatMilestoneEvent(type: CombatMilestoneType.victory));
+    gameEventBus.emit(CombatEndedEvent(
+      currentFloor: current.playerRunState.currentFloor,
+    ));
+
+    if (kDebugMode) {
+      GameLogger.debug(
+        LogSystem.combat,
+        'Monster tamed: ${target.data.name} (${target.data.id})',
+      );
+    }
+
+    emit(CardCombatResolved(
+      outcome: CombatOutcome.victory,
+      enemies: current.enemies.map((e) => e.data).toList(),
+      playerHp: current.playerHp,
+      playerMaxHp: current.playerMaxHp,
+      playerRunState: current.playerRunState.copyWith(
+        currentHp: current.playerHp,
+        maxHp: current.playerMaxHp,
+      ),
+      roomType: current.roomType,
+      cardRewardOptions: const [], // 길들이기는 카드 보상 대신 몬스터 획득.
+      tamedEnemyId: target.data.id,
     ));
   }
 

@@ -2080,6 +2080,28 @@ class GameScreenState extends State<GameScreen>
     );
 
     final buttons = <Widget>[];
+
+    // 몬스터 테이밍: 제압된 적이 있으면 '길들이기' 버튼을 앞에 추가.
+    if (combatState is CardCombatActive && combatState.canTame) {
+      final tameIdx = combatState.suppressedTargetIndex!;
+      buttons.add(
+        Expanded(
+          flex: 3,
+          child: RetroButton(
+            label: '🐾 길들이기',
+            onTap: () => _cardCombatHandler.handleTame(tameIdx),
+            backgroundColor: const Color(0xFF243A24),
+            borderColor: const Color(0xFF6FCF6F),
+            textColor: const Color(0xFFB8F0B8),
+            fontWeight: FontWeight.w600,
+            fontSize: 13,
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+          ),
+        ),
+      );
+      buttons.add(const SizedBox(width: 8));
+    }
+
     for (int i = 0; i < actions.length; i++) {
       if (i > 0) buttons.add(const SizedBox(width: 8));
       final isEndTurn = actions[i].id == 'end_turn';

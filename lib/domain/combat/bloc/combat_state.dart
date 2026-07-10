@@ -527,6 +527,31 @@ final class CardCombatActive extends CombatState {
   /// 보스 전투 여부.
   bool get isBoss => bossData != null;
 
+  // ── 몬스터 테이밍: 제압(Suppress) 판정 ──
+
+  /// 제압 임계치 — HP가 최대의 이 비율 이하이면 길들이기 가능.
+  /// (추후 적/난이도별 개별 임계치로 확장 가능)
+  static const double suppressHpRatio = 0.25;
+
+  /// 길들이기 가능한(제압된) 적의 인덱스 — 없으면 null.
+  /// 살아있고 HP ≤ maxHp × [suppressHpRatio] 인 첫 번째 적.
+  /// 보스는 제압 대상에서 제외(별도 조건은 추후).
+  int? get suppressedTargetIndex {
+    if (isBoss) return null;
+    for (var i = 0; i < enemies.length; i++) {
+      final e = enemies[i];
+      if (!e.isDead &&
+          e.maxHp > 0 &&
+          e.currentHp <= e.maxHp * suppressHpRatio) {
+        return i;
+      }
+    }
+    return null;
+  }
+
+  /// 지금 길들이기가 가능한가.
+  bool get canTame => suppressedTargetIndex != null;
+
   /// 남은 보스 페이즈 여부.
   bool get hasNextBossPhase =>
       bossData != null && currentBossPhase < bossData!.totalPhases - 1;
@@ -703,8 +728,15 @@ final class CardCombatResolved extends CombatState {
   /// 퍼마데스 시 획득 소울 수 (표시용).
   final int soulGained;
 
+  /// 길들이기로 종료된 경우, 포획한 몬스터 id (아니면 null).
+  /// 로스터/도감 시스템이 이 값을 읽어 몬스터를 등록한다.
+  final String? tamedEnemyId;
+
   /// 하위 호환 getter — 첫 번째 적 데이터.
   EnemyCombatData get enemy => enemies.first;
+
+  /// 길들이기로 종료됐는지.
+  bool get isTamed => tamedEnemyId != null;
 
   const CardCombatResolved({
     required this.outcome,
@@ -718,6 +750,7 @@ final class CardCombatResolved extends CombatState {
     this.roomType = RoomType.combat,
     this.cardRewardOptions = const [],
     this.soulGained = 0,
+    this.tamedEnemyId,
   });
 
   @override
@@ -725,7 +758,7 @@ final class CardCombatResolved extends CombatState {
         outcome, enemies, playerHp, playerMaxHp,
         playerRunState, hpLost, hpNarrationTier,
         isPermadeath, roomType, cardRewardOptions,
-        soulGained,
+        soulGained, tamedEnemyId,
       ];
 }
 

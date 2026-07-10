@@ -226,6 +226,17 @@ final class AttemptFlee extends CombatEvent {
   List<Object?> get props => [momentumTier];
 }
 
+/// 제압된 적 길들이기 — 처치 대신 포획으로 전투 종료.
+/// [index]의 적이 제압 상태(HP ≤ 임계치, 생존)일 때만 유효.
+final class TameEnemy extends CombatEvent {
+  final int index;
+
+  const TameEnemy(this.index);
+
+  @override
+  List<Object?> get props => [index];
+}
+
 // ── 디버그 전용 이벤트 (kDebugMode only) ──────────────────
 
 /// 디버그: AP를 99로 설정.

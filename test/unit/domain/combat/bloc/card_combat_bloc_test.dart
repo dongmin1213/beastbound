@@ -1291,4 +1291,52 @@ void main() {
       expect(resolved[1].id, 'cr_soul_stone');
     });
   });
+
+  group('몬스터 테이밍 — 제압/길들이기', () {
+    test('제압 감지: HP ≤ 25%면 canTame=true', () {
+      final suppressed = makeActive(enemyHp: 5, enemyMaxHp: 100);
+      expect(suppressed.canTame, isTrue);
+      expect(suppressed.suppressedTargetIndex, 0);
+
+      final healthy = makeActive(enemyHp: 100, enemyMaxHp: 100);
+      expect(healthy.canTame, isFalse);
+      expect(healthy.suppressedTargetIndex, isNull);
+
+      // 경계값: 정확히 25%는 제압 가능(≤).
+      final boundary = makeActive(enemyHp: 25, enemyMaxHp: 100);
+      expect(boundary.canTame, isTrue);
+      final above = makeActive(enemyHp: 26, enemyMaxHp: 100);
+      expect(above.canTame, isFalse);
+    });
+
+    blocTest<CombatBloc, CombatState>(
+      '제압된 적 길들이기 → CardCombatResolved(tamedEnemyId 설정, 카드보상 없음)',
+      build: () => bloc,
+      seed: () => makeActive(enemyHp: 5, enemyMaxHp: 100),
+      act: (b) => b.add(const TameEnemy(0)),
+      expect: () => [
+        isA<CardCombatResolved>()
+            .having((s) => s.isTamed, 'isTamed', isTrue)
+            .having((s) => s.tamedEnemyId, 'tamedEnemyId', FloorEnemies.rat.id)
+            .having((s) => s.outcome, 'outcome', CombatOutcome.victory)
+            .having((s) => s.cardRewardOptions, 'cardRewardOptions', isEmpty),
+      ],
+    );
+
+    blocTest<CombatBloc, CombatState>(
+      '제압되지 않은 적 길들이기 시도 → 무시(상태 변화 없음)',
+      build: () => bloc,
+      seed: () => makeActive(enemyHp: 100, enemyMaxHp: 100),
+      act: (b) => b.add(const TameEnemy(0)),
+      expect: () => [],
+    );
+
+    blocTest<CombatBloc, CombatState>(
+      '잘못된 인덱스 길들이기 → 무시',
+      build: () => bloc,
+      seed: () => makeActive(enemyHp: 5, enemyMaxHp: 100),
+      act: (b) => b.add(const TameEnemy(9)),
+      expect: () => [],
+    );
+  });
 }

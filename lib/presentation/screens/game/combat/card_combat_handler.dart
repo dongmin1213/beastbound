@@ -611,6 +611,46 @@ class CardCombatHandler {
     });
   }
 
+  /// 제압된 적 길들이기 처리 — 전투를 포획으로 종료.
+  /// [index] 적이 제압 상태일 때만 유효 (도주 흐름을 미러링).
+  void handleTame(int index) {
+    final preState = combatBloc.state;
+    if (preState is! CardCombatActive) return;
+    if (preState.suppressedTargetIndex != index) return; // 방어
+
+    final name = preState.enemies[index].data.name;
+    updateUI(choiceSelected: true);
+
+    Future.delayed(const Duration(milliseconds: 400), () async {
+      if (!isMounted()) return;
+
+      runController.completedBlocks.add(CompletedBlock(
+        text: '🐾 $name 길들이기',
+        isChoice: true,
+      ));
+
+      combatBloc.add(TameEnemy(index));
+
+      CombatState newState;
+      try {
+        newState = await combatBloc.stream.first.timeout(
+          const Duration(milliseconds: 500),
+          onTimeout: () => combatBloc.state,
+        );
+      } on StateError {
+        updateUI(choiceSelected: false);
+        return;
+      }
+      if (!isMounted()) return;
+
+      if (newState is CardCombatResolved) {
+        _handleCardCombatResolved(newState);
+      } else {
+        updateUI(choiceSelected: false);
+      }
+    });
+  }
+
   /// 카드 보상 선택 처리.
   void handleSelectCardReward(ChoiceData choice) {
     final selectedCardId = choice.id == 'skip_reward'
@@ -655,8 +695,8 @@ class CardCombatHandler {
 
     switch (resolved.outcome) {
       case CombatOutcome.victory:
-        runController.completedBlocks.add(const CompletedBlock(
-          text: '✦ 전투 승리!',
+        runController.completedBlocks.add(CompletedBlock(
+          text: resolved.isTamed ? '🐾 몬스터를 길들였다!' : '✦ 전투 승리!',
         ));
 
         if (resolved.roomType == RoomType.boss) {
@@ -707,7 +747,8 @@ class CardCombatHandler {
             choiceSelected: false,
             showingChoices: false,
           );
-          runController.appendFeedbackText('전투 승리!');
+          runController.appendFeedbackText(
+              resolved.isTamed ? '몬스터를 길들였다!' : '전투 승리!');
           _endCombatAndCompleteRoom();
         }
 

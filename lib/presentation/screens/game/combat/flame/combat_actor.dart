@@ -25,6 +25,9 @@ class CombatActor extends PositionComponent {
   int hp;
   int maxHp;
 
+  /// 제압 상태 — true면 길들이기 가능 신호(초록 펄스 링)를 표시.
+  bool suppressed = false;
+
   final Map<String, Sprite> _frames = {};
 
   // ── 애니메이션 상태 (수동 구동) ──
@@ -147,6 +150,22 @@ class CombatActor extends PositionComponent {
       );
     }
     canvas.restore();
+
+    // 제압 신호 — 초록 펄스 링 (길들이기 가능).
+    if (suppressed && !_dying) {
+      final pulse = 0.3 + 0.4 * (0.5 + 0.5 * math.sin(_bobT * 6));
+      final ring = Paint()
+        ..color = Color.fromRGBO(120, 240, 140, pulse)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2;
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(-3, -3, size.x + 6, size.y + 6),
+          const Radius.circular(4),
+        ),
+        ring,
+      );
+    }
 
     if (showHpBar) _renderHpBar(canvas);
   }

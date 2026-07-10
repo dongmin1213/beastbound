@@ -100,6 +100,7 @@ class CombatFlameGame extends FlameGame {
         size: Vector2(eSize, eSize),
         showHpBar: multi, // 멀티몹만 머리 위 미니 바; 단일은 코너 플레이트.
       );
+      actor.suppressed = def.hp > 0 && def.hp <= def.maxHp * _suppressRatio;
       _enemies.add(actor);
       await add(actor);
     }
@@ -136,10 +137,17 @@ class CombatFlameGame extends FlameGame {
     _addShake(5.0);
   }
 
-  /// 특정 적 HP 갱신 (플레이트/미니바 반영).
+  /// 특정 적 HP 갱신 (플레이트/미니바 + 제압 신호 반영).
   void setEnemyHp(int index, int hp) {
-    _enemyAt(index)?.hp = hp;
+    final e = _enemyAt(index);
+    if (e != null) {
+      e.hp = hp;
+      e.suppressed = hp > 0 && hp <= e.maxHp * _suppressRatio;
+    }
   }
+
+  /// 제압 임계 비율 (도메인 CardCombatActive.suppressHpRatio와 동일하게 유지).
+  static const double _suppressRatio = 0.25;
 
   /// 적 사망 디졸브.
   void killEnemy(int index) => _enemyAt(index)?.triggerDeath();
