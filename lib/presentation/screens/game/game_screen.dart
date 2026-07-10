@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soul_dungeon/presentation/widgets/combat_ui/combat_tutorial_modal.dart';
 import 'package:soul_dungeon/core/config/balance_config.dart';
+import 'package:soul_dungeon/core/config/tamed_monster_store.dart';
 import 'package:soul_dungeon/core/events/game_event_bus.dart';
 import 'package:soul_dungeon/core/events/gold_gained_event.dart';
 import 'package:soul_dungeon/core/events/job_unlock_event.dart';
@@ -366,6 +367,10 @@ class GameScreenState extends State<GameScreen>
                   purchasedUpgradeIds: purchasedIds,
                 ),
         );
+        // 스타터 몬스터는 동료 — 도감에 자동 포획 등록.
+        if (starterId != null) {
+          TamedMonsterStore.markTamed(starterId);
+        }
       }
 
       // E9 저주 런타임 연동 — 클리어 횟수 기반 저주 모디파이어 적용

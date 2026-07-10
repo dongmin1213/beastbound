@@ -53,7 +53,7 @@ class BestiaryScreen extends StatelessWidget {
                   ),
                   const Spacer(),
                   Text(
-                    '${monsters.length}종',
+                    '${monsters.where((m) => TamedMonsterStore.isTamed(m.id)).length}/${monsters.length} 포획',
                     style: const TextStyle(
                       color: Color(0xFF8A80A0),
                       fontSize: 13,
