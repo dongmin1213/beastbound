@@ -17,7 +17,6 @@ import 'package:soul_dungeon/core/config/dungeon_balance_config.dart';
 import 'package:soul_dungeon/core/config/floor_config.dart';
 import 'package:soul_dungeon/core/logging/game_logger.dart';
 import 'package:soul_dungeon/domain/combat/bloc/combat_bloc.dart';
-import 'package:soul_dungeon/domain/combat/content/boss_gimmick_text.dart';
 import 'package:soul_dungeon/domain/combat/bloc/combat_event.dart';
 import 'package:soul_dungeon/domain/combat/bloc/combat_state.dart';
 import 'package:soul_dungeon/domain/combat/logic/curse_modifier_resolver.dart';
@@ -31,7 +30,6 @@ import 'package:soul_dungeon/domain/dungeon/bloc/dungeon_event.dart';
 import 'package:soul_dungeon/domain/dungeon/bloc/dungeon_state.dart';
 import 'package:soul_dungeon/domain/dungeon/generator/dungeon_generator.dart';
 import 'package:soul_dungeon/domain/momentum/bloc/momentum_bloc.dart';
-import 'package:soul_dungeon/core/models/momentum_types.dart';
 import 'package:soul_dungeon/core/models/environment_clue.dart';
 import 'package:soul_dungeon/core/models/disposition_axis.dart';
 import 'package:soul_dungeon/core/models/game_enums.dart';
@@ -50,13 +48,11 @@ import 'package:soul_dungeon/domain/combat/models/boss_phase_data.dart';
 import 'package:soul_dungeon/presentation/widgets/combat_ui/boss_demo_encounter.dart';
 import 'package:soul_dungeon/presentation/widgets/combat_ui/combat_flow_manager.dart';
 import 'package:soul_dungeon/presentation/widgets/combat_ui/combat_models.dart';
-import 'package:soul_dungeon/presentation/widgets/combat_ui/multi_enemy_area_widget.dart';
-import 'package:soul_dungeon/presentation/widgets/combat_ui/player_hand_area_widget.dart';
+import 'package:soul_dungeon/presentation/screens/game/combat/card_combat_view.dart';
 import 'package:soul_dungeon/presentation/widgets/combat_ui/player_status_bar.dart';
 import 'package:soul_dungeon/presentation/widgets/combat_ui/hp_display_widget.dart';
 import 'package:soul_dungeon/presentation/widgets/combat_ui/momentum_gauge_widget.dart';
 import 'package:soul_dungeon/presentation/widgets/effects/retro_button.dart';
-import 'package:soul_dungeon/presentation/widgets/effects/retro_window_frame.dart';
 import 'package:soul_dungeon/presentation/widgets/minimap/minimap_widget.dart';
 import 'package:soul_dungeon/presentation/widgets/text_engine/typewriter_widget.dart';
 import 'package:soul_dungeon/domain/dungeon/shop/shop_item.dart';
@@ -1753,257 +1749,53 @@ class GameScreenState extends State<GameScreen>
           key: const ValueKey('game_screen_tap_area'),
           behavior: HitTestBehavior.opaque,
           onTap: _handleTap,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // ── 상단 고정 상태 바 ──
-              if (_inCardCombat)
-                BlocBuilder<CombatBloc, CombatState>(
-                  bloc: _combatBloc,
-                  buildWhen: (prev, curr) {
-                    if (prev is CardCombatActive && curr is CardCombatActive) {
-                      return prev.enemies != curr.enemies ||
-                          prev.selectedTargetIndex != curr.selectedTargetIndex ||
-                          prev.currentTurn != curr.currentTurn ||
-                          prev.intentRevealed != curr.intentRevealed;
-                    }
-                    return true;
-                  },
-                  builder: (context, combatState) {
-                    if (combatState is CardCombatActive) {
-                      final enemyPrefix = combatState.isBoss
-                          ? '\u2620 '
-                          : combatState.enemy.isElite
-                              ? '\u2605 '
-                              : '\u2694 ';
-                      final enemyTitleBarColor = combatState.isBoss
-                          ? const Color(0xFF2E1A1A)
-                          : combatState.enemy.isElite
-                              ? const Color(0xFF2E2A1A)
-                              : _currentFloorVisuals.combatUiTint;
-                      final titleText = combatState.enemies.length > 1
-                          ? '$enemyPrefix적 (${combatState.enemies.length}체)'
-                          : '$enemyPrefix${combatState.enemy.name}';
-                      return BlocBuilder<MomentumBloc, MomentumState>(
-                        buildWhen: (prev, curr) =>
-                            prev.runtimeType != curr.runtimeType ||
-                            (prev is MomentumUpdated &&
-                                curr is MomentumUpdated &&
-                                prev.tier != curr.tier),
-                        builder: (context, momentumState) {
-                          final tier = momentumState is MomentumUpdated
-                              ? momentumState.tier
-                              : MomentumTier.low;
-                          final enemyBorderColor = tier == MomentumTier.high
-                              ? AppTheme.momentumHighColor
-                              : const Color(0xFF555555);
-                          return Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 4),
-                            child: RetroWindowFrame(
-                              title: titleText,
-                              borderColor: enemyBorderColor,
-                              titleBarColor: enemyTitleBarColor,
-                              backgroundColor: _currentFloorVisuals.frameBackground,
-                              child: MultiEnemyAreaWidget(
-                                enemies: combatState.enemies,
-                                selectedTargetIndex: combatState.selectedTargetIndex,
-                                currentTurn: combatState.currentTurn,
-                                intentRevealed: combatState.intentRevealed,
-                                isBoss: combatState.isBoss,
-                                bossData: combatState.bossData,
-                                currentBossPhase: combatState.currentBossPhase,
-                                gimmickTag: combatState.bossData != null
-                                    ? BossGimmickText.gimmickTag(
-                                        combatState.bossData!
-                                            .phaseAt(combatState.currentBossPhase)
-                                            .gimmick)
-                                    : '',
-                                onSelectTarget: (index) {
-                                  _combatBloc.add(SelectTarget(index));
-                                },
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    }
-                    if (combatState is CardCombatResolved &&
-                        combatState.outcome == CombatOutcome.victory) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: RetroWindowFrame(
-                          title: '승리',
-                          titleBarColor: _currentFloorVisuals.combatUiTint,
-                          backgroundColor: _currentFloorVisuals.frameBackground,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
-                            ),
-                            child: Text(
-                              '✦ 승리',
-                              style: TextStyle(
-                                color: AppTheme.titleGold,
-                                fontSize: ResponsiveScale.scaleFontSize(
-                                    context, 14),
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'monospace',
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-                    return const SizedBox.shrink();
-                  },
-                )
-              else if (!_inPrepPhase)
-                PlayerStatusBar(
-                  currentHp: _runController.playerRunState.currentHp,
-                  maxHp: _runController.playerRunState.maxHp,
+          child: _inCardCombat
+              // ── 카드 전투: 전용 위젯으로 격리 (Reforged 1단계) ──
+              // 이후 이 위젯 내부를 Flame GameWidget 씬으로 교체한다.
+              ? CardCombatView(
+                  combatBloc: _combatBloc,
+                  momentumConfig: widget.momentumConfig,
+                  floorVisuals: _currentFloorVisuals,
                   currentFloor: _runController.playerRunState.currentFloor,
-                  backgroundColor: _currentFloorVisuals.frameBackground,
-                ),
-              // ── 상단: 스크롤 가능한 스토리 텍스트 영역 ──
-              if (_inCardCombat)
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: RetroWindowFrame(
-                      title: '전투 기록',
-                      expand: true,
-                      titleBarColor: _currentFloorVisuals.combatUiTint,
-                      backgroundColor: _currentFloorVisuals.frameBackground,
-                      child: _buildTextScrollArea(context),
-                    ),
-                  ),
+                  showActionButtons: _showingChoices &&
+                      _combatBloc.state is! CardBossPhaseTransition &&
+                      !_isCardRewardPhase,
+                  choiceSelected: _choiceSelected,
+                  textScrollArea: _buildTextScrollArea(context),
+                  bottomChoiceArea: _buildBottomChoiceArea(context),
+                  combatActionButtons: _buildCombatActionButtons(context),
+                  onSelectTarget: (index) =>
+                      _combatBloc.add(SelectTarget(index)),
                 )
-              else
-                Expanded(
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeInOut,
-                    foregroundDecoration: const BoxDecoration(
-                      // 탐색 모드: 미세 채도 절제 오버레이
-                      color: Color(0x0800000A),
-                    ),
-                    child: _buildTextScrollArea(context),
-                  ),
-                ),
-              // ── 하단 고정: 미니맵 토글 + 선택지 + 전투 액션 버튼 ──
-              if (_dungeonBloc != null && !_inCardCombat) _buildMinimapToggleBar(),
-              // ── 카드 전투 하단: 플레이어 상태 바 (기세 + HP/AP/덱) ──
-              if (_inCardCombat)
-                BlocBuilder<CombatBloc, CombatState>(
-                  bloc: _combatBloc,
-                  buildWhen: (prev, curr) {
-                    if (prev is CardCombatActive && curr is CardCombatActive) {
-                      return prev.playerHp != curr.playerHp ||
-                          prev.playerMaxHp != curr.playerMaxHp ||
-                          prev.playerBlock != curr.playerBlock ||
-                          prev.actionPoints != curr.actionPoints ||
-                          prev.maxActionPoints != curr.maxActionPoints ||
-                          prev.currentTurn != curr.currentTurn ||
-                          prev.playerStatuses != curr.playerStatuses ||
-                          prev.deckState != curr.deckState;
-                    }
-                    return true;
-                  },
-                  builder: (context, combatState) {
-                    if (combatState is CardCombatActive) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: RetroWindowFrame(
-                          title: '손패',
-                          titleBarColor: _currentFloorVisuals.combatUiTint,
-                          backgroundColor: _currentFloorVisuals.frameBackground,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              // 기세 게이지 (HP 바 위) — O-03: 2층부터 표시
-                              if (_runController.playerRunState.currentFloor >= 2)
-                                BlocBuilder<MomentumBloc, MomentumState>(
-                                  buildWhen: (prev, curr) =>
-                                      prev.runtimeType != curr.runtimeType ||
-                                      (prev is MomentumUpdated &&
-                                          curr is MomentumUpdated &&
-                                          (prev.value != curr.value ||
-                                              prev.tier != curr.tier)),
-                                  builder: (context, state) {
-                                    // 실제 CombatBloc의 maxAP를 표시 (MomentumBloc 기준 재계산 X)
-                                    // → 턴 중 기세가 올라도 AP 표시가 실제 값과 불일치하지 않음
-                                    final actualAp = combatState.maxActionPoints;
-                                    return switch (state) {
-                                      MomentumInitial() => MomentumGaugeWidget(
-                                          momentum: 0,
-                                          config: widget.momentumConfig,
-                                          apForCurrentTier: actualAp,
-                                        ),
-                                      MomentumUpdated(
-                                        :final value,
-                                        :final lastDelta,
-                                      ) =>
-                                        MomentumGaugeWidget(
-                                          momentum: value,
-                                          lastDelta: lastDelta,
-                                          config: widget.momentumConfig,
-                                          apForCurrentTier: actualAp,
-                                        ),
-                                    };
-                                  },
-                                ),
-                              PlayerHandAreaWidget(
-                                playerHp: combatState.playerHp,
-                                playerMaxHp: combatState.playerMaxHp,
-                                playerBlock: combatState.playerBlock,
-                                actionPoints: combatState.actionPoints,
-                                maxActionPoints: combatState.maxActionPoints,
-                                currentTurn: combatState.currentTurn,
-                                drawPileCount: combatState.deckState.drawPileCount,
-                                discardPileCount: combatState.deckState.discardPileCount,
-                                exhaustPileCount: combatState.deckState.exhaustPileCount,
-                                playerStatuses: combatState.playerStatuses,
-                              ),
-                            ],
-                          ),
+              // ── 탐색 모드 ──
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // ── 상단 고정 상태 바 ──
+                    if (!_inPrepPhase)
+                      PlayerStatusBar(
+                        currentHp: _runController.playerRunState.currentHp,
+                        maxHp: _runController.playerRunState.maxHp,
+                        currentFloor: _runController.playerRunState.currentFloor,
+                        backgroundColor: _currentFloorVisuals.frameBackground,
+                      ),
+                    // ── 상단: 스크롤 가능한 스토리 텍스트 영역 ──
+                    Expanded(
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeInOut,
+                        foregroundDecoration: const BoxDecoration(
+                          // 탐색 모드: 미세 채도 절제 오버레이
+                          color: Color(0x0800000A),
                         ),
-                      );
-                    }
-                    return const SizedBox.shrink();
-                  },
-                ),
-              // ── 카드 전투: 카드 선택지 + 액션 버튼 (RetroWindowFrame) ──
-              if (_inCardCombat)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  child: RetroWindowFrame(
-                    title: '카드',
-                    titleBarColor: _currentFloorVisuals.combatUiTint,
-                    backgroundColor: _currentFloorVisuals.frameBackground,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        _buildBottomChoiceArea(context),
-                        if (_showingChoices &&
-                            _combatBloc.state is! CardBossPhaseTransition &&
-                            !_isCardRewardPhase)
-                          AnimatedOpacity(
-                            opacity: _choiceSelected ? 0.0 : 1.0,
-                            duration: const Duration(milliseconds: 200),
-                            child: IgnorePointer(
-                              ignoring: _choiceSelected,
-                              child: _buildCombatActionButtons(context),
-                            ),
-                          ),
-                      ],
+                        child: _buildTextScrollArea(context),
+                      ),
                     ),
-                  ),
-                )
-              else
-                _buildBottomChoiceArea(context)
-            ],
-          ),
+                    // ── 하단 고정: 미니맵 토글 + 선택지 ──
+                    if (_dungeonBloc != null) _buildMinimapToggleBar(),
+                    _buildBottomChoiceArea(context),
+                  ],
+                ),
         ),
       ),
           // 전투 이펙트 오버레이 (피격/방어/회복 틴트 플래시)
