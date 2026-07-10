@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:soul_dungeon/domain/combat/content/card_pool.dart';
+import 'package:soul_dungeon/domain/combat/content/monster_cards.dart';
 import 'package:soul_dungeon/core/models/card_data.dart';
 
 /// 카드 보상 생성 — 승리 후 3장 선택지 제공.
@@ -94,6 +95,52 @@ class CardRewardGenerator {
           usedIds.add(card.id);
         }
       }
+    }
+
+    return result;
+  }
+
+  /// 로스터 몬스터들의 무브풀에서 보상 카드 [count]장 생성.
+  ///
+  /// 몬스터 테이밍 컨셉: 이번 런에 데려온 몬스터(스타터+길들인)들의 카드에서
+  /// 보상이 나온다. 몬스터 카드 우선, 부족분은 무색으로 보충.
+  /// [ownedCardIds]에 포함된 카드는 제외 (이미 보유).
+  static List<CardData> generateFromMonsters({
+    required List<String> monsterIds,
+    required int count,
+    Set<String> ownedCardIds = const {},
+    Random? random,
+  }) {
+    final rng = random ?? Random();
+
+    // 로스터 몬스터 무브풀 union (중복 제거).
+    final monsterPool = <CardData>[];
+    final seen = <String>{};
+    for (final id in monsterIds) {
+      for (final card in MonsterCards.movepool(id)) {
+        if (seen.add(card.id)) monsterPool.add(card);
+      }
+    }
+
+    final availableMonster =
+        monsterPool.where((c) => !ownedCardIds.contains(c.id)).toList()
+          ..shuffle(rng);
+    final availableColorless = <CardData>[
+      ...CardPool.colorless.where((c) => !ownedCardIds.contains(c.id)),
+    ]..shuffle(rng);
+
+    final result = <CardData>[];
+    final usedIds = <String>{};
+
+    // 몬스터 카드 우선.
+    for (final card in availableMonster) {
+      if (result.length >= count) break;
+      if (usedIds.add(card.id)) result.add(card);
+    }
+    // 부족분은 무색으로 보충.
+    for (final card in availableColorless) {
+      if (result.length >= count) break;
+      if (usedIds.add(card.id)) result.add(card);
     }
 
     return result;

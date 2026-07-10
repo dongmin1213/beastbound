@@ -92,6 +92,9 @@ class CardCombatHandler {
   /// 전투 튜토리얼 모달 표시 콜백 (앱 최초 1회, SharedPreferences 관리).
   final Future<void> Function()? showTutorialModal;
 
+  /// 이번 런 로스터 몬스터 id (스타터 + 길들인). 승리 보상 풀 소스.
+  final List<String> runMonsterIds = <String>[];
+
   /// AP 변동 추적 — 직전 턴의 maxActionPoints.
   int _lastTurnMaxAp = 0;
 
@@ -151,6 +154,7 @@ class CardCombatHandler {
         roomType: roomType,
         currentMomentum: momentum,
         rewardJobOverride: rewardJobOverride,
+        rewardMonsterIds: List.of(runMonsterIds),
       ),
     );
   }
@@ -698,6 +702,10 @@ class CardCombatHandler {
       case CombatOutcome.victory:
         if (resolved.isTamed && resolved.tamedEnemyId != null) {
           TamedMonsterStore.markTamed(resolved.tamedEnemyId!);
+          // 길들인 몬스터를 이번 런 로스터에 편입 → 이후 보상 풀에 포함.
+          if (!runMonsterIds.contains(resolved.tamedEnemyId)) {
+            runMonsterIds.add(resolved.tamedEnemyId!);
+          }
         }
         runController.completedBlocks.add(CompletedBlock(
           text: resolved.isTamed ? '🐾 몬스터를 길들였다!' : '✦ 전투 승리!',

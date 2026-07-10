@@ -117,6 +117,10 @@ final class StartCardCombat extends CombatEvent {
   /// 보상 카드 직업 오버라이드 (유령 PvP: 유령 직업 카드 보상).
   final String? rewardJobOverride;
 
+  /// 이번 런 로스터 몬스터 id (스타터+길들인). 비어있지 않으면 승리 보상이
+  /// 이 몬스터들의 무브풀에서 나온다 (몬스터 테이밍 컨셉).
+  final List<String> rewardMonsterIds;
+
   const StartCardCombat({
     required this.enemies,
     required this.masterDeck,
@@ -125,11 +129,14 @@ final class StartCardCombat extends CombatEvent {
     this.roomType = RoomType.combat,
     this.currentMomentum = 0,
     this.rewardJobOverride,
+    this.rewardMonsterIds = const [],
   });
 
   @override
-  List<Object?> get props =>
-      [enemies, masterDeck, playerRunState, momentumTier, roomType, currentMomentum, rewardJobOverride];
+  List<Object?> get props => [
+        enemies, masterDeck, playerRunState, momentumTier, roomType,
+        currentMomentum, rewardJobOverride, rewardMonsterIds,
+      ];
 }
 
 /// 카드 플레이.

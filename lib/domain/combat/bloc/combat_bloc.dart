@@ -66,6 +66,10 @@ import 'package:soul_dungeon/core/models/momentum_types.dart';
 class CombatBloc extends Bloc<CombatEvent, CombatState> {
   final GameEventBus gameEventBus;
   final CombatBalanceConfig combatConfig;
+
+  /// 이번 런 로스터 몬스터 id (스타터+길들인) — StartCardCombat마다 갱신.
+  /// 승리 시 이 몬스터들의 무브풀에서 보상을 뽑는다. 비어있으면 직업 보상 폴백.
+  List<String> _rewardMonsterIds = const [];
   final EconomyConfig economyConfig;
   final TierEffectCalculator tierEffectCalculator;
   final CardCombatBalanceConfig cardCombatConfig;
@@ -429,6 +433,9 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     StartCardCombat event,
     Emitter<CombatState> emit,
   ) {
+    // 이번 런 로스터 몬스터 — 승리 보상 풀 소스 (몬스터 테이밍 컨셉).
+    _rewardMonsterIds = event.rewardMonsterIds;
+
     // 초기 AP는 event.momentumTier 대신 실제 초기 기세값에서 산출 (첫 턴 불일치 수정)
     // totalMomentumBonus는 아래에서 계산되므로, 우선 event.momentumTier를 임시 사용
     // → 최종 AP는 totalMomentumBonus 확정 후 재산출
@@ -3454,12 +3461,19 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         CurseModifierResolver.resolveRewardReduction(victoryCurses);
     final rewardCount =
         (cardCombatConfig.cardRewardCount - rewardReduction).clamp(1, 10);
-    final cardRewards = CardRewardGenerator.generate(
-      jobId: jobId,
-      count: rewardCount,
-      ownedCardIds: ownedIds,
-      unlockedCardIds: unlockedCardIds,
-    );
+    // 로스터 몬스터가 있으면 그 무브풀에서, 아니면 직업 보상(폴백).
+    final cardRewards = _rewardMonsterIds.isNotEmpty
+        ? CardRewardGenerator.generateFromMonsters(
+            monsterIds: _rewardMonsterIds,
+            count: rewardCount,
+            ownedCardIds: ownedIds,
+          )
+        : CardRewardGenerator.generate(
+            jobId: jobId,
+            count: rewardCount,
+            ownedCardIds: ownedIds,
+            unlockedCardIds: unlockedCardIds,
+          );
 
     emit(CardCombatResolved(
       outcome: CombatOutcome.victory,

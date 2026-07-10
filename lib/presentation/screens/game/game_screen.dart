@@ -555,6 +555,11 @@ class GameScreenState extends State<GameScreen>
       fleeApCost: widget.fleeConfig.apCost,
     );
 
+    // 스타터 몬스터를 이번 런 로스터에 시드 → 이후 승리 보상이 이 무브풀에서 나옴.
+    if (widget.starterMonsterId != null) {
+      _cardCombatHandler.runMonsterIds.add(widget.starterMonsterId!);
+    }
+
     // Dungeon Navigation Handler 초기화 (Step 6d)
     _dungeonNavHandler = DungeonNavigationHandler(
       runController: _runController,

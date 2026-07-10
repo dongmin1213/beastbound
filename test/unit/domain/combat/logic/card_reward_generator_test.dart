@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:soul_dungeon/domain/combat/content/card_pool.dart';
+import 'package:soul_dungeon/domain/combat/content/monster_cards.dart';
 import 'package:soul_dungeon/domain/combat/content/warrior_cards.dart';
 import 'package:soul_dungeon/domain/combat/content/sage_cards.dart';
 import 'package:soul_dungeon/domain/combat/content/colorless_cards.dart';
@@ -138,6 +139,48 @@ void main() {
       for (final card in rewards) {
         expect(starterIds.contains(card.id), false,
             reason: '${card.id} is a starter card');
+      }
+    });
+  });
+  group('generateFromMonsters (로스터 보상)', () {
+    test('보상이 로스터 몬스터 무브풀에서 나옴', () {
+      final rewards = CardRewardGenerator.generateFromMonsters(
+        monsterIds: ['enemy_goblin'],
+        count: 3,
+        random: Random(1),
+      );
+      expect(rewards, hasLength(3));
+      final pool = MonsterCards.movepoolIds('enemy_goblin').toSet();
+      // 무브풀(5장) < 3이 아니므로 전부 무브풀에서 나와야 함
+      for (final c in rewards) {
+        expect(pool.contains(c.id), isTrue, reason: '\${c.id} not in movepool');
+      }
+    });
+
+    test('보유 카드는 제외', () {
+      final pool = MonsterCards.movepoolIds('enemy_goblin');
+      final rewards = CardRewardGenerator.generateFromMonsters(
+        monsterIds: ['enemy_goblin'],
+        count: 2,
+        ownedCardIds: {pool.first},
+        random: Random(2),
+      );
+      expect(rewards.any((c) => c.id == pool.first), isFalse);
+    });
+
+    test('여러 몬스터 무브풀 union', () {
+      final rewards = CardRewardGenerator.generateFromMonsters(
+        monsterIds: ['enemy_goblin', 'enemy_slime'],
+        count: 4,
+        random: Random(3),
+      );
+      final union = {
+        ...MonsterCards.movepoolIds('enemy_goblin'),
+        ...MonsterCards.movepoolIds('enemy_slime'),
+      };
+      expect(rewards, hasLength(4));
+      for (final c in rewards) {
+        expect(union.contains(c.id), isTrue);
       }
     });
   });
