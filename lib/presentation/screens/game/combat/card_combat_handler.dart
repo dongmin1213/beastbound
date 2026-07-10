@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:soul_dungeon/core/config/balance_config.dart';
 import 'package:soul_dungeon/core/config/game_hint_manager.dart';
+import 'package:soul_dungeon/core/config/tamed_monster_store.dart';
 import 'package:soul_dungeon/core/text/korean_particles.dart';
 import 'package:soul_dungeon/domain/combat/bloc/combat_bloc.dart';
 import 'package:soul_dungeon/domain/combat/bloc/combat_event.dart';
@@ -695,6 +696,9 @@ class CardCombatHandler {
 
     switch (resolved.outcome) {
       case CombatOutcome.victory:
+        if (resolved.isTamed && resolved.tamedEnemyId != null) {
+          TamedMonsterStore.markTamed(resolved.tamedEnemyId!);
+        }
         runController.completedBlocks.add(CompletedBlock(
           text: resolved.isTamed ? '🐾 몬스터를 길들였다!' : '✦ 전투 승리!',
         ));

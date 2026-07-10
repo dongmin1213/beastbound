@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:soul_dungeon/core/models/enemy_combat_data.dart';
 import 'package:soul_dungeon/domain/combat/content/floor_enemies.dart';
+import 'package:soul_dungeon/core/config/tamed_monster_store.dart';
 import 'package:soul_dungeon/domain/combat/content/monster_cards.dart';
 import 'package:soul_dungeon/presentation/theme/app_theme.dart';
 import 'package:soul_dungeon/presentation/theme/pixel_art_assets.dart';
@@ -89,8 +90,7 @@ class BestiaryScreen extends StatelessWidget {
                 itemCount: monsters.length,
                 itemBuilder: (context, i) => _MonsterCard(
                   monster: monsters[i],
-                  // 포획 영속(로스터/도감 저장)은 시스템 ④에서 연결.
-                  tamed: false,
+                  tamed: TamedMonsterStore.isTamed(monsters[i].id),
                 ),
               ),
             ),
