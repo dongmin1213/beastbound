@@ -1757,6 +1757,7 @@ class GameScreenState extends State<GameScreen>
                   momentumConfig: widget.momentumConfig,
                   floorVisuals: _currentFloorVisuals,
                   currentFloor: _runController.playerRunState.currentFloor,
+                  playerJobId: _runController.playerRunState.currentJobId,
                   showActionButtons: _showingChoices &&
                       _combatBloc.state is! CardBossPhaseTransition &&
                       !_isCardRewardPhase,

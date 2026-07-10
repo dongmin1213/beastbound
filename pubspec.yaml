@@ -42,6 +42,7 @@ dependencies:
   flutter_svg: ^2.2.3
   flutter_animate: ^4.5.2
   flutter_soloud: ^3.4.10
+  flame: ^1.37.0
 
 dev_dependencies:
   flutter_test:

@@ -4,14 +4,13 @@ import 'package:soul_dungeon/core/config/balance_config.dart';
 import 'package:soul_dungeon/core/models/game_enums.dart';
 import 'package:soul_dungeon/core/models/momentum_types.dart';
 import 'package:soul_dungeon/domain/combat/bloc/combat_bloc.dart';
+import 'package:soul_dungeon/presentation/screens/game/combat/flame_combat_scene.dart';
 import 'package:soul_dungeon/domain/combat/bloc/combat_state.dart';
-import 'package:soul_dungeon/domain/combat/content/boss_gimmick_text.dart';
 import 'package:soul_dungeon/domain/momentum/bloc/momentum_bloc.dart';
 import 'package:soul_dungeon/presentation/theme/app_theme.dart';
 import 'package:soul_dungeon/presentation/theme/floor_theme_visuals.dart';
 import 'package:soul_dungeon/presentation/theme/responsive_scale.dart';
 import 'package:soul_dungeon/presentation/widgets/combat_ui/momentum_gauge_widget.dart';
-import 'package:soul_dungeon/presentation/widgets/combat_ui/multi_enemy_area_widget.dart';
 import 'package:soul_dungeon/presentation/widgets/combat_ui/player_hand_area_widget.dart';
 import 'package:soul_dungeon/presentation/widgets/effects/retro_window_frame.dart';
 
@@ -36,6 +35,9 @@ class CardCombatView extends StatelessWidget {
 
   /// 현재 층 (기세 게이지는 2층부터 표시).
   final int currentFloor;
+
+  /// 플레이어 직업 ID (Flame 전투 씬의 플레이어 스프라이트용). null이면 실루엣.
+  final String? playerJobId;
 
   /// 전투 액션 버튼(턴 종료/도주) 표시 여부.
   /// = 선택지 표시 중 && 보스 페이즈 전환 아님 && 카드 보상 단계 아님.
@@ -62,6 +64,7 @@ class CardCombatView extends StatelessWidget {
     required this.momentumConfig,
     required this.floorVisuals,
     required this.currentFloor,
+    required this.playerJobId,
     required this.showActionButtons,
     required this.choiceSelected,
     required this.textScrollArea,
@@ -135,20 +138,12 @@ class CardCombatView extends StatelessWidget {
                   borderColor: enemyBorderColor,
                   titleBarColor: enemyTitleBarColor,
                   backgroundColor: floorVisuals.frameBackground,
-                  child: MultiEnemyAreaWidget(
-                    enemies: combatState.enemies,
-                    selectedTargetIndex: combatState.selectedTargetIndex,
-                    currentTurn: combatState.currentTurn,
-                    intentRevealed: combatState.intentRevealed,
-                    isBoss: combatState.isBoss,
-                    bossData: combatState.bossData,
-                    currentBossPhase: combatState.currentBossPhase,
-                    gimmickTag: combatState.bossData != null
-                        ? BossGimmickText.gimmickTag(combatState.bossData!
-                            .phaseAt(combatState.currentBossPhase)
-                            .gimmick)
-                        : '',
-                    onSelectTarget: onSelectTarget,
+                  // Reforged 2단계: 정적 초상화(MultiEnemyAreaWidget) 대신
+                  // Flame 연출 씬 — 플레이어/적이 공격·피격·사망한다.
+                  child: FlameCombatScene(
+                    combatBloc: combatBloc,
+                    floorVisuals: floorVisuals,
+                    playerJobId: playerJobId,
                   ),
                 ),
               );
