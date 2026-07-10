@@ -732,7 +732,9 @@ class CardCombatHandler {
             choiceSelected: false,
             textBlockDataList: [
               TextBlockData(
-                text: '카드 보상을 선택하세요.',
+                text: resolved.isTamed
+                    ? '길들인 몬스터의 힘을 배운다 — 카드를 선택하세요.'
+                    : '카드 보상을 선택하세요.',
                 choices: rewardChoices,
               ),
             ],

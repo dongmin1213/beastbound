@@ -11,6 +11,7 @@ import 'package:soul_dungeon/domain/combat/bloc/combat_bloc.dart';
 import 'package:soul_dungeon/domain/combat/bloc/combat_event.dart';
 import 'package:soul_dungeon/domain/combat/bloc/combat_state.dart';
 import 'package:soul_dungeon/domain/combat/content/floor_enemies.dart';
+import 'package:soul_dungeon/domain/combat/content/monster_cards.dart';
 import 'package:soul_dungeon/domain/combat/content/starter_cards.dart';
 import 'package:soul_dungeon/domain/build/data/blessing_pool.dart';
 import 'package:soul_dungeon/domain/build/data/card_blessing_pool.dart';
@@ -1310,7 +1311,7 @@ void main() {
     });
 
     blocTest<CombatBloc, CombatState>(
-      '제압된 적 길들이기 → CardCombatResolved(tamedEnemyId 설정, 카드보상 없음)',
+      '제압된 적 길들이기 → CardCombatResolved(tamedEnemyId + 무브풀 드래프트)',
       build: () => bloc,
       seed: () => makeActive(enemyHp: 5, enemyMaxHp: 100),
       act: (b) => b.add(const TameEnemy(0)),
@@ -1319,7 +1320,13 @@ void main() {
             .having((s) => s.isTamed, 'isTamed', isTrue)
             .having((s) => s.tamedEnemyId, 'tamedEnemyId', FloorEnemies.rat.id)
             .having((s) => s.outcome, 'outcome', CombatOutcome.victory)
-            .having((s) => s.cardRewardOptions, 'cardRewardOptions', isEmpty),
+            .having((s) => s.cardRewardOptions.isNotEmpty, '보상 있음', isTrue)
+            .having(
+              (s) => s.cardRewardOptions.every((c) =>
+                  MonsterCards.movepoolIds(FloorEnemies.rat.id).contains(c.id)),
+              '보상이 길들인 몬스터 무브풀에서 나옴',
+              isTrue,
+            ),
       ],
     );
 
@@ -1338,5 +1345,14 @@ void main() {
       act: (b) => b.add(const TameEnemy(9)),
       expect: () => [],
     );
+
+    test('MonsterCards: 무브풀이 실제 카드로 해석됨', () {
+      final rat = MonsterCards.movepool('enemy_rat');
+      expect(rat, isNotEmpty);
+      expect(rat.length, MonsterCards.movepoolIds('enemy_rat').length);
+      // 알 수 없는 몬스터 → 빈 목록
+      expect(MonsterCards.movepool('enemy_unknown_xyz'), isEmpty);
+      expect(MonsterCards.hasMovepool('enemy_goblin'), isTrue);
+    });
   });
 }

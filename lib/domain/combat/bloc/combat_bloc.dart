@@ -33,6 +33,7 @@ import 'package:soul_dungeon/domain/combat/models/enemy_battle_state.dart';
 import 'package:soul_dungeon/core/models/enemy_combat_data.dart';
 import 'package:soul_dungeon/core/models/enemy_modifier.dart';
 import 'package:soul_dungeon/domain/combat/content/colorless_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/monster_cards.dart';
 import 'package:soul_dungeon/domain/combat/content/encounter_pool.dart';
 import 'package:soul_dungeon/domain/combat/logic/action_interaction.dart';
 import 'package:soul_dungeon/core/models/curse_modifier_pool.dart';
@@ -3495,7 +3496,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     _emitCardCombatTame(current, target, emit);
   }
 
-  /// 길들이기 성공 → 전투 종료. 카드 보상 대신 몬스터 포획 플래그.
+  /// 길들이기 성공 → 전투 종료. 길들인 몬스터의 무브풀에서 카드 드래프트.
+  /// "싸운 적이 덱이 된다" — 포획한 몬스터의 카드를 배운다.
   void _emitCardCombatTame(
     CardCombatActive current,
     EnemyBattleState target,
@@ -3506,10 +3508,20 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       currentFloor: current.playerRunState.currentFloor,
     ));
 
+    // 길들인 몬스터의 무브풀 → 드래프트 후보 (미보유 우선).
+    final ownedIds =
+        current.playerRunState.masterDeck.map((c) => c.id).toSet();
+    final pool = MonsterCards.movepool(target.data.id);
+    final unowned = pool.where((c) => !ownedIds.contains(c.id)).toList();
+    final source = unowned.isNotEmpty ? unowned : pool;
+    final rewardCount = cardCombatConfig.cardRewardCount.clamp(1, 10);
+    final tameRewards = source.take(rewardCount).toList();
+
     if (kDebugMode) {
       GameLogger.debug(
         LogSystem.combat,
-        'Monster tamed: ${target.data.name} (${target.data.id})',
+        'Monster tamed: ${target.data.name} (${target.data.id}), '
+        'movepool draft=${tameRewards.length}',
       );
     }
 
@@ -3523,7 +3535,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
         maxHp: current.playerMaxHp,
       ),
       roomType: current.roomType,
-      cardRewardOptions: const [], // 길들이기는 카드 보상 대신 몬스터 획득.
+      cardRewardOptions: tameRewards, // 길들인 몬스터의 무브풀에서 드래프트.
       tamedEnemyId: target.data.id,
     ));
   }
