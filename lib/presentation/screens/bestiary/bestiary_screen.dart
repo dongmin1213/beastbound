@@ -15,10 +15,18 @@ class BestiaryScreen extends StatelessWidget {
 
   const BestiaryScreen({super.key, required this.onBack});
 
-  /// 도감에 표시할 몬스터 (현재 1층). 무브풀이 정의된 종만.
+  /// 도감에 표시할 몬스터 (전 층). 무브풀이 정의된 종만.
   static List<EnemyCombatData> get _monsters => [
         ...FloorEnemies.floor1Normal,
         ...FloorEnemies.floor1Elite,
+        ...FloorEnemies.floor2Normal,
+        ...FloorEnemies.floor2Elite,
+        ...FloorEnemies.floor3Normal,
+        ...FloorEnemies.floor3Elite,
+        ...FloorEnemies.floor4Normal,
+        ...FloorEnemies.floor4Elite,
+        ...FloorEnemies.floor5Normal,
+        ...FloorEnemies.floor5Elite,
       ].where((e) => MonsterCards.hasMovepool(e.id)).toList();
 
   @override
