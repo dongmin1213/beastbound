@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "description": "축복 풀 — 상점/NPC/악마 축복 전체",
+  "blessings": [
+    {
+      "id": "blessing_001",
+      "name": "힘의 축복",
+      "description": "전투 시작 시 힘 +1",
+      "rarity": "common",
+      "effect_type": "attackBonus",
+      "effect_value": 1
+    },
+    {
+      "id": "blessing_002",
+      "name": "방어의 축복",
+      "description": "전투 시작 시 블록 +3",
+      "rarity": "common",
+      "effect_type": "defenseBonus",
+      "effect_value": 3
+    },
+    {
+      "id": "blessing_003",
+      "name": "속도의 축복",
+      "description": "전투 시작 시 드로우 +1",
+      "rarity": "common",
+      "effect_type": "bonusDraw",
+      "effect_value": 1
+    },
+    {
+      "id": "blessing_004",
+      "name": "생명의 축복",
+      "description": "전투 시작 시 HP 5 회복",
+      "rarity": "common",
+      "effect_type": "healOnCombatStart",
+      "effect_value": 5
+    },
+    {
+      "id": "blessing_005",
+      "name": "기세의 축복",
+      "description": "전투 시작 시 기세 +10",
+      "rarity": "rare",
+      "effect_type": "momentumOnCombatStart",
+      "effect_value": 10
+    },
+    {
+      "id": "blessing_006",
+      "name": "회피의 축복",
+      "description": "첫 피격 시 데미지 50% 감소",
+      "rarity": "rare",
+      "effect_type": "firstHitReduction",
+      "effect_value": 50
+    },
+    {
+      "id": "blessing_007",
+      "name": "집중의 축복",
+      "description": "전투 시작 시 AP +1 (첫 턴만)",
+      "rarity": "rare",
+      "effect_type": "bonusApFirstTurn",
+      "effect_value": 1
+    },
+    {
+      "id": "blessing_008",
+      "name": "재생의 축복",
+      "description": "매 턴 시작 시 HP 2 회복",
+      "rarity": "rare",
+      "effect_type": "healPerTurn",
+      "effect_value": 2
+    },
+    {
+      "id": "npc_blessing_001",
+      "name": "은둔자의 부적",
+      "description": "전투 시작 시 블록 +2",
+      "rarity": "rare",
+      "effect_type": "defenseBonus",
+      "effect_value": 2
+    },
+    {
+      "id": "npc_blessing_002",
+      "name": "여행자의 부적",
+      "description": "전투 시작 시 기세 +5",
+      "rarity": "rare",
+      "effect_type": "momentumBonus",
+      "effect_value": 5
+    },
+    {
+      "id": "npc_blessing_003",
+      "name": "전사의 완장",
+      "description": "전투 시작 시 힘 +1",
+      "rarity": "rare",
+      "effect_type": "attackBonus",
+      "effect_value": 1
+    },
+    {
+      "id": "npc_blessing_004",
+      "name": "치유의 부적",
+      "description": "전투 시작 시 HP 3 회복",
+      "rarity": "rare",
+      "effect_type": "healBonus",
+      "effect_value": 3
+    },
+    {
+      "id": "npc_blessing_005",
+      "name": "행운의 동전",
+      "description": "전투 시작 시 카드 1장 추가 드로우",
+      "rarity": "rare",
+      "effect_type": "bonusDraw",
+      "effect_value": 1
+    },
+    {
+      "id": "npc_blessing_006",
+      "name": "인내의 반지",
+      "description": "블록 25% 다음 턴 유지",
+      "rarity": "rare",
+      "effect_type": "retainBlock",
+      "effect_value": 25
+    },
+    {
+      "id": "devil_blessing_001",
+      "name": "피의 계약",
+      "description": "전투 시작 시 힘 +3",
+      "rarity": "cursed",
+      "effect_type": "attackBonus",
+      "effect_value": 3
+    },
+    {
+      "id": "devil_blessing_002",
+      "name": "그림자 갑옷",
+      "description": "전투 시작 시 블록 +5",
+      "rarity": "cursed",
+      "effect_type": "defenseBonus",
+      "effect_value": 5
+    },
+    {
+      "id": "devil_blessing_003",
+      "name": "심연의 눈",
+      "description": "전투 시작 시 기세 +10",
+      "rarity": "cursed",
+      "effect_type": "momentumBonus",
+      "effect_value": 10
+    },
+    {
+      "id": "devil_blessing_004",
+      "name": "광기의 힘",
+      "description": "전투 시작 시 힘 +2, 블록 +3",
+      "rarity": "cursed",
+      "effect_type": "attackAndDefenseBonus",
+      "effect_value": 2
+    }
+  ]
+}

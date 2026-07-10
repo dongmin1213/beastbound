@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "description": "유물 풀 — 일반/희귀/전설 유물 전체",
+  "relics": [
+    {
+      "id": "relic_001",
+      "name": "녹슨 부적",
+      "description": "전투 시작 시 기세 5 회복",
+      "rarity": "common",
+      "condition_type": "combatStart",
+      "passive_effect": "momentumGain",
+      "effect_value": 5
+    },
+    {
+      "id": "relic_002",
+      "name": "치유의 돌",
+      "description": "방 이동 시 HP 2 회복",
+      "rarity": "common",
+      "condition_type": "roomEnter",
+      "passive_effect": "hpRegen",
+      "effect_value": 2
+    },
+    {
+      "id": "relic_003",
+      "name": "행운의 동전",
+      "description": "전투 승리 시 골드 5 추가 획득",
+      "rarity": "common",
+      "condition_type": "combatEnd",
+      "passive_effect": "goldBonus",
+      "effect_value": 5
+    },
+    {
+      "id": "relic_004",
+      "name": "강화 가죽",
+      "description": "전투 시작 시 블록 3 획득",
+      "rarity": "common",
+      "condition_type": "combatStart",
+      "passive_effect": "defenseBonus",
+      "effect_value": 3
+    },
+    {
+      "id": "relic_005",
+      "name": "바람의 깃털",
+      "description": "기세 60 이상일 때 공격력 8 증가",
+      "rarity": "rare",
+      "condition_type": "momentumThreshold",
+      "passive_effect": "attackBonus",
+      "effect_value": 8
+    },
+    {
+      "id": "relic_006",
+      "name": "치유의 샘물",
+      "description": "층 이동 시 HP 10 회복",
+      "rarity": "rare",
+      "condition_type": "floorTransition",
+      "passive_effect": "hpRegen",
+      "effect_value": 10
+    },
+    {
+      "id": "relic_007",
+      "name": "탐험가의 나침반",
+      "description": "방 이동 시 기세 3 회복",
+      "rarity": "rare",
+      "condition_type": "roomEnter",
+      "passive_effect": "momentumGain",
+      "effect_value": 3
+    },
+    {
+      "id": "relic_008",
+      "name": "고대 주화 주머니",
+      "description": "전투 승리 시 골드 10 추가 획득",
+      "rarity": "rare",
+      "condition_type": "combatEnd",
+      "passive_effect": "goldBonus",
+      "effect_value": 10
+    },
+    {
+      "id": "relic_009",
+      "name": "불사조의 깃털",
+      "description": "HP 20% 이하일 때 피해 15 감소",
+      "rarity": "legendary",
+      "condition_type": "hpThreshold",
+      "passive_effect": "damageReduction",
+      "effect_value": 15
+    },
+    {
+      "id": "relic_010",
+      "name": "고대의 반지",
+      "description": "전투 시작 시 기세 15 회복",
+      "rarity": "legendary",
+      "condition_type": "combatStart",
+      "passive_effect": "momentumGain",
+      "effect_value": 15
+    },
+    {
+      "id": "relic_011",
+      "name": "모험가의 지도",
+      "description": "미스터리 방 결과 2개 중 선택",
+      "rarity": "rare",
+      "condition_type": "mysteryRoom",
+      "passive_effect": "mysteryChoice",
+      "effect_value": 2
+    },
+    {
+      "id": "relic_012",
+      "name": "장인의 망치",
+      "description": "상점 카드 업그레이드 비용 -50%",
+      "rarity": "rare",
+      "condition_type": "shop",
+      "passive_effect": "upgradeDiscount",
+      "effect_value": 50
+    },
+    {
+      "id": "relic_013",
+      "name": "차원의 주머니",
+      "description": "상점 카드 제거 비용 무료 (1회/층)",
+      "rarity": "legendary",
+      "condition_type": "shop",
+      "passive_effect": "freeRemoval",
+      "effect_value": 1
+    },
+    {
+      "id": "relic_014",
+      "name": "영원의 심장",
+      "description": "매 층 시작 시 최대HP +3",
+      "rarity": "legendary",
+      "condition_type": "floorTransition",
+      "passive_effect": "maxHpPerFloor",
+      "effect_value": 3
+    }
+  ]
+}

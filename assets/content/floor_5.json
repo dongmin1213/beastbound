@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "description": "5층(근/根) 심층 던전 — 서술자 침묵 변형, 대부분 reliable: false",
+  "entries": [
+    {
+      "text_id": "f5_combat_intro_001",
+      "text": "...서술자의 목소리가 들리지 않는다. 적만 보인다.",
+      "run_type": "first",
+      "boss_disposition": "none",
+      "reliable": false,
+      "layer": "l3",
+      "floor": 5,
+      "room_type": "combat",
+      "priority": 0,
+      "weight": 1.0,
+      "tags": ["intro", "silence"]
+    },
+    {
+      "text_id": "f5_combat_intro_002",
+      "text": "뿌리가 벽을 뚫고 나와 있다... 던전 그 자체가 숨 쉰다.",
+      "run_type": "first",
+      "boss_disposition": "none",
+      "reliable": false,
+      "layer": "l3",
+      "floor": 5,
+      "room_type": "combat",
+      "priority": 0,
+      "weight": 1.0,
+      "tags": ["intro", "root"]
+    },
+    {
+      "text_id": "f5_elite_intro_001",
+      "text": "근(根)의 수호자... 던전이 직접 보낸 최후의 방벽.",
+      "run_type": "first",
+      "boss_disposition": "none",
+      "reliable": false,
+      "layer": "l3",
+      "floor": 5,
+      "room_type": "elite",
+      "priority": 0,
+      "weight": 1.0,
+      "tags": ["intro", "elite", "root"]
+    },
+    {
+      "text_id": "f5_event_intro_001",
+      "text": "뿌리 사이에 기억 조각이 박혀 있다... 던전의 기억인가, 당신의 기억인가.",
+      "run_type": "first",
+      "boss_disposition": "none",
+      "reliable": false,
+      "layer": "l3",
+      "floor": 5,
+      "room_type": "event",
+      "priority": 0,
+      "weight": 1.0,
+      "tags": ["intro", "memory", "root"]
+    },
+    {
+      "text_id": "f5_rest_intro_001",
+      "text": "뿌리가 감싸는 작은 공간... 적의가 느껴지지 않는다. 아마도.",
+      "run_type": "first",
+      "boss_disposition": "none",
+      "reliable": false,
+      "layer": "l3",
+      "floor": 5,
+      "room_type": "rest",
+      "priority": 0,
+      "weight": 1.0,
+      "tags": ["intro", "safe", "silence"]
+    },
+    {
+      "text_id": "f5_mystery_intro_001",
+      "text": ".",
+      "run_type": "first",
+      "boss_disposition": "none",
+      "reliable": false,
+      "layer": "l3",
+      "floor": 5,
+      "room_type": "mystery",
+      "priority": 0,
+      "weight": 1.0,
+      "tags": ["intro", "silence", "root"]
+    },
+    {
+      "text_id": "f5_combat_card_001",
+      "text": "{cardName}... {damage}.",
+      "run_type": "first",
+      "boss_disposition": "none",
+      "reliable": false,
+      "layer": "l3",
+      "floor": 5,
+      "room_type": "combat",
+      "priority": 0,
+      "weight": 1.0,
+      "tags": ["combat_action", "card_template", "silence"]
+    },
+    {
+      "text_id": "f5_repeat_combat_001",
+      "text": "...",
+      "run_type": "repeat",
+      "boss_disposition": "none",
+      "reliable": false,
+      "layer": "l3",
+      "floor": 5,
+      "room_type": "combat",
+      "priority": 0,
+      "weight": 1.0,
+      "tags": ["intro", "repeat", "silence"]
+    }
+  ]
+}

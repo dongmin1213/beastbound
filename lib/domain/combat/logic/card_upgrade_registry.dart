@@ -1,0 +1,324 @@
+import 'package:soul_dungeon/domain/combat/content/arbiter_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/archmage_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/assassin_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/colorless_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/dark_knight_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/dark_mage_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/dimension_mage_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/fate_traveler_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/guardian_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/harmonist_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/high_priest_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/holy_knight_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/illusionist_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/iron_fortress_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/nether_king_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/one_with_all_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/reaper_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/sage_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/saint_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/shadow_lord_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/spell_blade_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/starter_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/sword_saint_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/wanderer_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/warrior_cards.dart';
+import 'package:soul_dungeon/core/models/card_data.dart';
+
+/// 카드 업그레이드 레지스트리 — base ID → upgraded CardData 매핑.
+class CardUpgradeRegistry {
+  CardUpgradeRegistry._();
+
+  static final Map<String, CardData> _upgrades = {
+    // 공통
+    StarterCards.strike1.id: StarterCards.strikeUpgraded,
+    StarterCards.strike2.id: StarterCards.strikeUpgraded,
+    StarterCards.strike3.id: StarterCards.strikeUpgraded,
+    StarterCards.defend1.id: StarterCards.defendUpgraded,
+    StarterCards.defend2.id: StarterCards.defendUpgraded,
+    StarterCards.vigilance.id: StarterCards.vigilanceUpgraded,
+    StarterCards.brace.id: StarterCards.braceUpgraded,
+    // 전사
+    WarriorCards.heavyStrike.id: WarriorCards.heavyStrikePlus,
+    WarriorCards.warCry.id: WarriorCards.warCryPlus,
+    WarriorCards.charge.id: WarriorCards.chargePlus,
+    WarriorCards.onslaught.id: WarriorCards.onslaughtPlus,
+    WarriorCards.crush.id: WarriorCards.crushPlus,
+    WarriorCards.berserker.id: WarriorCards.berserkerPlus,
+    WarriorCards.bloodOath.id: WarriorCards.bloodOathPlus,
+    WarriorCards.spinSlash.id: WarriorCards.spinSlashPlus,
+    WarriorCards.bloodStrike.id: WarriorCards.bloodStrikePlus,
+    WarriorCards.rageShout.id: WarriorCards.rageShoutPlus,
+    WarriorCards.ironWill.id: WarriorCards.ironWillPlus,
+    WarriorCards.execute.id: WarriorCards.executePlus,
+    WarriorCards.battlePulse.id: WarriorCards.battlePulsePlus,
+    WarriorCards.warPulse.id: WarriorCards.warPulsePlus,
+    WarriorCards.awakening.id: WarriorCards.awakeningPlus,
+    // 현자
+    SageCards.magicBolt.id: SageCards.magicBoltPlus,
+    SageCards.analysis.id: SageCards.analysisPlus,
+    SageCards.focus.id: SageCards.focusPlus,
+    SageCards.manaCycle.id: SageCards.manaCyclePlus,
+    SageCards.magicExplosion.id: SageCards.magicExplosionPlus,
+    SageCards.chainLightning.id: SageCards.chainLightningPlus,
+    SageCards.timeDistortion.id: SageCards.timeDistortionPlus,
+    SageCards.manaCharge.id: SageCards.manaChargePlus,
+    SageCards.manaBarrier.id: SageCards.manaBarrierPlus,
+    SageCards.mindFocus.id: SageCards.mindFocusPlus,
+    SageCards.dimensionCut.id: SageCards.dimensionCutPlus,
+    SageCards.manaReflux.id: SageCards.manaRefluxPlus,
+    SageCards.towerOfKnowledge.id: SageCards.towerOfKnowledgePlus,
+    SageCards.manaOverload.id: SageCards.manaOverloadPlus,
+    SageCards.manaAbsorb.id: SageCards.manaAbsorbPlus,
+    SageCards.manaShield.id: SageCards.manaShieldPlus,
+    // 암살자
+    AssassinCards.ambush.id: AssassinCards.ambushPlus,
+    AssassinCards.poisonBlade.id: AssassinCards.poisonBladePlus,
+    AssassinCards.stealth.id: AssassinCards.stealthPlus,
+    AssassinCards.shadow.id: AssassinCards.shadowPlus,
+    AssassinCards.chainStrike.id: AssassinCards.chainStrikePlus,
+    AssassinCards.poisonCloud.id: AssassinCards.poisonCloudPlus,
+    AssassinCards.assassination.id: AssassinCards.assassinationPlus,
+    AssassinCards.shadowClone.id: AssassinCards.shadowClonePlus,
+    AssassinCards.poisonBurst.id: AssassinCards.poisonBurstPlus,
+    AssassinCards.shadowStep.id: AssassinCards.shadowStepPlus,
+    AssassinCards.vitalStrike.id: AssassinCards.vitalStrikePlus,
+    AssassinCards.poisonFig.id: AssassinCards.poisonFigPlus,
+    AssassinCards.bladeRain.id: AssassinCards.bladeRainPlus,
+    AssassinCards.darkCloak.id: AssassinCards.darkCloakPlus,
+    AssassinCards.toxicGuard.id: AssassinCards.toxicGuardPlus,
+    AssassinCards.shadowLeap.id: AssassinCards.shadowLeapPlus,
+    // 성자
+    SaintCards.divineStrike.id: SaintCards.divineStrikePlus,
+    SaintCards.heal.id: SaintCards.healPlus,
+    SaintCards.prayer.id: SaintCards.prayerPlus,
+    SaintCards.holyWall.id: SaintCards.holyWallPlus,
+    SaintCards.divineShield.id: SaintCards.divineShieldPlus,
+    SaintCards.purify.id: SaintCards.purifyPlus,
+    SaintCards.retribution.id: SaintCards.retributionPlus,
+    SaintCards.lightOfRegeneration.id: SaintCards.lightOfRegenerationPlus,
+    SaintCards.judgment.id: SaintCards.judgmentPlus,
+    SaintCards.divineBarrier.id: SaintCards.divineBarrierPlus,
+    SaintCards.holyLight.id: SaintCards.holyLightPlus,
+    SaintCards.blessedArmor.id: SaintCards.blessedArmorPlus,
+    SaintCards.divinePunishment.id: SaintCards.divinePunishmentPlus,
+    SaintCards.devotion.id: SaintCards.devotionPlus,
+    // 수호자
+    GuardianCards.shieldBash.id: GuardianCards.shieldBashPlus,
+    GuardianCards.ironGuard.id: GuardianCards.ironGuardPlus,
+    GuardianCards.thornArmor.id: GuardianCards.thornArmorPlus,
+    GuardianCards.taunt.id: GuardianCards.tauntPlus,
+    GuardianCards.counterStance.id: GuardianCards.counterStancePlus,
+    GuardianCards.fortress.id: GuardianCards.fortressPlus,
+    GuardianCards.thornBurst.id: GuardianCards.thornBurstPlus,
+    GuardianCards.unyielding.id: GuardianCards.unyieldingPlus,
+    GuardianCards.wallCharge.id: GuardianCards.wallChargePlus,
+    GuardianCards.chains.id: GuardianCards.chainsPlus,
+    GuardianCards.oathOfProtection.id: GuardianCards.oathOfProtectionPlus,
+    GuardianCards.steelWill.id: GuardianCards.steelWillPlus,
+    GuardianCards.grandCounter.id: GuardianCards.grandCounterPlus,
+    GuardianCards.fortify.id: GuardianCards.fortifyPlus,
+    GuardianCards.ironWillPower.id: GuardianCards.ironWillPowerPlus,
+    // 방랑자
+    WandererCards.improviseStrike.id: WandererCards.improviseStrikePlus,
+    WandererCards.adapt.id: WandererCards.adaptPlus,
+    WandererCards.luckyCoin.id: WandererCards.luckyCoinPlus,
+    WandererCards.wisdom.id: WandererCards.wisdomPlus,
+    WandererCards.mimic.id: WandererCards.mimicPlus,
+    WandererCards.conjure.id: WandererCards.conjurePlus,
+    WandererCards.chainAdapt.id: WandererCards.chainAdaptPlus,
+    WandererCards.chaos.id: WandererCards.chaosPlus,
+    WandererCards.survivalInstinct.id: WandererCards.survivalInstinctPlus,
+    WandererCards.veteranStrike.id: WandererCards.veteranStrikePlus,
+    WandererCards.luckyDice.id: WandererCards.luckyDicePlus,
+    WandererCards.seizeMoment.id: WandererCards.seizeMomentPlus,
+    WandererCards.vision.id: WandererCards.visionPlus,
+    WandererCards.rewind.id: WandererCards.rewindPlus,
+    WandererCards.instinct.id: WandererCards.instinctPlus,
+    // 무색
+    ColorlessCards.freshStart.id: ColorlessCards.freshStartPlus,
+    ColorlessCards.threaten.id: ColorlessCards.threatenPlus,
+    ColorlessCards.preemptiveStrike.id: ColorlessCards.preemptiveStrikePlus,
+    ColorlessCards.fleePrepare.id: ColorlessCards.fleePreparePlus,
+    ColorlessCards.observe.id: ColorlessCards.observePlus,
+    ColorlessCards.exposeWeakness.id: ColorlessCards.exposeWeaknessPlus,
+    ColorlessCards.focusedStrike.id: ColorlessCards.focusedStrikePlus,
+    ColorlessCards.sprint.id: ColorlessCards.sprintPlus,
+    ColorlessCards.insight.id: ColorlessCards.insightPlus,
+    ColorlessCards.smokeScreen.id: ColorlessCards.smokeScreenPlus,
+    ColorlessCards.criticalStrike.id: ColorlessCards.criticalStrikePlus,
+    ColorlessCards.momentumCharge.id: ColorlessCards.momentumChargePlus,
+    ColorlessCards.environmentExplosion.id:
+        ColorlessCards.environmentExplosionPlus,
+    ColorlessCards.poisonJar.id: ColorlessCards.poisonJarPlus,
+    ColorlessCards.absorb.id: ColorlessCards.absorbPlus,
+    ColorlessCards.threateningShot.id: ColorlessCards.threateningShotPlus,
+    ColorlessCards.doubleStrike.id: ColorlessCards.doubleStrikePlus,
+    ColorlessCards.patience.id: ColorlessCards.patiencePlus,
+    ColorlessCards.trickery.id: ColorlessCards.trickeryPlus,
+    ColorlessCards.lastStand.id: ColorlessCards.lastStandPlus,
+    ColorlessCards.endurance.id: ColorlessCards.endurancePlus,
+    ColorlessCards.finalBattle.id: ColorlessCards.finalBattlePlus,
+    ColorlessCards.improvise.id: ColorlessCards.improvisePlus,
+    ColorlessCards.wrathOfWeak.id: ColorlessCards.wrathOfWeakPlus,
+    ColorlessCards.thrift.id: ColorlessCards.thriftPlus,
+    ColorlessCards.collector.id: ColorlessCards.collectorPlus,
+    ColorlessCards.boldGamble.id: ColorlessCards.boldGamblePlus,
+    ColorlessCards.timeRewind.id: ColorlessCards.timeRewindPlus,
+    ColorlessCards.whirlwind.id: ColorlessCards.whirlwindPlus,
+    ColorlessCards.meditation.id: ColorlessCards.meditationPlus,
+    // 사신
+    ReaperCards.scythe.id: ReaperCards.scythePlus,
+    ReaperCards.soulHarvest.id: ReaperCards.soulHarvestPlus,
+    ReaperCards.deathSentence.id: ReaperCards.deathSentencePlus,
+    ReaperCards.deathTouch.id: ReaperCards.deathTouchPlus,
+    ReaperCards.immortalWill.id: ReaperCards.immortalWillPlus,
+    ReaperCards.netherGate.id: ReaperCards.netherGatePlus,
+    ReaperCards.grim.id: ReaperCards.grimPlus,
+    ReaperCards.soulSplit.id: ReaperCards.soulSplitPlus,
+    ReaperCards.lifeDrain.id: ReaperCards.lifeDrainPlus,
+    ReaperCards.deathMark.id: ReaperCards.deathMarkPlus,
+    ReaperCards.soulStorm.id: ReaperCards.soulStormPlus,
+    ReaperCards.bloodArmor.id: ReaperCards.bloodArmorPlus,
+    ReaperCards.deathDance.id: ReaperCards.deathDancePlus,
+    ReaperCards.netherGrace.id: ReaperCards.netherGracePlus,
+    // 환술사
+    IllusionistCards.phantomStrike.id: IllusionistCards.phantomStrikePlus,
+    IllusionistCards.mirrorShield.id: IllusionistCards.mirrorShieldPlus,
+    IllusionistCards.clone.id: IllusionistCards.clonePlus,
+    IllusionistCards.hallucination.id: IllusionistCards.hallucinationPlus,
+    IllusionistCards.magicCard.id: IllusionistCards.magicCardPlus,
+    IllusionistCards.dimensionShift.id: IllusionistCards.dimensionShiftPlus,
+    IllusionistCards.perfectCopy.id: IllusionistCards.perfectCopyPlus,
+    IllusionistCards.phantomArmy.id: IllusionistCards.phantomArmyPlus,
+    IllusionistCards.phantomWall.id: IllusionistCards.phantomWallPlus,
+    IllusionistCards.multiClone.id: IllusionistCards.multiClonePlus,
+    IllusionistCards.realityWarp.id: IllusionistCards.realityWarpPlus,
+    IllusionistCards.mirrorMaze.id: IllusionistCards.mirrorMazePlus,
+    IllusionistCards.hallucinationStorm.id:
+        IllusionistCards.hallucinationStormPlus,
+    IllusionistCards.infiniteMirror.id: IllusionistCards.infiniteMirrorPlus,
+    IllusionistCards.phantom.id: IllusionistCards.phantomPlus,
+    // 조율사
+    HarmonistCards.balancedStrike.id: HarmonistCards.balancedStrikePlus,
+    HarmonistCards.attune.id: HarmonistCards.attunePlus,
+    HarmonistCards.resonance.id: HarmonistCards.resonancePlus,
+    HarmonistCards.adaptiveStrike.id: HarmonistCards.adaptiveStrikePlus,
+    HarmonistCards.absorb.id: HarmonistCards.absorbPlus,
+    HarmonistCards.perfectHarmony.id: HarmonistCards.perfectHarmonyPlus,
+    HarmonistCards.equilibrium.id: HarmonistCards.equilibriumPlus,
+    HarmonistCards.oneness.id: HarmonistCards.onenessPlus,
+    HarmonistCards.innerHarmony.id: HarmonistCards.innerHarmonyPlus,
+    HarmonistCards.flowShift.id: HarmonistCards.flowShiftPlus,
+    HarmonistCards.resonanceWave.id: HarmonistCards.resonanceWavePlus,
+    HarmonistCards.perfectDefense.id: HarmonistCards.perfectDefensePlus,
+    HarmonistCards.tuningWave.id: HarmonistCards.tuningWavePlus,
+    HarmonistCards.allAsOne.id: HarmonistCards.allAsOnePlus,
+
+    // ═══════════════════════════════════════════════════════════
+    // 2차 전직 — 상위직 9종 (각 5장 = 45)
+    // ═══════════════════════════════════════════════════════════
+
+    // 검성
+    SwordSaintCards.swordAura.id: SwordSaintCards.swordAuraPlus,
+    SwordSaintCards.fatalSlash.id: SwordSaintCards.fatalSlashPlus,
+    SwordSaintCards.swordFocus.id: SwordSaintCards.swordFocusPlus,
+    SwordSaintCards.thousandBlades.id: SwordSaintCards.thousandBladesPlus,
+    SwordSaintCards.wayOfSword.id: SwordSaintCards.wayOfSwordPlus,
+    // 대사제
+    HighPriestCards.grandPurify.id: HighPriestCards.grandPurifyPlus,
+    HighPriestCards.celestialLight.id: HighPriestCards.celestialLightPlus,
+    HighPriestCards.sacredProtection.id: HighPriestCards.sacredProtectionPlus,
+    HighPriestCards.divinePunishment.id: HighPriestCards.divinePunishmentPlus,
+    HighPriestCards.blessingAura.id: HighPriestCards.blessingAuraPlus,
+    // 대현자
+    ArchmageCards.dimensionSever.id: ArchmageCards.dimensionSeverPlus,
+    ArchmageCards.spacetimeWarp.id: ArchmageCards.spacetimeWarpPlus,
+    ArchmageCards.manaAmplify.id: ArchmageCards.manaAmplifyPlus,
+    ArchmageCards.absoluteZero.id: ArchmageCards.absoluteZeroPlus,
+    ArchmageCards.grandMagicCircle.id: ArchmageCards.grandMagicCirclePlus,
+    // 그림자군주
+    ShadowLordCards.shadowStorm.id: ShadowLordCards.shadowStormPlus,
+    ShadowLordCards.perfectStealth.id: ShadowLordCards.perfectStealthPlus,
+    ShadowLordCards.poisonDominion.id: ShadowLordCards.poisonDominionPlus,
+    ShadowLordCards.assassination.id: ShadowLordCards.assassinationPlus,
+    ShadowLordCards.shadowThrone.id: ShadowLordCards.shadowThronePlus,
+    // 철벽성주
+    IronFortressCards.absoluteBarrier.id: IronFortressCards.absoluteBarrierPlus,
+    IronFortressCards.reflectWall.id: IronFortressCards.reflectWallPlus,
+    IronFortressCards.fortressCharge.id: IronFortressCards.fortressChargePlus,
+    IronFortressCards.thornFortress.id: IronFortressCards.thornFortressPlus,
+    IronFortressCards.guardianOath.id: IronFortressCards.guardianOathPlus,
+    // 운명의 여행자
+    FateTravelerCards.fateStrike.id: FateTravelerCards.fateStrikePlus,
+    FateTravelerCards.chaosCard.id: FateTravelerCards.chaosCardPlus,
+    FateTravelerCards.timeReverse.id: FateTravelerCards.timeReversePlus,
+    FateTravelerCards.luckyExplosion.id: FateTravelerCards.luckyExplosionPlus,
+    FateTravelerCards.fateTuning.id: FateTravelerCards.fateTuningPlus,
+    // 명계왕
+    NetherKingCards.deathScythe.id: NetherKingCards.deathScythePlus,
+    NetherKingCards.soulExploit.id: NetherKingCards.soulExploitPlus,
+    NetherKingCards.netherDominion.id: NetherKingCards.netherDominionPlus,
+    NetherKingCards.netherJudgment.id: NetherKingCards.netherJudgmentPlus,
+    NetherKingCards.immortal.id: NetherKingCards.immortalPlus,
+    // 차원술사
+    DimensionMageCards.dimensionStorm.id: DimensionMageCards.dimensionStormPlus,
+    DimensionMageCards.perfectClone.id: DimensionMageCards.perfectClonePlus,
+    DimensionMageCards.phantomLegion.id: DimensionMageCards.phantomLegionPlus,
+    DimensionMageCards.dimensionBarrier.id: DimensionMageCards.dimensionBarrierPlus,
+    DimensionMageCards.realityCollapse.id: DimensionMageCards.realityCollapsePlus,
+    // 만물일체
+    OneWithAllCards.perfectStrike.id: OneWithAllCards.perfectStrikePlus,
+    OneWithAllCards.harmonyOfAll.id: OneWithAllCards.harmonyOfAllPlus,
+    OneWithAllCards.resonanceExplosion.id: OneWithAllCards.resonanceExplosionPlus,
+    OneWithAllCards.absoluteBalance.id: OneWithAllCards.absoluteBalancePlus,
+    OneWithAllCards.transcendence.id: OneWithAllCards.transcendencePlus,
+
+    // ═══════════════════════════════════════════════════════════
+    // 2차 전직 — 조합직 5종 (각 5장 = 25)
+    // ═══════════════════════════════════════════════════════════
+
+    // 마검사
+    SpellBladeCards.arcaneSlash.id: SpellBladeCards.arcaneSlashPlus,
+    SpellBladeCards.magicEnhance.id: SpellBladeCards.magicEnhancePlus,
+    SpellBladeCards.chainArcane.id: SpellBladeCards.chainArcanePlus,
+    SpellBladeCards.manaShield.id: SpellBladeCards.manaShieldPlus,
+    SpellBladeCards.arcaneAwakening.id: SpellBladeCards.arcaneAwakeningPlus,
+    // 성기사
+    HolyKnightCards.holySword.id: HolyKnightCards.holySwordPlus,
+    HolyKnightCards.guardianPrayer.id: HolyKnightCards.guardianPrayerPlus,
+    HolyKnightCards.judgmentStrike.id: HolyKnightCards.judgmentStrikePlus,
+    HolyKnightCards.blessedArmor.id: HolyKnightCards.blessedArmorPlus,
+    HolyKnightCards.crusaderOath.id: HolyKnightCards.crusaderOathPlus,
+    // 흑마법사
+    DarkMageCards.curseBolt.id: DarkMageCards.curseBoltPlus,
+    DarkMageCards.darkBarrier.id: DarkMageCards.darkBarrierPlus,
+    DarkMageCards.darkAmplify.id: DarkMageCards.darkAmplifyPlus,
+    DarkMageCards.mindControl.id: DarkMageCards.mindControlPlus,
+    DarkMageCards.darkPower.id: DarkMageCards.darkPowerPlus,
+    // 암흑기사
+    DarkKnightCards.shadowSlash.id: DarkKnightCards.shadowSlashPlus,
+    DarkKnightCards.darkShield.id: DarkKnightCards.darkShieldPlus,
+    DarkKnightCards.counterSlash.id: DarkKnightCards.counterSlashPlus,
+    DarkKnightCards.darkArmor.id: DarkKnightCards.darkArmorPlus,
+    DarkKnightCards.darkKnightOath.id: DarkKnightCards.darkKnightOathPlus,
+    // 심판자
+    ArbiterCards.justiceJudgment.id: ArbiterCards.justiceJudgmentPlus,
+    ArbiterCards.purifyWave.id: ArbiterCards.purifyWavePlus,
+    ArbiterCards.poisonAbsorbLight.id: ArbiterCards.poisonAbsorbLightPlus,
+    ArbiterCards.arbiterEye.id: ArbiterCards.arbiterEyePlus,
+    ArbiterCards.absoluteJustice.id: ArbiterCards.absoluteJusticePlus,
+  };
+
+  /// base 카드 ID → upgraded 카드. null = 업그레이드 없음.
+  static CardData? upgrade(String cardId) => _upgrades[cardId];
+
+  /// 업그레이드 가능 여부.
+  static bool canUpgrade(String cardId) => _upgrades.containsKey(cardId);
+
+  /// 전체 업그레이드 매핑 (CardPool 인덱싱용).
+  static Map<String, CardData> get allUpgrades => _upgrades;
+
+  /// 등록된 업그레이드 총 수.
+  static int get count => _upgrades.length;
+}

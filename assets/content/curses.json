@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "description": "저주 풀 + 악마의 축복 + 악마의 거래 페어링",
+  "curses": [
+    {
+      "id": "curse_001",
+      "name": "약화",
+      "description": "최대 HP 10% 감소",
+      "rarity": "cursed",
+      "effect_type": "maxHpPenalty",
+      "effect_value": 10
+    },
+    {
+      "id": "curse_002",
+      "name": "둔감",
+      "description": "기세 획득량 20% 감소",
+      "rarity": "cursed",
+      "effect_type": "momentumGainPenalty",
+      "effect_value": 20
+    },
+    {
+      "id": "curse_003",
+      "name": "불운",
+      "description": "상점 가격 15% 상승",
+      "rarity": "cursed",
+      "effect_type": "shopPricePenalty",
+      "effect_value": 15
+    },
+    {
+      "id": "curse_004",
+      "name": "적의",
+      "description": "적 공격력 10% 증가",
+      "rarity": "cursed",
+      "effect_type": "enemyDamageBonus",
+      "effect_value": 10
+    },
+    {
+      "id": "curse_005",
+      "name": "혼란",
+      "description": "서술자 신뢰도 감소",
+      "rarity": "cursed",
+      "effect_type": "narratorReliabilityPenalty",
+      "effect_value": 15
+    },
+    {
+      "id": "curse_006",
+      "name": "소모",
+      "description": "기세 감쇠 속도 50% 증가",
+      "rarity": "cursed",
+      "effect_type": "momentumDecayPenalty",
+      "effect_value": 50
+    },
+    {
+      "id": "curse_007",
+      "name": "무거운 발",
+      "description": "매 전투 드로우 -1",
+      "rarity": "cursed",
+      "effect_type": "drawPenalty",
+      "effect_value": 1
+    },
+    {
+      "id": "curse_008",
+      "name": "저주받은 손",
+      "description": "첫 턴 AP -1",
+      "rarity": "cursed",
+      "effect_type": "firstTurnApPenalty",
+      "effect_value": 1
+    },
+    {
+      "id": "curse_009",
+      "name": "그림자 추적",
+      "description": "매 전투 시작 시 HP -3",
+      "rarity": "cursed",
+      "effect_type": "combatStartHpLoss",
+      "effect_value": 3
+    },
+    {
+      "id": "curse_010",
+      "name": "망각",
+      "description": "카드 업그레이드 비용 +30%",
+      "rarity": "cursed",
+      "effect_type": "upgradeCostIncrease",
+      "effect_value": 30
+    }
+  ],
+  "devil_blessings": [
+    {
+      "id": "devil_blessing_001",
+      "name": "피의 계약",
+      "description": "전투 시작 시 힘 +3",
+      "rarity": "cursed",
+      "effect_type": "attackBonus",
+      "effect_value": 3
+    },
+    {
+      "id": "devil_blessing_002",
+      "name": "그림자 갑옷",
+      "description": "전투 시작 시 블록 +5",
+      "rarity": "cursed",
+      "effect_type": "defenseBonus",
+      "effect_value": 5
+    },
+    {
+      "id": "devil_blessing_003",
+      "name": "심연의 눈",
+      "description": "전투 시작 시 기세 +10",
+      "rarity": "cursed",
+      "effect_type": "momentumBonus",
+      "effect_value": 10
+    },
+    {
+      "id": "devil_blessing_004",
+      "name": "광기의 힘",
+      "description": "전투 시작 시 힘 +2, 블록 +3",
+      "rarity": "cursed",
+      "effect_type": "attackAndDefenseBonus",
+      "effect_value": 2
+    }
+  ],
+  "devil_deals": [
+    {
+      "id": "deal_001",
+      "blessing_id": "devil_blessing_001",
+      "curse_id": "curse_001",
+      "cost": 0,
+      "flavor_text": "힘을 원하는가? 대가는 육체의 쇠약."
+    },
+    {
+      "id": "deal_002",
+      "blessing_id": "devil_blessing_002",
+      "curse_id": "curse_002",
+      "cost": 0,
+      "flavor_text": "단단해지고 싶은가? 대신 둔해질 것이다."
+    },
+    {
+      "id": "deal_003",
+      "blessing_id": "devil_blessing_003",
+      "curse_id": "curse_005",
+      "cost": 0,
+      "flavor_text": "진실을 보고 싶은가? 그 눈은 혼란을 부른다."
+    },
+    {
+      "id": "deal_004",
+      "blessing_id": "devil_blessing_004",
+      "curse_id": "curse_004",
+      "cost": 10,
+      "flavor_text": "절대적 힘... 하지만 적도 강해진다."
+    },
+    {
+      "id": "deal_005",
+      "blessing_id": "devil_blessing_001",
+      "curse_id": "curse_006",
+      "cost": 0,
+      "flavor_text": "공격의 극한. 대가는 기세의 소모."
+    },
+    {
+      "id": "deal_006",
+      "blessing_id": "devil_blessing_002",
+      "curse_id": "curse_002",
+      "cost": 0,
+      "flavor_text": "방어는 얻으나, 감각은 둔해진다."
+    },
+    {
+      "id": "deal_007",
+      "blessing_id": "devil_blessing_003",
+      "curse_id": "curse_003",
+      "cost": 0,
+      "flavor_text": "눈은 열리지만, 금화가 새어나간다."
+    },
+    {
+      "id": "deal_008",
+      "blessing_id": "devil_blessing_004",
+      "curse_id": "curse_001",
+      "cost": 0,
+      "flavor_text": "전장의 왕이 되리라. 육체가 버틸 수 있다면."
+    },
+    {
+      "id": "deal_009",
+      "blessing_id": "devil_blessing_001",
+      "curse_id": "curse_003",
+      "cost": 5,
+      "flavor_text": "저렴한 거래라고? 세상에 공짜는 없다네."
+    },
+    {
+      "id": "deal_010",
+      "blessing_id": "devil_blessing_003",
+      "curse_id": "curse_004",
+      "cost": 0,
+      "flavor_text": "진실을 보는 눈... 적도 당신을 더 잘 보게 되지."
+    },
+    {
+      "id": "deal_011",
+      "blessing_id": "devil_blessing_001",
+      "curse_id": "curse_007",
+      "cost": 0,
+      "flavor_text": "힘을 원하느냐? 대가는 둔한 손놀림."
+    },
+    {
+      "id": "deal_012",
+      "blessing_id": "devil_blessing_002",
+      "curse_id": "curse_008",
+      "cost": 0,
+      "flavor_text": "방어를 얻되, 첫 순간의 주저함을 받아들여라."
+    },
+    {
+      "id": "deal_013",
+      "blessing_id": "devil_blessing_003",
+      "curse_id": "curse_009",
+      "cost": 0,
+      "flavor_text": "통찰의 눈... 하지만 어둠이 네 생명을 갉아먹는다."
+    },
+    {
+      "id": "deal_014",
+      "blessing_id": "devil_blessing_004",
+      "curse_id": "curse_010",
+      "cost": 0,
+      "flavor_text": "강해지리라. 다만 과거의 기술은 잊혀지리니."
+    }
+  ]
+}

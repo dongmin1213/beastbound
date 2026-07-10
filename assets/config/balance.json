@@ -1,0 +1,186 @@
+{
+  "schema_version": 2,
+  "text": {
+    "chars_per_second_slow": 20,
+    "chars_per_second_normal": 40,
+    "chars_per_second_fast": 80
+  },
+  "momentum": {
+    "initial_value": 30,
+    "min": 0,
+    "max": 100,
+    "action_switch_bonus": 12,
+    "same_action_penalty": -15,
+    "same_action_streak_penalty": -25,
+    "environment_momentum_bonus": 20,
+    "special_action_momentum_bonus": 20,
+    "thresholds": { "low": 10, "medium": 30, "high": 80 },
+    "tier_effects": {
+      "high": {
+        "effective_text": "결정적 일격!",
+        "neutral_text": "밀어붙인다!"
+      },
+      "low": {
+        "ineffective_text": "힘이 빠진다...",
+        "counter_text": "적이 반격한다!"
+      }
+    }
+  },
+  "combat": {
+    "base_player_hp": 100,
+    "max_regen_stacks": 8,
+    "boss_hp_multiplier": 3.0,
+    "elite_hp_multiplier": 1.8,
+    "momentum_carryover_ratio": 0.5,
+    "normal_turn_count": 3,
+    "elite_turn_count": 5,
+    "elite_victory_threshold": 1,
+    "normal_defeat_hp_loss": 9999,
+    "elite_defeat_hp_loss": 9999,
+    "boss_turn_count_phase1": 3,
+    "boss_turn_count_phase2": 4,
+    "boss_victory_threshold": 0,
+    "boss_defeat_hp_loss": 9999
+  },
+  "flee": {
+    "base_success_rate": 0.5,
+    "ap_cost": 1,
+    "hp_penalty_percent": 0.10,
+    "gold_penalty": 10,
+    "wind_amulet_bonus": 0.3
+  },
+  "chain_bonus": {
+    "chain_2_bonus_percent": 20,
+    "chain_3_bonus_percent": 45,
+    "chain_draw_bonus": 1,
+    "chain_3_momentum_bonus": 10
+  },
+  "card_combat": {
+    "initial_hand_size": 5,
+    "draw_per_turn": 4,
+    "ap_low": 2,
+    "ap_mid": 3,
+    "ap_high": 4,
+    "elite_turn_limit": 20,
+    "boss_turn_limit": 30
+  },
+  "economy": {
+    "base_gold_per_combat": 8,
+    "elite_gold_multiplier": 3.0,
+    "shop_price_base": 20,
+    "shop_price_floor_multiplier": 1.2,
+    "soul_base_gain": 8,
+    "soul_price_curve_exponent": 1.3,
+    "boss_gold_multiplier": 3.0
+  },
+  "dungeon": {
+    "rooms_per_floor": 20,
+    "branch_factor_min": 2,
+    "branch_factor_max": 4,
+    "elite_min": 1,
+    "elite_max": 2,
+    "elite_min_depth": 3
+  },
+  "mystery": {
+    "treasure_gold": 15,
+    "trap_hp_loss": 15,
+    "combat_gold": 15,
+    "event_gold": 5,
+    "minor_gold": 2,
+    "weight_treasure": 20,
+    "weight_trap": 15,
+    "weight_combat": 30,
+    "weight_event": 15,
+    "weight_minor": 20
+  },
+  "npc": {
+    "weight_trader": 40,
+    "weight_sage": 30,
+    "weight_wanderer": 30,
+    "trade_item_count": 2,
+    "dialogue_gold_reward": 14
+  },
+  "rest": {
+    "hp_recovery_percent": 0.15,
+    "max_hp_increase": 5
+  },
+  "event": {
+    "gold_reward": 10,
+    "hp_reward": 7,
+    "hp_penalty": 5
+  },
+  "disposition": {
+    "event_major_reward": 4,
+    "event_minor_reward": 1,
+    "event_medium_reward": 2,
+    "elite_challenge_reward": 2,
+    "elite_avoid_reward": 1,
+    "hint_min_threshold": 3,
+    "hint_cooldown_rooms": 2
+  },
+  "build": {
+    "class_change_threshold": 5,
+    "wanderer_min_total": 10,
+    "wanderer_max_deviation": 2,
+    "advanced_job_threshold": 10,
+    "combo_job_primary_threshold": 8,
+    "combo_job_secondary_threshold": 5
+  },
+  "prep": {
+    "starting_gold_bonus": 15,
+    "starting_hp_bonus": 10,
+    "starting_blessing_id": "blessing_001",
+    "starting_relic_id": "relic_001",
+    "mercy_hp_bonus": 10,
+    "balanced_gold": 10,
+    "balanced_hp": 8
+  },
+  "rarity": {
+    "weight_common": 55,
+    "weight_rare": 30,
+    "weight_legendary": 10,
+    "weight_cursed": 5,
+    "price_multiplier_common": 1.0,
+    "price_multiplier_rare": 1.5,
+    "price_multiplier_legendary": 2.0,
+    "price_multiplier_cursed": 0.8
+  },
+  "floors": [
+    { "rooms_per_floor": 16, "enemy_hp_multiplier": 1.0, "gold_multiplier": 1.0, "min_events_per_path": 2 },
+    { "rooms_per_floor": 18, "enemy_hp_multiplier": 1.35, "gold_multiplier": 1.2, "elite_min": 1, "elite_max": 2, "min_events_per_path": 2 },
+    { "rooms_per_floor": 20, "enemy_hp_multiplier": 1.65, "gold_multiplier": 1.3, "elite_min": 1, "elite_max": 2, "combat_weight": 75, "mystery_weight": 15, "event_weight": 10 },
+    { "rooms_per_floor": 22, "enemy_hp_multiplier": 1.85, "gold_multiplier": 1.4, "elite_min": 2, "elite_max": 3, "combat_weight": 75, "mystery_weight": 15, "event_weight": 10 },
+    { "rooms_per_floor": 24, "enemy_hp_multiplier": 2.1, "gold_multiplier": 1.5, "elite_min": 2, "elite_max": 3, "elite_min_depth": 2, "combat_weight": 75, "mystery_weight": 15, "event_weight": 10 }
+  ],
+  "meta_progression": {
+    "soul_clear_bonus": 50,
+    "soul_death_multiplier": 1,
+    "ghost_npc": {
+      "guarantee_run": 2,
+      "spawn_probability": 0.3,
+      "similarity_familiar": 0.7,
+      "similarity_curious": 0.3
+    }
+  },
+  "audio": {
+    "master_volume": 0.8,
+    "sfx_volume": 1.0,
+    "music_volume": 0.7,
+    "enabled": true
+  },
+  "tutorial": {
+    "enabled": true,
+    "fixed_depth_rooms": {
+      "0": "combat",
+      "1": "event"
+    }
+  },
+  "curses": {
+    "combat_strength_by_level": [0, 2, 3, 5, 7, 10],
+    "reward_reduction_by_level": [0, 0, 0, 1, 1, 1],
+    "shop_price_multiplier_by_level": [1.0, 1.0, 1.3, 1.5, 1.7, 2.0],
+    "curse_card_count_by_level": [0, 0, 1, 1, 2, 2],
+    "narrator_floor_offset_by_level": [0, 0, 1, 1, 2, 2],
+    "level_thresholds": [0, 1, 3, 5, 8, 12]
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "description": "데모 전투 조우 — 일반/엘리트/보스",
+  "combat": {
+    "enemy_name": "떠도는 망령",
+    "environment_text": "좁은 통로에 금이 간 돌벽이 이어진다. 벽 틈 사이로 차가운 바람이 새어 나온다.",
+    "environment_clues": [
+      {
+        "id": "cracked_wall",
+        "description": "금이 간 돌벽이 위태롭게 서 있다",
+        "action_hint": "벽을 무너뜨려 적의 움직임을 방해할 수 있다"
+      }
+    ],
+    "intro_text": "어둠 속에서 희미한 형체가 다가온다. 떠도는 망령이다.",
+    "victory_text": "망령이 흩어진다. 남겨진 잔재 속에서 무언가가 빛난다.",
+    "defeat_text": "차가운 기운에 휩싸여 쓰러진다. 하지만 아직 숨이 붙어 있다...",
+    "turns": [
+      { "turn": 1, "action_type": "attack", "preview_text": "망령이 차가운 손을 뻗어 덮친다", "threat_level": 2 },
+      { "turn": 2, "action_type": "defend", "preview_text": "망령이 형체를 흐트러뜨리며 몸을 사린다", "threat_level": 1 },
+      { "turn": 3, "action_type": "attack", "preview_text": "망령이 차가운 기운을 모아 돌진한다", "threat_level": 2 }
+    ]
+  },
+  "elite": {
+    "enemy_name": "심연의 파수꾼",
+    "environment_text": "무너진 제단 위에 금이 간 석상이 서 있다. 바닥에는 오래된 마법진의 흔적이 희미하게 빛난다.",
+    "environment_clues": [
+      {
+        "id": "cracked_statue",
+        "description": "금이 간 석상이 불안정하게 서 있다",
+        "action_hint": "석상을 무너뜨려 적을 방해할 수 있다"
+      },
+      {
+        "id": "magic_circle",
+        "description": "바닥의 마법진이 희미하게 빛나고 있다",
+        "action_hint": "마법진의 힘을 빌려 공격할 수 있다"
+      }
+    ],
+    "intro_text": "심연의 파수꾼이 어둠 속에서 모습을 드러낸다. 평범한 적이 아니다.",
+    "victory_text": "강적이 무릎을 꿇는다. 그 잔해 속에서 빛나는 무언가가 눈에 들어온다...",
+    "defeat_text": "압도적인 힘 앞에 쓰러진다. 하지만 이 경험이 무의미하지는 않을 것이다...",
+    "turns": [
+      { "turn": 1, "action_type": "attack", "preview_text": "파수꾼이 거대한 창을 휘두르려 한다", "threat_level": 3 },
+      { "turn": 2, "action_type": "attack", "preview_text": "파수꾼이 돌진하며 내려찍으려 한다", "threat_level": 3 },
+      { "turn": 3, "action_type": "defend", "preview_text": "파수꾼이 창을 세워 방어 태세를 취한다", "threat_level": 2 },
+      { "turn": 4, "action_type": "attack", "preview_text": "파수꾼이 어둠의 기운을 모아 강타한다", "threat_level": 4 },
+      { "turn": 5, "action_type": "observe", "preview_text": "파수꾼이 잠시 물러서며 빈틈을 노린다", "threat_level": 1 }
+    ]
+  },
+  "boss": {
+    "enemy_name": "심연의 수호자",
+    "intro_text": "어둠 속에서 거대한 그림자가 일어선다. 이 층의 지배자다.\n\n여기서 쓰러지면... 돌아올 수 없다.",
+    "victory_text": "심연의 수호자가 쓰러진다. 어둠이 걷히며 저 너머로 길이 열린다.",
+    "defeat_text": "심연의 수호자의 압도적인 힘에 쓰러진다. 의식이 어두워진다...",
+    "transition_text": "심연의 수호자가 포효한다! 어둠이 짙어지며 새로운 형태가 드러난다...",
+    "phase2_intro_text": "수호자의 눈에서 붉은 빛이 타오른다. 진짜 전투가 시작된다.",
+    "phase1_turns": [
+      { "turn": 1, "action_type": "attack", "preview_text": "수호자가 거대한 팔을 휘두르려 한다", "threat_level": 3 },
+      { "turn": 2, "action_type": "defend", "preview_text": "수호자가 어둠의 장벽을 펼친다", "threat_level": 2 },
+      { "turn": 3, "action_type": "attack", "preview_text": "수호자가 어둠을 응축하여 내려친다", "threat_level": 3 }
+    ],
+    "phase2_turns": [
+      { "turn": 1, "action_type": "attack", "preview_text": "수호자가 붉은 빛과 함께 돌진한다", "threat_level": 4 },
+      { "turn": 2, "action_type": "attack", "preview_text": "수호자가 연속으로 강타한다", "threat_level": 3 },
+      { "turn": 3, "action_type": "observe", "preview_text": "수호자가 잠시 숨을 고르며 빈틈을 노린다", "threat_level": 1 },
+      { "turn": 4, "action_type": "attack", "preview_text": "수호자가 최후의 일격을 준비한다", "threat_level": 4 }
+    ]
+  }
+}
