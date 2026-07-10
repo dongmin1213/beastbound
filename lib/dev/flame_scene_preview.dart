@@ -4,6 +4,9 @@
 //   flutter run -t lib/dev/flame_scene_preview.dart -d chrome
 // 버튼으로 공격/피격/방어/회복/처치 연출을 직접 트리거해 "생동감"을 확인한다.
 //
+// 포켓몬 골드식 구성 — 씬이 상단을 크게 차지(대각선 대치 + 코너 HP 플레이트),
+// 하단은 메시지 한 줄 + 카드. 전투기록/손패 패널 없음.
+//
 // 프로덕션 빌드에는 포함되지 않는다(별도 엔트리포인트).
 
 import 'package:flame/game.dart';
@@ -29,14 +32,24 @@ class _PreviewAppState extends State<_PreviewApp> {
     _game = _newGame();
   }
 
-  CombatFlameGame _newGame() => CombatFlameGame(
-        bgTop: const Color(0xFF241B33),
-        bgBottom: const Color(0xFF0E0A18),
-        playerSpritePath: PixelArtAssets.jobSprite('warrior'),
-        initialEnemies: [
-          (path: PixelArtAssets.enemySprite('enemy_goblin'), hp: 20, maxHp: 20),
-        ],
-      );
+  CombatFlameGame _newGame() {
+    final g = CombatFlameGame(
+      bgTop: const Color(0xFF241B33),
+      bgBottom: const Color(0xFF0E0A18),
+      playerSpritePath: PixelArtAssets.jobSprite('warrior'),
+      playerName: '전사',
+      initialEnemies: [
+        (
+          path: PixelArtAssets.enemySprite('enemy_goblin'),
+          name: '고블린',
+          hp: 20,
+          maxHp: 20,
+        ),
+      ],
+    );
+    g.setPlayer(60, 60);
+    return g;
+  }
 
   void _playerAttack() {
     setState(() => _enemyHp = (_enemyHp - 9).clamp(0, 20));
@@ -47,8 +60,7 @@ class _PreviewAppState extends State<_PreviewApp> {
 
   @override
   Widget build(BuildContext context) {
-    // 실제 폰 세로 전투 화면 레이아웃 근사:
-    //   [적 영역 밴드 = Flame 씬] → [전투 기록] → [플레이어 상태] → [카드]
+    // [Flame 씬: 대각선 대치 + 코너 HP 플레이트] → [메시지] → [카드]
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -57,14 +69,39 @@ class _PreviewAppState extends State<_PreviewApp> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // ── 적 영역 밴드 (Flame 연출 씬) ──
-              _frame('☠ 고블린', SizedBox(height: 200, child: GameWidget(game: _game))),
-              // ── 전투 기록 (텍스트 로그 자리) ──
-              Expanded(child: _frame('전투 기록', const _Placeholder('고블린이 이빨을 드러낸다...'))),
-              // ── 플레이어 상태 (기세/HP/AP/덱 자리) ──
-              _frame('손패', const _Placeholder('❤ 60/60   ◆ AP 3   🂠 덱 12')),
-              // ── 카드 (손패 카드 자리) ──
-              _frame('카드', const _Placeholder('[강타 1AP]  [수비 1AP]  [연격 2AP]')),
+              // ── 전투 씬 (상단 지배) ──
+              Expanded(flex: 6, child: GameWidget(game: _game)),
+              // ── 명령/메시지 박스 (하단) ──
+              Expanded(
+                flex: 4,
+                child: Container(
+                  margin: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF15101F),
+                    border: Border.all(color: const Color(0xFF6A5A8C), width: 1.5),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Text('고블린이 이빨을 드러낸다...',
+                          style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 13,
+                              fontFamily: 'monospace')),
+                      const Spacer(),
+                      Row(
+                        children: [
+                          _card('강타', '1AP'),
+                          _card('수비', '1AP'),
+                          _card('연격', '2AP'),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               // ── 데모 트리거 (실제 게임엔 없음 — 카드 플레이가 대신함) ──
               Container(
                 color: const Color(0xFF120C1C),
@@ -93,27 +130,29 @@ class _PreviewAppState extends State<_PreviewApp> {
     );
   }
 
-  Widget _frame(String title, Widget child) => Container(
-        margin: const EdgeInsets.fromLTRB(4, 4, 4, 0),
-        decoration: BoxDecoration(
-          color: const Color(0xFF15101F),
-          border: Border.all(color: const Color(0xFF43395C)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              color: const Color(0xFF2A2140),
-              padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
-              child: Text(title,
+  Widget _card(String name, String cost) => Expanded(
+        child: Container(
+          height: 70,
+          margin: const EdgeInsets.symmetric(horizontal: 3),
+          decoration: BoxDecoration(
+            color: const Color(0xFF2A2140),
+            border: Border.all(color: const Color(0xFF6A5A8C)),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(name,
                   style: const TextStyle(
-                      color: Colors.white70,
+                      color: Colors.white, fontSize: 13, fontFamily: 'monospace')),
+              const SizedBox(height: 4),
+              Text(cost,
+                  style: const TextStyle(
+                      color: Color(0xFF9A8AC0),
                       fontSize: 11,
                       fontFamily: 'monospace')),
-            ),
-            child,
-          ],
+            ],
+          ),
         ),
       );
 
@@ -126,18 +165,5 @@ class _PreviewAppState extends State<_PreviewApp> {
           padding: const EdgeInsets.symmetric(horizontal: 10),
         ),
         child: Text(label, style: const TextStyle(fontFamily: 'monospace', fontSize: 12)),
-      );
-}
-
-/// 실제 위젯(전투로그/손패/카드) 자리를 대신하는 회색 플레이스홀더.
-class _Placeholder extends StatelessWidget {
-  final String text;
-  const _Placeholder(this.text);
-  @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-        child: Text(text,
-            style: const TextStyle(
-                color: Colors.white38, fontSize: 12, fontFamily: 'monospace')),
       );
 }

@@ -34,8 +34,10 @@
 - `CardCombatView` 적 패널이 정적 초상화 대신 Flame 씬을 렌더
 - **기존 정적 PNG를 새 프레임 없이** 트랜스폼/VFX로 살아 움직이게 함 → 통합 테스트 120개 통과
 - 데모 하네스: `lib/dev/flame_scene_preview.dart` (`flutter run -t lib/dev/flame_scene_preview.dart -d chrome`)
-- 스크린샷: [`docs/pilot/01_scene_idle.png`](docs/pilot/01_scene_idle.png) · [`docs/pilot/02_attack_juice.png`](docs/pilot/02_attack_juice.png)
-- 다음: 스프라이트 상태별 프레임(attack/hurt/death) 추가 + 카드 플레이 UI를 씬 오버레이로
+- **화면 구성 개편(포켓몬 골드식):** 대각선 대치(적 우상단 / 플레이어 좌하단·크게) + 발판 원근 +
+  코너 HP 플레이트(적 좌상단 / 플레이어 우하단) + 하단 명령창(메시지+카드). 전투기록·손패 패널 제거로 공간 효율↑
+- 스크린샷: `docs/pilot/` — `05_pokemon_layout_idle.png` · `06_pokemon_layout_attack.png` (세로/폰)
+- 다음: 이 씬-지배 구성을 실제 `CardCombatView`에 이식(현재는 적 밴드에 고정높이 배치) + 스프라이트 상태 프레임(attack/hurt/death)
 
 ## 실행
 

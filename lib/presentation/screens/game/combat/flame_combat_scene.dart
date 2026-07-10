@@ -22,15 +22,15 @@ class FlameCombatScene extends StatefulWidget {
   /// 플레이어 직업 ID (스프라이트 매핑용). null이면 실루엣.
   final String? playerJobId;
 
-  /// 씬 높이 (전투 패널 내부).
-  final double height;
+  /// 플레이어 HP 플레이트에 표시할 이름.
+  final String playerName;
 
   const FlameCombatScene({
     super.key,
     required this.combatBloc,
     required this.floorVisuals,
     required this.playerJobId,
-    this.height = 200,
+    this.playerName = '나',
   });
 
   @override
@@ -60,20 +60,28 @@ class _FlameCombatSceneState extends State<FlameCombatScene> {
   }
 
   CombatFlameGame _buildGame(CardCombatActive state) {
-    return CombatFlameGame(
+    final game = CombatFlameGame(
       bgTop: widget.floorVisuals.backgroundColor,
       bgBottom: widget.floorVisuals.combatBackground,
       playerSpritePath:
           widget.playerJobId != null ? PixelArtAssets.jobSprite(widget.playerJobId!) : null,
+      playerName: widget.playerName,
       initialEnemies: state.enemies.map(_enemyDef).toList(),
     );
+    game.setPlayer(state.playerHp, state.playerMaxHp);
+    return game;
   }
 
   EnemyDef _enemyDef(dynamic e) {
-    // EnemyBattleState: data(id), currentHp, maxHp.
+    // EnemyBattleState: data(id, name), currentHp, maxHp.
     final id = e.data.id as String;
     final path = PixelArtAssets.enemySprite(id) ?? PixelArtAssets.bossSprite(id);
-    return (path: path, hp: e.currentHp as int, maxHp: e.maxHp as int);
+    return (
+      path: path,
+      name: e.data.name as String,
+      hp: e.currentHp as int,
+      maxHp: e.maxHp as int,
+    );
   }
 
   void _onState(CombatState state) {
@@ -122,6 +130,9 @@ class _FlameCombatSceneState extends State<FlameCombatScene> {
     if (state.playerBlock > prev.playerBlock) {
       game.playerBlock();
     }
+
+    // 플레이어 HP 플레이트 갱신.
+    game.setPlayer(state.playerHp, state.playerMaxHp);
   }
 
   bool _enemiesChanged(CardCombatActive a, CardCombatActive b) {
@@ -135,11 +146,7 @@ class _FlameCombatSceneState extends State<FlameCombatScene> {
   @override
   Widget build(BuildContext context) {
     final game = _game;
-    return SizedBox(
-      height: widget.height,
-      child: game == null
-          ? const SizedBox.shrink()
-          : GameWidget(game: game),
-    );
+    // 부모(Expanded)가 크기를 결정 — 씬이 상단 영역을 채운다.
+    return game == null ? const SizedBox.shrink() : GameWidget(game: game);
   }
 }
