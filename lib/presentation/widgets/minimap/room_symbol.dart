@@ -113,16 +113,28 @@ class RoomSymbolWidget extends StatelessWidget {
             color: isCurrent
                 ? AppTheme.minimapCurrentColor
                 : isAvailable
-                    ? symbolColor.withValues(alpha: 0.6)
+                    ? symbolColor.withValues(alpha: 0.9)
                     : Colors.transparent,
-            width: isCurrent ? 2 : 1,
+            width: isCurrent ? 2.5 : (isAvailable ? 1.5 : 1),
           ),
-          borderRadius: BorderRadius.circular(6),
+          borderRadius: BorderRadius.circular(8),
+          // GBC 칩: 이동 가능/현재 노드는 타입색으로 채워 도드라지게.
           color: isCurrent
-              ? AppTheme.minimapCurrentColor.withValues(alpha: 0.15)
+              ? AppTheme.minimapCurrentColor.withValues(alpha: 0.28)
               : isAvailable
-                  ? symbolColor.withValues(alpha: 0.1)
+                  ? symbolColor.withValues(alpha: 0.22)
                   : null,
+          boxShadow: (isCurrent || isAvailable)
+              ? [
+                  BoxShadow(
+                    color: (isCurrent
+                            ? AppTheme.minimapCurrentColor
+                            : symbolColor)
+                        .withValues(alpha: 0.4),
+                    blurRadius: 5,
+                  ),
+                ]
+              : null,
         ),
         alignment: Alignment.center,
         child: Text(
