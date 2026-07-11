@@ -6,7 +6,6 @@ import 'package:soul_dungeon/domain/dungeon/event/event_room_bloc.dart';
 import 'package:soul_dungeon/domain/dungeon/event/event_room_data.dart';
 import 'package:soul_dungeon/domain/dungeon/event/event_room_event.dart';
 import 'package:soul_dungeon/domain/dungeon/event/event_room_state.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 
 void main() {
   late GameEventBus gameEventBus;
@@ -102,40 +101,7 @@ void main() {
       await bloc.close();
     });
 
-    // === Story 4-1: dispositionChanges 전달 ===
-
-    test('SelectEventChoice includes dispositionChanges in EventChoiceEvent', () async {
-      const choiceWithDisposition = EventChoice(
-        label: '도움을 준다',
-        outcomeText: '감사합니다.',
-        goldChange: 10,
-        hpChange: 0,
-        dispositionRewards: {DispositionAxis.mercy: 3},
-      );
-      final dataWithDisposition = EventRoomData(
-        title: '테스트 이벤트',
-        narrativeText: '테스트.',
-        choices: [choiceWithDisposition],
-      );
-
-      final bloc = EventRoomBloc(gameEventBus: gameEventBus);
-      final events = <EventChoiceEvent>[];
-      final sub = gameEventBus.on<EventChoiceEvent>().listen(events.add);
-
-      bloc.add(OpenEventRoom(dataWithDisposition));
-      await Future<void>.delayed(Duration.zero);
-
-      bloc.add(const SelectEventChoice(0));
-      await Future<void>.delayed(Duration.zero);
-
-      expect(events, hasLength(1));
-      expect(events.first.dispositionChanges, {'mercy': 3});
-
-      await sub.cancel();
-      await bloc.close();
-    });
-
-    test('SelectEventChoice passes empty dispositionChanges when no rewards', () async {
+    test('SelectEventChoice emits EventChoiceEvent with gold/hp', () async {
       final bloc = EventRoomBloc(gameEventBus: gameEventBus);
       final events = <EventChoiceEvent>[];
       final sub = gameEventBus.on<EventChoiceEvent>().listen(events.add);
@@ -143,11 +109,10 @@ void main() {
       bloc.add(OpenEventRoom(testData));
       await Future<void>.delayed(Duration.zero);
 
-      bloc.add(const SelectEventChoice(1)); // "무시한다" — no dispositionRewards
+      bloc.add(const SelectEventChoice(1));
       await Future<void>.delayed(Duration.zero);
 
       expect(events, hasLength(1));
-      expect(events.first.dispositionChanges, isEmpty);
 
       await sub.cancel();
       await bloc.close();

@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:soul_dungeon/core/config/balance_config.dart';
 import 'package:soul_dungeon/core/events/game_event_bus.dart';
 import 'package:soul_dungeon/core/models/boss_choice.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 import 'package:soul_dungeon/core/models/player_run_state.dart';
 import 'package:soul_dungeon/core/models/tier_effect_calculator.dart';
 import 'package:soul_dungeon/domain/build/data/blessing_pool.dart';
@@ -28,7 +27,6 @@ void main() {
   late List<List<TextBlockData>> capturedTextBlocks;
   late List<bool> capturedEndCombat;
   late List<String> capturedEndingNames;
-  late bool dispositionChangeCalled;
 
   const combatConfig = CombatBalanceConfig();
   const economyConfig = EconomyConfig();
@@ -40,7 +38,6 @@ void main() {
     capturedTextBlocks = [];
     capturedEndCombat = [];
     capturedEndingNames = [];
-    dispositionChangeCalled = false;
   });
 
   tearDown(() {
@@ -74,11 +71,6 @@ void main() {
       scrollToBottom: () {},
     );
 
-    // disposition 변경 감지 콜백
-    runController.onDispositionChanged = () {
-      dispositionChangeCalled = true;
-    };
-
     combatBloc = CombatBloc(
       gameEventBus: gameEventBus,
       combatConfig: combatConfig,
@@ -111,37 +103,6 @@ void main() {
   }
 
   group('BossFlowHandler — 5층 보스 버그 수정 검증', () {
-    test('5층에서 handleBossChoice 시 applyDisposition을 호출하지 않는다', () {
-      // 5층 보스: 1~4층 선택 기록 주입
-      final existingChoices = [
-        const BossChoice(floor: 1, bossId: 'boss_ash', choiceType: BossChoiceType.slay),
-        const BossChoice(floor: 2, bossId: 'boss_tide', choiceType: BossChoiceType.slay),
-        const BossChoice(floor: 3, bossId: 'boss_thorn', choiceType: BossChoiceType.slay),
-        const BossChoice(floor: 4, bossId: 'boss_void', choiceType: BossChoiceType.slay),
-      ];
-      setupHandler(floor: 5, existingBossChoices: existingChoices);
-
-      // 선택 전 성향 값 기록
-      final dispositionBefore = Map<DispositionAxis, int>.of(
-        runController.playerRunState.disposition,
-      );
-
-      // 5층 보스 선택
-      handler.handleBossChoice(const ChoiceData(
-        id: 'boss_slay',
-        text: '처치한다',
-        resultTextBlocks: [],
-      ));
-
-      // applyDisposition이 호출되지 않아야 한다 (onDispositionChanged 콜백 미호출)
-      expect(dispositionChangeCalled, isFalse,
-          reason: '5층에서는 applyDisposition이 호출되면 안 된다');
-
-      // 성향 값이 변경되지 않아야 한다
-      expect(runController.playerRunState.disposition, equals(dispositionBefore),
-          reason: '5층에서는 성향값이 변경되면 안 된다');
-    });
-
     test('10층(최종)에서 handleBossChoice 시 showEnding을 호출한다', () {
       final existingChoices = [
         const BossChoice(floor: 1, bossId: 'boss_ash', choiceType: BossChoiceType.slay),
@@ -171,20 +132,6 @@ void main() {
       // recordRunCompleted 콜백이 호출되어야 한다
       expect(capturedEndingNames, isNotEmpty,
           reason: '런 완료 기록이 남아야 한다');
-    });
-
-    test('1~4층에서는 applyDisposition이 정상 호출된다', () {
-      setupHandler(floor: 3);
-
-      handler.handleBossChoice(const ChoiceData(
-        id: 'boss_slay',
-        text: '처치한다',
-        resultTextBlocks: [],
-      ));
-
-      // applyDisposition이 호출되어야 한다
-      expect(dispositionChangeCalled, isTrue,
-          reason: '1~4층에서는 applyDisposition이 호출되어야 한다');
     });
 
     test('1~4층에서는 advance_floor 선택지가 표시된다 (showEnding 아님)', () {

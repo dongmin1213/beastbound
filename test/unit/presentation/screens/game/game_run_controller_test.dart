@@ -29,38 +29,6 @@ void main() {
     runBloc.close();
   });
 
-  group('GameRunController 힌트 상태', () {
-    test('onRoomEntered — roomsSinceLastHint 카운터 증가', () {
-      final initial = controller.roomsSinceLastHint;
-      controller.onRoomEntered();
-      expect(controller.roomsSinceLastHint, initial + 1);
-      controller.onRoomEntered();
-      expect(controller.roomsSinceLastHint, initial + 2);
-    });
-
-    test('onHintShown — 카운터 리셋 + 인덱스 증가', () {
-      expect(controller.hintIndex, 0);
-      controller.onHintShown();
-      expect(controller.roomsSinceLastHint, 0);
-      expect(controller.hintIndex, 1);
-      controller.onHintShown();
-      expect(controller.roomsSinceLastHint, 0);
-      expect(controller.hintIndex, 2);
-    });
-
-    test('resetRun — 힌트 상태 초기화', () {
-      controller.onRoomEntered();
-      controller.onRoomEntered();
-      controller.onHintShown();
-      controller.onRoomEntered();
-
-      controller.resetRun(100);
-
-      expect(controller.roomsSinceLastHint, 99);
-      expect(controller.hintIndex, 0);
-    });
-  });
-
   group('GameRunController — advanceFloor', () {
     test('advanceFloor — currentFloor 증가 + completedFloors 기록', () {
       expect(controller.playerRunState.currentFloor, 1);
@@ -78,18 +46,6 @@ void main() {
 
       expect(controller.playerRunState.currentFloor, 3);
       expect(controller.playerRunState.completedFloors, {1, 2});
-    });
-
-    test('advanceFloor — 힌트 카운터 리셋', () {
-      controller.onRoomEntered();
-      controller.onRoomEntered();
-      controller.onHintShown();
-      controller.onRoomEntered();
-
-      controller.advanceFloor();
-
-      expect(controller.roomsSinceLastHint, 99);
-      expect(controller.hintIndex, 0);
     });
 
     test('advanceFloor — RunBloc AdvanceFloor 이벤트 발행', () async {

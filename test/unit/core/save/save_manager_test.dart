@@ -5,7 +5,6 @@ import 'package:soul_dungeon/core/save/save_manager.dart';
 import 'package:soul_dungeon/core/save/save_storage.dart';
 import 'package:soul_dungeon/core/save/save_validator.dart';
 import 'package:soul_dungeon/core/models/boss_choice.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 import 'package:soul_dungeon/core/models/player_run_state.dart';
 
 void main() {
@@ -147,7 +146,6 @@ void main() {
         currentHp: 45,
         maxHp: 100,
         gold: 300,
-        disposition: {for (final a in DispositionAxis.values) a: 0},
         currentFloor: 4,
         ownedBlessingIds: ['b1', 'b2', 'b3'],
         ownedRelicIds: ['r1'],

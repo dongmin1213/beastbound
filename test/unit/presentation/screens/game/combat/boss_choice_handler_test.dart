@@ -182,12 +182,6 @@ void main() {
       });
     });
 
-    group('dispositionDelta', () {
-      test('기본값 3', () {
-        expect(BossChoiceHandler.dispositionDelta, 3);
-      });
-    });
-
     group('momentumThreshold', () {
       test('기본값 50', () {
         expect(BossChoiceHandler.momentumThreshold, 50);

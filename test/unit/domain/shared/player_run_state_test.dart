@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:soul_dungeon/domain/combat/content/starter_cards.dart';
 import 'package:soul_dungeon/core/models/card_data.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 import 'package:soul_dungeon/core/models/game_enums.dart';
 import 'package:soul_dungeon/core/models/player_run_state.dart';
 
@@ -64,60 +63,6 @@ void main() {
 
       // toString includes gold
       expect(withGold.toString(), contains('45'));
-    });
-
-    // === Story 4-1: disposition 필드 테스트 ===
-
-    test('disposition initial value has all 6 axes at 0', () {
-      final state = PlayerRunState.initial(maxHp: 100);
-
-      expect(state.disposition.length, 6);
-      for (final axis in DispositionAxis.values) {
-        expect(state.disposition[axis], 0);
-      }
-    });
-
-    test('copyWith disposition creates new instance with updated disposition', () {
-      final state = PlayerRunState.initial(maxHp: 100);
-      final updated = state.copyWith(disposition: {
-        ...state.disposition,
-        DispositionAxis.mercy: 3,
-      });
-
-      expect(updated.disposition[DispositionAxis.mercy], 3);
-      // Original unchanged
-      expect(state.disposition[DispositionAxis.mercy], 0);
-    });
-
-    test('initial() creates 6-axis zero Map', () {
-      final state = PlayerRunState.initial(maxHp: 80);
-
-      expect(state.disposition, {
-        DispositionAxis.struggle: 0,
-        DispositionAxis.mercy: 0,
-        DispositionAxis.wisdom: 0,
-        DispositionAxis.shadow: 0,
-        DispositionAxis.will: 0,
-        DispositionAxis.harmony: 0,
-      });
-    });
-
-    test('equality includes disposition', () {
-      final state1 = PlayerRunState.initial(maxHp: 100);
-      final state2 = PlayerRunState.initial(maxHp: 100);
-      expect(state1, state2);
-
-      final withMercy = state1.copyWith(disposition: {
-        ...state1.disposition,
-        DispositionAxis.mercy: 5,
-      });
-      expect(state1, isNot(withMercy));
-    });
-
-    test('toString includes disposition', () {
-      final state = PlayerRunState.initial(maxHp: 100);
-      final str = state.toString();
-      expect(str, contains('disposition'));
     });
 
     // === Story 4-3: currentJobId 필드 테스트 ===

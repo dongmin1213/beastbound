@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 import 'package:soul_dungeon/domain/dungeon/event/event_room_data.dart';
 
 void main() {
@@ -56,49 +55,24 @@ void main() {
       expect(choice1.toString(), contains('도움을 준다'));
     });
 
-    // === Story 4-1: dispositionRewards 필드 ===
-
-    test('EventChoice dispositionRewards field defaults to empty Map', () {
-      const choice = EventChoice(
-        label: '테스트',
-        outcomeText: '결과',
-        goldChange: 0,
-        hpChange: 0,
-      );
-
-      expect(choice.dispositionRewards, isEmpty);
-
-      const choiceWithRewards = EventChoice(
-        label: '도움',
-        outcomeText: '감사',
-        goldChange: 0,
-        hpChange: 0,
-        dispositionRewards: {DispositionAxis.mercy: 3},
-      );
-      expect(choiceWithRewards.dispositionRewards[DispositionAxis.mercy], 3);
-    });
-
-    test('EventChoice equality includes dispositionRewards', () {
+    test('EventChoice equality includes gold/hp/card fields', () {
       const a = EventChoice(
         label: '도움',
         outcomeText: '감사',
         goldChange: 10,
         hpChange: 0,
-        dispositionRewards: {DispositionAxis.mercy: 3},
       );
       const b = EventChoice(
         label: '도움',
         outcomeText: '감사',
         goldChange: 10,
         hpChange: 0,
-        dispositionRewards: {DispositionAxis.mercy: 3},
       );
       const c = EventChoice(
         label: '도움',
         outcomeText: '감사',
-        goldChange: 10,
+        goldChange: 20,
         hpChange: 0,
-        dispositionRewards: {DispositionAxis.shadow: 1},
       );
 
       expect(a, b);

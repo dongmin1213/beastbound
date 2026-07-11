@@ -3,7 +3,6 @@ import 'package:soul_dungeon/core/error/result.dart';
 import 'package:soul_dungeon/core/save/save_data.dart';
 import 'package:soul_dungeon/core/save/save_serializer.dart';
 import 'package:soul_dungeon/core/models/boss_choice.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 import 'package:soul_dungeon/core/models/player_run_state.dart';
 
 void main() {
@@ -16,14 +15,6 @@ void main() {
         currentHp: 75,
         maxHp: 100,
         gold: 250,
-        disposition: {
-          DispositionAxis.struggle: 5,
-          DispositionAxis.mercy: 3,
-          DispositionAxis.wisdom: 0,
-          DispositionAxis.shadow: -2,
-          DispositionAxis.will: 1,
-          DispositionAxis.harmony: 4,
-        },
         currentJobId: 'warrior',
         ownedBlessingIds: ['bless_1', 'bless_2'],
         ownedRelicIds: ['relic_alpha'],
@@ -78,18 +69,6 @@ void main() {
       expect(loaded.playerRunState.currentFloor, 1);
       expect(loaded.playerRunState.bossChoices, isEmpty);
       expect(loaded.playerRunState.completedFloors, isEmpty);
-    });
-
-    test('round-trip — disposition 모든 축', () {
-      final json = SaveSerializer.serializeRun(runData);
-      final loaded =
-          (SaveSerializer.deserializeRun(json) as Success<RunSaveData>).data;
-      for (final axis in DispositionAxis.values) {
-        expect(
-          loaded.playerRunState.disposition[axis],
-          fullState.disposition[axis],
-        );
-      }
     });
 
     test('round-trip — bossChoices 순서 보존', () {

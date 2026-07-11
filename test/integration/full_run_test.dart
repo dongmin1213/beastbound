@@ -14,7 +14,6 @@ import 'package:soul_dungeon/domain/run/run_bloc.dart';
 import 'package:soul_dungeon/domain/run/run_event.dart';
 import 'package:soul_dungeon/domain/run/run_state.dart';
 import 'package:soul_dungeon/core/models/boss_choice.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 import 'package:soul_dungeon/core/models/player_run_state.dart';
 
 void main() {
@@ -54,7 +53,6 @@ void main() {
           currentHp: 0,
           maxHp: 100,
           gold: 50,
-          disposition: {for (final a in DispositionAxis.values) a: 0},
         ),
         savedAt: DateTime.now(),
       );
@@ -95,11 +93,6 @@ void main() {
             choiceType: BossChoiceType.liberate,
           ),
         ],
-        disposition: {
-          DispositionAxis.struggle: 3,
-          DispositionAxis.mercy: 3,
-          DispositionAxis.harmony: 0,
-        },
       );
 
       await saveManager.saveRun(RunSaveData(
@@ -117,7 +110,6 @@ void main() {
       expect(loadedState.bossChoices.length, 2);
       expect(loadedState.bossChoices[0].choiceType, BossChoiceType.slay);
       expect(loadedState.bossChoices[1].choiceType, BossChoiceType.liberate);
-      expect(loadedState.disposition[DispositionAxis.struggle], 3);
     });
 
     test('DungeonGenerator — 5층 생성 가능', () {

@@ -8,7 +8,6 @@ import 'package:soul_dungeon/domain/run/run_event.dart';
 import 'package:soul_dungeon/domain/run/run_state.dart';
 import 'package:soul_dungeon/core/models/boss_choice.dart';
 import 'package:soul_dungeon/core/models/card_data.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 import 'package:soul_dungeon/core/models/game_enums.dart';
 import 'package:soul_dungeon/core/models/player_run_state.dart';
 
@@ -280,18 +279,11 @@ void main() {
       );
 
       blocTest<RunBloc, RunState>(
-        'preserves disposition from current state',
+        'preserves gold from current state',
         build: () => RunBloc(gameEventBus: eventBus),
         seed: () => RunActive(
           playerRunState: PlayerRunState.initial(maxHp: 100)
-              .copyWith(currentHp: 80, gold: 50, disposition: {
-            DispositionAxis.struggle: 0,
-            DispositionAxis.mercy: 5,
-            DispositionAxis.wisdom: 0,
-            DispositionAxis.shadow: 3,
-            DispositionAxis.will: 0,
-            DispositionAxis.harmony: 0,
-          }),
+              .copyWith(currentHp: 80, gold: 50),
         ),
         act: (bloc) => bloc.add(
           SyncFromCombat(
@@ -302,14 +294,7 @@ void main() {
         expect: () => [
           RunActive(
             playerRunState: PlayerRunState.initial(maxHp: 100)
-                .copyWith(currentHp: 60, gold: 50, disposition: {
-              DispositionAxis.struggle: 0,
-              DispositionAxis.mercy: 5,
-              DispositionAxis.wisdom: 0,
-              DispositionAxis.shadow: 3,
-              DispositionAxis.will: 0,
-              DispositionAxis.harmony: 0,
-            }),
+                .copyWith(currentHp: 60, gold: 50),
           ),
         ],
       );
@@ -499,140 +484,6 @@ void main() {
       );
     });
 
-    // === Story 4-1: ChangeDisposition ===
-
-    group('ChangeDisposition', () {
-      blocTest<RunBloc, RunState>(
-        'single axis accumulation',
-        build: () => RunBloc(gameEventBus: eventBus),
-        seed: () => RunActive(
-          playerRunState: PlayerRunState.initial(maxHp: 100),
-        ),
-        act: (bloc) => bloc.add(
-            const ChangeDisposition({DispositionAxis.mercy: 3})),
-        expect: () => [
-          RunActive(
-            playerRunState: PlayerRunState.initial(maxHp: 100).copyWith(
-              disposition: {
-                DispositionAxis.struggle: 0,
-                DispositionAxis.mercy: 3,
-                DispositionAxis.wisdom: 0,
-                DispositionAxis.shadow: 0,
-                DispositionAxis.will: 0,
-                DispositionAxis.harmony: 0,
-              },
-            ),
-          ),
-        ],
-      );
-
-      blocTest<RunBloc, RunState>(
-        'multiple axes at once',
-        build: () => RunBloc(gameEventBus: eventBus),
-        seed: () => RunActive(
-          playerRunState: PlayerRunState.initial(maxHp: 100),
-        ),
-        act: (bloc) => bloc.add(
-            const ChangeDisposition({
-              DispositionAxis.shadow: 3,
-              DispositionAxis.struggle: 1,
-            })),
-        expect: () => [
-          RunActive(
-            playerRunState: PlayerRunState.initial(maxHp: 100).copyWith(
-              disposition: {
-                DispositionAxis.struggle: 1,
-                DispositionAxis.mercy: 0,
-                DispositionAxis.wisdom: 0,
-                DispositionAxis.shadow: 3,
-                DispositionAxis.will: 0,
-                DispositionAxis.harmony: 0,
-              },
-            ),
-          ),
-        ],
-      );
-
-      blocTest<RunBloc, RunState>(
-        'consecutive calls accumulate',
-        build: () => RunBloc(gameEventBus: eventBus),
-        seed: () => RunActive(
-          playerRunState: PlayerRunState.initial(maxHp: 100),
-        ),
-        act: (bloc) {
-          bloc.add(const ChangeDisposition({DispositionAxis.mercy: 3}));
-          bloc.add(const ChangeDisposition({DispositionAxis.mercy: 2}));
-        },
-        expect: () => [
-          RunActive(
-            playerRunState: PlayerRunState.initial(maxHp: 100).copyWith(
-              disposition: {
-                DispositionAxis.struggle: 0,
-                DispositionAxis.mercy: 3,
-                DispositionAxis.wisdom: 0,
-                DispositionAxis.shadow: 0,
-                DispositionAxis.will: 0,
-                DispositionAxis.harmony: 0,
-              },
-            ),
-          ),
-          RunActive(
-            playerRunState: PlayerRunState.initial(maxHp: 100).copyWith(
-              disposition: {
-                DispositionAxis.struggle: 0,
-                DispositionAxis.mercy: 5,
-                DispositionAxis.wisdom: 0,
-                DispositionAxis.shadow: 0,
-                DispositionAxis.will: 0,
-                DispositionAxis.harmony: 0,
-              },
-            ),
-          ),
-        ],
-      );
-
-      blocTest<RunBloc, RunState>(
-        'ResetRun resets disposition to 6-axis zero',
-        build: () => RunBloc(gameEventBus: eventBus),
-        seed: () => RunActive(
-          playerRunState: PlayerRunState.initial(maxHp: 100).copyWith(
-            disposition: {
-              DispositionAxis.struggle: 5,
-              DispositionAxis.mercy: 3,
-              DispositionAxis.wisdom: 0,
-              DispositionAxis.shadow: 0,
-              DispositionAxis.will: 0,
-              DispositionAxis.harmony: 0,
-            },
-          ),
-        ),
-        act: (bloc) => bloc.add(const ResetRun(maxHp: 100)),
-        expect: () => [
-          RunActive(
-            playerRunState: PlayerRunState.initial(maxHp: 100),
-          ),
-        ],
-      );
-
-      blocTest<RunBloc, RunState>(
-        'InitializeRun sets disposition to 6-axis zero',
-        build: () => RunBloc(gameEventBus: eventBus),
-        act: (bloc) => bloc.add(const InitializeRun(maxHp: 100)),
-        expect: () => [
-          RunActive(
-            playerRunState: PlayerRunState.initial(maxHp: 100),
-          ),
-        ],
-      );
-
-      blocTest<RunBloc, RunState>(
-        'ignored when state is RunInitial',
-        build: () => RunBloc(gameEventBus: eventBus),
-        act: (bloc) => bloc.add(
-            const ChangeDisposition({DispositionAxis.mercy: 3})),
-        expect: () => <RunState>[],
-      );
-    });
 
     // === Story 4-3: SetJobId ===
 
@@ -720,7 +571,6 @@ void main() {
               currentHp: 80,
               maxHp: 100,
               gold: 50,
-              disposition: {for (final a in DispositionAxis.values) a: 0},
               ownedBlessingIds: const ['blessing_001'],
               activeCurseIds: const ['curse_001'],
             ),
@@ -1027,7 +877,6 @@ void main() {
                 BossChoice(floor: 2, bossId: 'b2', choiceType: BossChoiceType.liberate),
               ],
               completedFloors: const {1, 2},
-              disposition: {for (final a in DispositionAxis.values) a: 0},
             ),
           ),
         ],
