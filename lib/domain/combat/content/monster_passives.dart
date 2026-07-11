@@ -44,9 +44,46 @@ class MonsterPassive {
       drawPerTurn == 0;
 }
 
+/// 몬스터 타입 — 패시브 아키타입과 1:1. 타입 친화(같은 타입 겹침)의 축.
+enum MonsterType {
+  attack('공격'),
+  guard('방어'),
+  venom('중독'),
+  vitality('회복'),
+  swift('속공'),
+  none('-');
+
+  final String label;
+  const MonsterType(this.label);
+}
+
 /// 몬스터 id → 패시브 매핑 + 로스터 합산.
 class MonsterPassives {
   MonsterPassives._();
+
+  /// 몬스터 타입 (패시브 아키타입에서 유도).
+  static MonsterType typeOf(String id) {
+    final p = forMonster(id);
+    if (p.strengthPerTurn > 0) return MonsterType.attack;
+    if (p.blockPerTurn > 0) return MonsterType.guard;
+    if (p.poisonPerTurn > 0) return MonsterType.venom;
+    if (p.healPerTurn > 0) return MonsterType.vitality;
+    if (p.drawPerTurn > 0) return MonsterType.swift;
+    return MonsterType.none;
+  }
+
+  /// 로스터의 타입별 친화(같은 타입 마리 수).
+  static Map<MonsterType, int> affinity(List<String> monsterIds) {
+    final m = <MonsterType, int>{};
+    for (final id in monsterIds) {
+      final t = typeOf(id);
+      if (t != MonsterType.none) m[t] = (m[t] ?? 0) + 1;
+    }
+    return m;
+  }
+
+  /// 친화 티어 보너스 — 같은 타입 2마리 +1, 3마리+ +2 (해당 효과에).
+  static int affinityBonus(int count) => count >= 3 ? 2 : (count >= 2 ? 1 : 0);
 
   /// 몬스터 id → 패시브 (아키타입별). 무브풀 테마와 일치.
   static const Map<String, MonsterPassive> _passives = {
@@ -101,7 +138,10 @@ class MonsterPassives {
   static MonsterPassive forMonster(String id) =>
       _passives[id] ?? MonsterPassive.none;
 
-  /// 로스터 몬스터들의 패시브 합산.
+  /// 로스터 몬스터들의 패시브 합산 (+ 타입 친화 시너지 보너스).
+  ///
+  /// 같은 타입을 겹칠수록 그 효과가 추가로 강해진다 = 빌딩 성장.
+  /// 예: 중독 몬스터 2마리 → 독 +4(합산) +1(친화) = +5.
   static MonsterPassive aggregate(List<String> monsterIds) {
     var block = 0, poison = 0, heal = 0, strength = 0, draw = 0;
     for (final id in monsterIds) {
@@ -112,6 +152,28 @@ class MonsterPassives {
       strength += p.strengthPerTurn;
       draw += p.drawPerTurn;
     }
+
+    // 타입 친화 시너지 보너스.
+    final aff = affinity(monsterIds);
+    for (final entry in aff.entries) {
+      final bonus = affinityBonus(entry.value);
+      if (bonus == 0) continue;
+      switch (entry.key) {
+        case MonsterType.attack:
+          strength += bonus;
+        case MonsterType.guard:
+          block += bonus;
+        case MonsterType.venom:
+          poison += bonus;
+        case MonsterType.vitality:
+          heal += bonus;
+        case MonsterType.swift:
+          draw += bonus;
+        case MonsterType.none:
+          break;
+      }
+    }
+
     return MonsterPassive(
       blockPerTurn: block,
       poisonPerTurn: poison,
