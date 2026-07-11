@@ -218,7 +218,7 @@ class CardCombatView extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: RetroWindowFrame(
-              title: '손패',
+              title: '상태',
               titleBarColor: floorVisuals.combatUiTint,
               backgroundColor: floorVisuals.frameBackground,
               child: Column(
