@@ -284,7 +284,7 @@ class CombatFlameGame extends FlameGame {
         color: Color(0xFFEDE6F5),
         fontSize: 10,
         fontWeight: FontWeight.bold,
-        fontFamily: 'monospace',
+        fontFamily: 'Galmuri11',
       ),
     ).render(canvas, name, Vector2(box.left + pad, box.top + 4));
 
@@ -314,7 +314,7 @@ class CombatFlameGame extends FlameGame {
         style: const TextStyle(
           color: Color(0xFFCFC6DF),
           fontSize: 10,
-          fontFamily: 'monospace',
+          fontFamily: 'Galmuri11',
         ),
       ).render(
         canvas,

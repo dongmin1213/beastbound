@@ -46,7 +46,7 @@ class SoulShopScreen extends StatelessWidget {
                       '데이터 로딩 중...',
                       style: TextStyle(
                         color: Color(0xFFB0B0B0),
-                        fontFamily: 'monospace',
+                        fontFamily: 'Galmuri11',
                       ),
                     ),
                   );
@@ -114,7 +114,7 @@ class _SoulShopBody extends StatelessWidget {
                           color: _soulAccentColor,
                           fontSize:
                               ResponsiveScale.scaleFontSize(context, 15),
-                          fontFamily: 'monospace',
+                          fontFamily: 'Galmuri11',
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -128,7 +128,7 @@ class _SoulShopBody extends StatelessWidget {
                       color: const Color(0xFF888888),
                       fontSize:
                           ResponsiveScale.scaleFontSize(context, 11),
-                      fontFamily: 'monospace',
+                      fontFamily: 'Galmuri11',
                     ),
                   ),
                 ],
@@ -173,7 +173,7 @@ class _SoulShopBody extends StatelessWidget {
                       color: const Color(0xFF666666),
                       fontSize:
                           ResponsiveScale.scaleFontSize(context, 13),
-                      fontFamily: 'monospace',
+                      fontFamily: 'Galmuri11',
                       height: 1.5,
                     ),
                   ),
@@ -212,7 +212,7 @@ class _SoulShopBody extends StatelessWidget {
             style: TextStyle(
               color: const Color(0xFF888888),
               fontSize: ResponsiveScale.scaleFontSize(context, 11),
-              fontFamily: 'monospace',
+              fontFamily: 'Galmuri11',
               letterSpacing: 1,
             ),
           ),
@@ -288,7 +288,7 @@ class _SoulUpgradeCard extends StatelessWidget {
                       fontSize:
                           ResponsiveScale.scaleFontSize(context, 14),
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'monospace',
+                      fontFamily: 'Galmuri11',
                       decoration:
                           _isMaxed ? TextDecoration.lineThrough : null,
                     ),
@@ -303,7 +303,7 @@ class _SoulUpgradeCard extends StatelessWidget {
                           : const Color(0xFF9C7CFF),
                       fontSize:
                           ResponsiveScale.scaleFontSize(context, 11),
-                      fontFamily: 'monospace',
+                      fontFamily: 'Galmuri11',
                     ),
                   ),
                 if (_isMaxed && upgrade.maxLevel <= 1)
@@ -313,7 +313,7 @@ class _SoulUpgradeCard extends StatelessWidget {
                       color: const Color(0xFF666666),
                       fontSize:
                           ResponsiveScale.scaleFontSize(context, 11),
-                      fontFamily: 'monospace',
+                      fontFamily: 'Galmuri11',
                     ),
                   ),
               ],
@@ -326,7 +326,7 @@ class _SoulUpgradeCard extends StatelessWidget {
               style: TextStyle(
                 color: const Color(0xFFB0B0B0),
                 fontSize: ResponsiveScale.scaleFontSize(context, 12),
-                fontFamily: 'monospace',
+                fontFamily: 'Galmuri11',
               ),
             ),
             const SizedBox(height: 8),
@@ -349,7 +349,7 @@ class _SoulUpgradeCard extends StatelessWidget {
                           : const Color(0xFF666666),
                       fontSize:
                           ResponsiveScale.scaleFontSize(context, 13),
-                      fontFamily: 'monospace',
+                      fontFamily: 'Galmuri11',
                       fontWeight: FontWeight.bold,
                     ),
                   ),

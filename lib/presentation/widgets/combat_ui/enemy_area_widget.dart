@@ -93,7 +93,7 @@ class EnemyAreaWidget extends StatelessWidget {
                               ? const Color(0xFFFF6B6B)
                               : const Color(0xFFE0E0E0),
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'monospace',
+                      fontFamily: 'Galmuri11',
                     ),
                   ),
                 ],
@@ -140,7 +140,7 @@ class EnemyAreaWidget extends StatelessWidget {
                 style: TextStyle(
                   fontSize: ResponsiveScale.scaleFontSize(context, 10),
                   color: const Color(0xFFFFAA44),
-                  fontFamily: 'monospace',
+                  fontFamily: 'Galmuri11',
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -264,7 +264,7 @@ class EnemyAreaWidget extends StatelessWidget {
         style: TextStyle(
           fontSize: fontSize,
           color: color,
-          fontFamily: 'monospace',
+          fontFamily: 'Galmuri11',
           fontWeight: FontWeight.bold,
         ),
       ),

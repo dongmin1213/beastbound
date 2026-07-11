@@ -66,7 +66,7 @@ class _FloorTransitionOverlayState extends State<FloorTransitionOverlay>
           style: TextStyle(
             color: themeVisuals.accentColor,
             fontSize: ResponsiveScale.scaleFontSize(context, 28),
-            fontFamily: 'monospace',
+            fontFamily: 'Galmuri11',
             fontWeight: FontWeight.bold,
             letterSpacing: 2,
           ),
@@ -77,7 +77,7 @@ class _FloorTransitionOverlayState extends State<FloorTransitionOverlay>
           style: TextStyle(
             color: themeVisuals.accentColor.withValues(alpha: 0.6),
             fontSize: ResponsiveScale.scaleFontSize(context, 14),
-            fontFamily: 'monospace',
+            fontFamily: 'Galmuri11',
             letterSpacing: 1,
           ),
         ),
@@ -89,7 +89,7 @@ class _FloorTransitionOverlayState extends State<FloorTransitionOverlay>
       style: TextStyle(
         color: const Color(0xFF666666),
         fontSize: ResponsiveScale.scaleFontSize(context, 13),
-        fontFamily: 'monospace',
+        fontFamily: 'Galmuri11',
         letterSpacing: 1,
       ),
     );
@@ -127,7 +127,7 @@ class _FloorTransitionOverlayState extends State<FloorTransitionOverlay>
         style: TextStyle(
           color: const Color(0xFF888888),
           fontSize: ResponsiveScale.scaleFontSize(context, 11),
-          fontFamily: 'monospace',
+          fontFamily: 'Galmuri11',
         ),
       );
       if (AppTheme.enableAnimations) {

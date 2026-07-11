@@ -85,7 +85,7 @@ class StarterSelectScreen extends StatelessWidget {
                       color: AppTheme.titleGold,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'monospace',
+                      fontFamily: 'Galmuri11',
                       letterSpacing: 1.5,
                     ),
                   ),
@@ -99,7 +99,7 @@ class StarterSelectScreen extends StatelessWidget {
                 style: TextStyle(
                   color: Color(0xFF8A80A0),
                   fontSize: 13,
-                  fontFamily: 'monospace',
+                  fontFamily: 'Galmuri11',
                   height: 1.4,
                 ),
               ),
@@ -180,7 +180,7 @@ class _StarterCard extends StatelessWidget {
                             color: Color(0xFFEDE6F5),
                             fontSize: 17,
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'monospace',
+                            fontFamily: 'Galmuri11',
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -196,7 +196,7 @@ class _StarterCard extends StatelessWidget {
                             style: TextStyle(
                               color: starter.accent,
                               fontSize: 11,
-                              fontFamily: 'monospace',
+                              fontFamily: 'Galmuri11',
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -209,7 +209,7 @@ class _StarterCard extends StatelessWidget {
                       style: const TextStyle(
                         color: Color(0xFF9A90B0),
                         fontSize: 12,
-                        fontFamily: 'monospace',
+                        fontFamily: 'Galmuri11',
                         height: 1.35,
                       ),
                     ),
@@ -221,7 +221,7 @@ class _StarterCard extends StatelessWidget {
                           style: const TextStyle(
                             color: Color(0xFF6A6280),
                             fontSize: 11,
-                            fontFamily: 'monospace',
+                            fontFamily: 'Galmuri11',
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -233,7 +233,7 @@ class _StarterCard extends StatelessWidget {
                               style: TextStyle(
                                 color: starter.accent,
                                 fontSize: 11,
-                                fontFamily: 'monospace',
+                                fontFamily: 'Galmuri11',
                               ),
                             ),
                           ),

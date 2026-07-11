@@ -143,7 +143,7 @@ class RoomSymbolWidget extends StatelessWidget {
             color: symbolColor,
             fontSize: 14,
             fontWeight: isCurrent || isAvailable ? FontWeight.bold : FontWeight.normal,
-            fontFamily: 'monospace',
+            fontFamily: 'Galmuri11',
           ),
         ),
       ),

@@ -40,7 +40,7 @@ class MemoryExplorationWidget extends StatelessWidget {
               style: TextStyle(
                 color: AppTheme.memoryColor,
                 fontSize: fontSize,
-                fontFamily: 'monospace',
+                fontFamily: 'Galmuri11',
               ),
             ),
             const SizedBox(height: 8),
@@ -66,7 +66,7 @@ class MemoryExplorationWidget extends StatelessWidget {
                   style: TextStyle(
                     color: AppTheme.restDisabledColor,
                     fontSize: fontSize,
-                    fontFamily: 'monospace',
+                    fontFamily: 'Galmuri11',
                   ),
                 ),
               ),
@@ -103,7 +103,7 @@ class MemoryExplorationWidget extends StatelessWidget {
                   style: TextStyle(
                     color: AppTheme.memoryColor.withValues(alpha: 0.7),
                     fontSize: fontSize * 0.9,
-                    fontFamily: 'monospace',
+                    fontFamily: 'Galmuri11',
                   ),
                 ),
                 const SizedBox(width: 6),
@@ -114,7 +114,7 @@ class MemoryExplorationWidget extends StatelessWidget {
                       color: AppTheme.memoryColor,
                       fontSize: fontSize,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'monospace',
+                      fontFamily: 'Galmuri11',
                     ),
                   ),
                 ),
@@ -126,7 +126,7 @@ class MemoryExplorationWidget extends StatelessWidget {
               style: TextStyle(
                 color: AppTheme.choiceCardText,
                 fontSize: fontSize * 0.9,
-                fontFamily: 'monospace',
+                fontFamily: 'Galmuri11',
                 height: 1.4,
               ),
             ),

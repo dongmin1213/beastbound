@@ -80,7 +80,7 @@ class _RetroButtonState extends State<RetroButton> {
             style: TextStyle(
               color: widget.textColor,
               fontSize: resolvedFontSize,
-              fontFamily: 'monospace',
+              fontFamily: 'Galmuri11',
               fontWeight: widget.fontWeight,
               letterSpacing: 0.5,
             ),

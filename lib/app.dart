@@ -152,7 +152,7 @@ class _SoulDungeonAppState extends State<SoulDungeonApp> {
                                 style: TextStyle(
                                   color: Color(0xFFB0B0B0),
                                   fontSize: 14,
-                                  fontFamily: 'monospace',
+                                  fontFamily: 'Galmuri11',
                                   height: 1.5,
                                 ),
                               ),
@@ -180,7 +180,7 @@ class _SoulDungeonAppState extends State<SoulDungeonApp> {
                                           style: TextStyle(
                                             color: Color(0xFFB0B0B0),
                                             fontSize: 13,
-                                            fontFamily: 'monospace',
+                                            fontFamily: 'Galmuri11',
                                           ),
                                         ),
                                       ),
@@ -211,7 +211,7 @@ class _SoulDungeonAppState extends State<SoulDungeonApp> {
                                           style: TextStyle(
                                             color: Color(0xFFFF6B6B),
                                             fontSize: 13,
-                                            fontFamily: 'monospace',
+                                            fontFamily: 'Galmuri11',
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),

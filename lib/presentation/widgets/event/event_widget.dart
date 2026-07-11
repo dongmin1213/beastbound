@@ -40,7 +40,7 @@ class EventWidget extends StatelessWidget {
                 color: AppTheme.eventFrameColor,
                 fontSize: ResponsiveScale.scaleFontSize(context, 14),
                 fontWeight: FontWeight.bold,
-                fontFamily: 'monospace',
+                fontFamily: 'Galmuri11',
               ),
             ),
             const SizedBox(height: 12),
@@ -50,7 +50,7 @@ class EventWidget extends StatelessWidget {
               style: TextStyle(
                 color: AppTheme.choiceCardText,
                 fontSize: ResponsiveScale.scaleFontSize(context, 12),
-                fontFamily: 'monospace',
+                fontFamily: 'Galmuri11',
               ),
               textAlign: TextAlign.center,
             ),

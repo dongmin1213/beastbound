@@ -89,7 +89,7 @@ class _PreviewAppState extends State<_PreviewApp> {
                           style: TextStyle(
                               color: Colors.white70,
                               fontSize: 13,
-                              fontFamily: 'monospace')),
+                              fontFamily: 'Galmuri11')),
                       const Spacer(),
                       Row(
                         children: [
@@ -144,13 +144,13 @@ class _PreviewAppState extends State<_PreviewApp> {
             children: [
               Text(name,
                   style: const TextStyle(
-                      color: Colors.white, fontSize: 13, fontFamily: 'monospace')),
+                      color: Colors.white, fontSize: 13, fontFamily: 'Galmuri11')),
               const SizedBox(height: 4),
               Text(cost,
                   style: const TextStyle(
                       color: Color(0xFF9A8AC0),
                       fontSize: 11,
-                      fontFamily: 'monospace')),
+                      fontFamily: 'Galmuri11')),
             ],
           ),
         ),
@@ -164,6 +164,6 @@ class _PreviewAppState extends State<_PreviewApp> {
           minimumSize: const Size(0, 32),
           padding: const EdgeInsets.symmetric(horizontal: 10),
         ),
-        child: Text(label, style: const TextStyle(fontFamily: 'monospace', fontSize: 12)),
+        child: Text(label, style: const TextStyle(fontFamily: 'Galmuri11', fontSize: 12)),
       );
 }

@@ -38,7 +38,7 @@ class FloatingNumber extends PositionComponent {
         color: color.withValues(alpha: alpha),
         fontSize: fontSize,
         fontWeight: FontWeight.bold,
-        fontFamily: 'monospace',
+        fontFamily: 'Galmuri11',
         shadows: [
           Shadow(
             color: const Color(0xFF000000).withValues(alpha: alpha * 0.8),

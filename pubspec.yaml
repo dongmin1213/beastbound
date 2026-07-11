@@ -89,6 +89,13 @@ flutter:
     - assets/fonts/
 
   fonts:
+    # Galmuri11 — 픽셀 폰트 (한/영/일 커버, SIL OFL 1.1: 무료·상용·임베딩 OK).
+    # BEASTBOUND 기본 폰트. 다국어(ko/en) 모두 이 하나로 렌더.
+    - family: Galmuri11
+      fonts:
+        - asset: assets/fonts/Galmuri11.ttf
+        - asset: assets/fonts/Galmuri11-Bold.ttf
+          weight: 700
     - family: NotoSansKR
       fonts:
         - asset: assets/fonts/NotoSansKR-Variable.ttf

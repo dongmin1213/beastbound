@@ -76,7 +76,7 @@ class _NpcWidgetState extends State<NpcWidget> {
             color: _npcTypeColor(),
             fontSize: ResponsiveScale.scaleFontSize(context, 15),
             fontWeight: FontWeight.bold,
-            fontFamily: 'monospace',
+            fontFamily: 'Galmuri11',
           ),
         ),
         const SizedBox(height: 8),
@@ -85,7 +85,7 @@ class _NpcWidgetState extends State<NpcWidget> {
           style: TextStyle(
             color: AppTheme.npcDialogueColor,
             fontSize: ResponsiveScale.scaleFontSize(context, 13),
-            fontFamily: 'monospace',
+            fontFamily: 'Galmuri11',
           ),
           textAlign: TextAlign.center,
         ),
@@ -98,7 +98,7 @@ class _NpcWidgetState extends State<NpcWidget> {
               color: AppTheme.npcGoldColor,
               fontSize: ResponsiveScale.scaleFontSize(context, 12),
               fontStyle: FontStyle.italic,
-              fontFamily: 'monospace',
+              fontFamily: 'Galmuri11',
             ),
             textAlign: TextAlign.center,
           ),
@@ -157,7 +157,7 @@ class _NpcWidgetState extends State<NpcWidget> {
             color: _npcTypeColor(),
             fontSize: ResponsiveScale.scaleFontSize(context, 15),
             fontWeight: FontWeight.bold,
-            fontFamily: 'monospace',
+            fontFamily: 'Galmuri11',
           ),
         ),
         const SizedBox(height: 12),
@@ -166,7 +166,7 @@ class _NpcWidgetState extends State<NpcWidget> {
           style: TextStyle(
             color: AppTheme.npcDialogueColor,
             fontSize: ResponsiveScale.scaleFontSize(context, 13),
-            fontFamily: 'monospace',
+            fontFamily: 'Galmuri11',
           ),
           textAlign: TextAlign.center,
         ),
@@ -200,7 +200,7 @@ class _NpcWidgetState extends State<NpcWidget> {
             color: _npcTypeColor(),
             fontSize: ResponsiveScale.scaleFontSize(context, 14),
             fontWeight: FontWeight.bold,
-            fontFamily: 'monospace',
+            fontFamily: 'Galmuri11',
           ),
         ),
         const SizedBox(height: 4),
@@ -209,7 +209,7 @@ class _NpcWidgetState extends State<NpcWidget> {
           style: TextStyle(
             color: AppTheme.npcGoldColor,
             fontSize: ResponsiveScale.scaleFontSize(context, 13),
-            fontFamily: 'monospace',
+            fontFamily: 'Galmuri11',
           ),
         ),
         const SizedBox(height: 12),
@@ -239,7 +239,7 @@ class _NpcWidgetState extends State<NpcWidget> {
       color: AppTheme.npcGoldColor,
       fontSize: ResponsiveScale.scaleFontSize(context, 13),
       fontWeight: FontWeight.bold,
-      fontFamily: 'monospace',
+      fontFamily: 'Galmuri11',
     );
     final parts = <String>[];
     if (npc.goldReward > 0) parts.add('${npc.goldReward} 골드');
@@ -280,7 +280,7 @@ class _NpcWidgetState extends State<NpcWidget> {
                       color: itemColor,
                       fontSize: ResponsiveScale.scaleFontSize(context, 13),
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'monospace',
+                      fontFamily: 'Galmuri11',
                       decoration: item.sold ? TextDecoration.lineThrough : null,
                     ),
                   ),
@@ -290,7 +290,7 @@ class _NpcWidgetState extends State<NpcWidget> {
                   style: TextStyle(
                     color: itemColor,
                     fontSize: ResponsiveScale.scaleFontSize(context, 11),
-                    fontFamily: 'monospace',
+                    fontFamily: 'Galmuri11',
                   ),
                 ),
               ],
@@ -301,7 +301,7 @@ class _NpcWidgetState extends State<NpcWidget> {
               style: TextStyle(
                 color: AppTheme.shopRarityCommonColor,
                 fontSize: ResponsiveScale.scaleFontSize(context, 12),
-                fontFamily: 'monospace',
+                fontFamily: 'Galmuri11',
                 decoration: item.sold ? TextDecoration.lineThrough : null,
               ),
             ),
@@ -314,7 +314,7 @@ class _NpcWidgetState extends State<NpcWidget> {
                   style: TextStyle(
                     color: AppTheme.npcGoldColor,
                     fontSize: ResponsiveScale.scaleFontSize(context, 12),
-                    fontFamily: 'monospace',
+                    fontFamily: 'Galmuri11',
                   ),
                 ),
                 const SizedBox(width: 8),

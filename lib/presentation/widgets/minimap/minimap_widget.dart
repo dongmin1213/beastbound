@@ -104,7 +104,7 @@ class MinimapWidget extends StatelessWidget {
                 style: TextStyle(
                   color: AppTheme.minimapAvailableColor,
                   fontSize: ResponsiveScale.scaleFontSize(context, 9),
-                  fontFamily: 'monospace',
+                  fontFamily: 'Galmuri11',
                 ),
               ),
             ],
@@ -132,7 +132,7 @@ class MinimapWidget extends StatelessWidget {
                     style: TextStyle(
                       color: AppTheme.minimapCurrentColor,
                       fontSize: ResponsiveScale.scaleFontSize(context, 10),
-                      fontFamily: 'monospace',
+                      fontFamily: 'Galmuri11',
                     ),
                   )
                 : null,

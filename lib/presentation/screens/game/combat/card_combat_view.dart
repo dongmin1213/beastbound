@@ -167,7 +167,7 @@ class CardCombatView extends StatelessWidget {
                     color: AppTheme.titleGold,
                     fontSize: ResponsiveScale.scaleFontSize(context, 14),
                     fontWeight: FontWeight.bold,
-                    fontFamily: 'monospace',
+                    fontFamily: 'Galmuri11',
                   ),
                 ),
               ),

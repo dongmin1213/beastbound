@@ -46,7 +46,7 @@ class ShopWidget extends StatelessWidget {
             style: TextStyle(
               color: AppTheme.shopGoldColor,
               fontSize: ResponsiveScale.scaleFontSize(context, 13),
-              fontFamily: 'monospace',
+              fontFamily: 'Galmuri11',
             ),
           ),
           const SizedBox(height: 16),
@@ -147,7 +147,7 @@ class ShopWidget extends StatelessWidget {
                       color: itemColor,
                       fontSize: ResponsiveScale.scaleFontSize(context, 13),
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'monospace',
+                      fontFamily: 'Galmuri11',
                       decoration:
                           item.sold ? TextDecoration.lineThrough : null,
                     ),
@@ -158,7 +158,7 @@ class ShopWidget extends StatelessWidget {
                   style: TextStyle(
                     color: itemColor,
                     fontSize: ResponsiveScale.scaleFontSize(context, 11),
-                    fontFamily: 'monospace',
+                    fontFamily: 'Galmuri11',
                   ),
                 ),
               ],
@@ -169,7 +169,7 @@ class ShopWidget extends StatelessWidget {
               style: TextStyle(
                 color: AppTheme.shopRarityCommonColor,
                 fontSize: ResponsiveScale.scaleFontSize(context, 12),
-                fontFamily: 'monospace',
+                fontFamily: 'Galmuri11',
                 decoration: item.sold ? TextDecoration.lineThrough : null,
               ),
             ),
@@ -184,7 +184,7 @@ class ShopWidget extends StatelessWidget {
                         ? const Color(0xFF66BB6A)
                         : AppTheme.shopGoldColor,
                     fontSize: ResponsiveScale.scaleFontSize(context, 12),
-                    fontFamily: 'monospace',
+                    fontFamily: 'Galmuri11',
                   ),
                 ),
                 const SizedBox(width: 8),

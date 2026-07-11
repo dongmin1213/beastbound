@@ -82,7 +82,7 @@ class _StatusBadge extends StatelessWidget {
                 style: TextStyle(
                   fontSize: badgeFontSize,
                   color: colors.foreground,
-                  fontFamily: 'monospace',
+                  fontFamily: 'Galmuri11',
                 ),
               ),
               const SizedBox(width: 2),
@@ -92,7 +92,7 @@ class _StatusBadge extends StatelessWidget {
                 style: TextStyle(
                   fontSize: badgeFontSize,
                   color: colors.foreground,
-                  fontFamily: 'monospace',
+                  fontFamily: 'Galmuri11',
                   fontWeight: FontWeight.bold,
                 ),
               ),

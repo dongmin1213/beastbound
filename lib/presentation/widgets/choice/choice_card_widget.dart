@@ -373,7 +373,7 @@ class ChoiceCardWidget extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                           height: 1.2,
-                          fontFamily: 'monospace',
+                          fontFamily: 'Galmuri11',
                         ),
                       ),
                       // 효과 텍스트
@@ -390,7 +390,7 @@ class ChoiceCardWidget extends StatelessWidget {
                                   ResponsiveScale.scaleFontSize(context, 12),
                               color: const Color(0xFFCCCCCC),
                               height: 1.2,
-                              fontFamily: 'monospace',
+                              fontFamily: 'Galmuri11',
                             ),
                           ),
                         ),

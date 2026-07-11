@@ -98,7 +98,7 @@ class RetroWindowFrame extends StatelessWidget {
               style: TextStyle(
                 color: const Color(0xFFF2ECFA),
                 fontSize: ResponsiveScale.scaleFontSize(context, 13),
-                fontFamily: 'monospace',
+                fontFamily: 'Galmuri11',
                 fontWeight: FontWeight.bold,
                 letterSpacing: 0.5,
               ),
@@ -125,7 +125,7 @@ class RetroWindowFrame extends StatelessWidget {
                     style: TextStyle(
                       color: Color(0xFFF2ECFA),
                       fontSize: 14,
-                      fontFamily: 'monospace',
+                      fontFamily: 'Galmuri11',
                       fontWeight: FontWeight.bold,
                       height: 1.0,
                     ),

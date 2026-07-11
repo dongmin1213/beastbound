@@ -255,22 +255,27 @@ class AppTheme {
     return ResponsiveScale.scaleVerticalPadding(context, 16);
   }
 
+  /// 앱 기본 픽셀 폰트 (한/영/일, SIL OFL). 폰트명 중앙화 — 하드코딩 방지.
+  static const String pixelFont = 'Galmuri11';
+
   static final ThemeData dark = ThemeData(
     brightness: Brightness.dark,
     scaffoldBackgroundColor: screenBackground,
+    // 기본 폰트 = 픽셀 폰트. 명시적 fontFamily 없는 모든 텍스트에 적용.
+    fontFamily: pixelFont,
     colorScheme: const ColorScheme.dark(
       primary: Color(0xFFB0B0B0),
       surface: Color(0xFF121212),
     ),
     textTheme: const TextTheme(
       bodyLarge: TextStyle(
-        fontFamily: 'NotoSansKR',
+        fontFamily: pixelFont,
         color: Color(0xFFE0E0E0),
         fontSize: 13,
         height: 1.5,
       ),
       bodyMedium: TextStyle(
-        fontFamily: 'NotoSansKR',
+        fontFamily: pixelFont,
         color: Color(0xFFB0B0B0),
         fontSize: 13,
         height: 1.4,

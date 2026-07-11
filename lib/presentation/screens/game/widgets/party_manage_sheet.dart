@@ -71,7 +71,7 @@ class _PartyManageSheetState extends State<PartyManageSheet> {
                       color: AppTheme.titleGold,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'monospace',
+                      fontFamily: 'Galmuri11',
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -80,7 +80,7 @@ class _PartyManageSheetState extends State<PartyManageSheet> {
                     style: const TextStyle(
                         color: Color(0xFF9A8AC0),
                         fontSize: 13,
-                        fontFamily: 'monospace'),
+                        fontFamily: 'Galmuri11'),
                   ),
                   const Spacer(),
                   IconButton(
@@ -112,7 +112,7 @@ class _PartyManageSheetState extends State<PartyManageSheet> {
                               ? const Color(0xFF8FE0A0)
                               : const Color(0xFF9A8AC0),
                           fontSize: 11,
-                          fontFamily: 'monospace',
+                          fontFamily: 'Galmuri11',
                         ),
                       ),
                     );
@@ -126,7 +126,7 @@ class _PartyManageSheetState extends State<PartyManageSheet> {
                 style: TextStyle(
                     color: Color(0xFF6A6280),
                     fontSize: 11,
-                    fontFamily: 'monospace'),
+                    fontFamily: 'Galmuri11'),
               ),
             ),
             // 로스터 목록
@@ -211,13 +211,13 @@ class _RosterRow extends StatelessWidget {
                                 color: Color(0xFFEDE6F5),
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold,
-                                fontFamily: 'monospace')),
+                                fontFamily: 'Galmuri11')),
                         const SizedBox(width: 6),
                         Text('[${type.label}]',
                             style: const TextStyle(
                                 color: Color(0xFF9A8AC0),
                                 fontSize: 10,
-                                fontFamily: 'monospace')),
+                                fontFamily: 'Galmuri11')),
                       ],
                     ),
                     if (!passive.isNone)
@@ -225,7 +225,7 @@ class _RosterRow extends StatelessWidget {
                           style: const TextStyle(
                               color: Color(0xFF8FB0E0),
                               fontSize: 10,
-                              fontFamily: 'monospace')),
+                              fontFamily: 'Galmuri11')),
                   ],
                 ),
               ),

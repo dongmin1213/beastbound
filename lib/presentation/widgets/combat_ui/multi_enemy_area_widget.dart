@@ -71,7 +71,7 @@ class MultiEnemyAreaWidget extends StatelessWidget {
                 style: TextStyle(
                   fontSize: ResponsiveScale.scaleFontSize(context, 10),
                   color: const Color(0xFFFFAA44),
-                  fontFamily: 'monospace',
+                  fontFamily: 'Galmuri11',
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -171,7 +171,7 @@ class MultiEnemyAreaWidget extends StatelessWidget {
                         fontSize: ResponsiveScale.scaleFontSize(context, _compact ? 11 : 13),
                         color: isDead ? nameColor.withValues(alpha: 0.5) : nameColor,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'monospace',
+                        fontFamily: 'Galmuri11',
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -362,7 +362,7 @@ class MultiEnemyAreaWidget extends StatelessWidget {
         style: TextStyle(
           fontSize: fontSize,
           color: color,
-          fontFamily: 'monospace',
+          fontFamily: 'Galmuri11',
           fontWeight: FontWeight.bold,
         ),
       ),

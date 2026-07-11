@@ -76,7 +76,7 @@ class CombatTutorialModal extends StatelessWidget {
                       style: TextStyle(
                         fontSize: ResponsiveScale.scaleFontSize(context, 15),
                         color: AppTheme.apAvailable,
-                        fontFamily: 'monospace',
+                        fontFamily: 'Galmuri11',
                         letterSpacing: 1,
                       ),
                     ),

@@ -64,7 +64,7 @@ class SettingsScreen extends StatelessWidget {
                             color: const Color(0xFF888888),
                             fontSize:
                                 ResponsiveScale.scaleFontSize(context, 13),
-                            fontFamily: 'monospace',
+                            fontFamily: 'Galmuri11',
                           ),
                         );
                       }
@@ -123,7 +123,7 @@ class SettingsScreen extends StatelessWidget {
                                     context,
                                     13,
                                   ),
-                                  fontFamily: 'monospace',
+                                  fontFamily: 'Galmuri11',
                                 ),
                               ),
                             ),
@@ -154,7 +154,7 @@ class SettingsScreen extends StatelessWidget {
           style: TextStyle(
             color: const Color(0xFF888888),
             fontSize: smallFontSize,
-            fontFamily: 'monospace',
+            fontFamily: 'Galmuri11',
             height: 1.4,
           ),
         ),
@@ -175,7 +175,7 @@ class SettingsScreen extends StatelessWidget {
               style: TextStyle(
                 color: const Color(0xFFFF6B6B),
                 fontSize: fontSize,
-                fontFamily: 'monospace',
+                fontFamily: 'Galmuri11',
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -218,7 +218,7 @@ class SettingsScreen extends StatelessWidget {
                     style: TextStyle(
                       color: Color(0xFFB0B0B0),
                       fontSize: 13,
-                      fontFamily: 'monospace',
+                      fontFamily: 'Galmuri11',
                       height: 1.5,
                     ),
                   ),
@@ -244,7 +244,7 @@ class SettingsScreen extends StatelessWidget {
                               style: TextStyle(
                                 color: Color(0xFFB0B0B0),
                                 fontSize: 13,
-                                fontFamily: 'monospace',
+                                fontFamily: 'Galmuri11',
                               ),
                             ),
                           ),
@@ -273,7 +273,7 @@ class SettingsScreen extends StatelessWidget {
                               style: TextStyle(
                                 color: Color(0xFFFF6B6B),
                                 fontSize: 13,
-                                fontFamily: 'monospace',
+                                fontFamily: 'Galmuri11',
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -320,7 +320,7 @@ class SettingsScreen extends StatelessWidget {
                     style: TextStyle(
                       color: Color(0xFFFF6B6B),
                       fontSize: 14,
-                      fontFamily: 'monospace',
+                      fontFamily: 'Galmuri11',
                       height: 1.5,
                       fontWeight: FontWeight.bold,
                     ),
@@ -347,7 +347,7 @@ class SettingsScreen extends StatelessWidget {
                               style: TextStyle(
                                 color: Color(0xFFB0B0B0),
                                 fontSize: 13,
-                                fontFamily: 'monospace',
+                                fontFamily: 'Galmuri11',
                               ),
                             ),
                           ),
@@ -375,7 +375,7 @@ class SettingsScreen extends StatelessWidget {
                               style: TextStyle(
                                 color: Color(0xFFFF6B6B),
                                 fontSize: 13,
-                                fontFamily: 'monospace',
+                                fontFamily: 'Galmuri11',
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -416,7 +416,7 @@ class SettingsScreen extends StatelessWidget {
         style: TextStyle(
           color: AppTheme.titleGold,
           fontSize: ResponsiveScale.scaleFontSize(context, 13),
-          fontFamily: 'monospace',
+          fontFamily: 'Galmuri11',
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -448,7 +448,7 @@ class SettingsScreen extends StatelessWidget {
                       ? const Color(0xFF666666)
                       : const Color(0xFFE0E0E0),
                   fontSize: fontSize,
-                  fontFamily: 'monospace',
+                  fontFamily: 'Galmuri11',
                 ),
               ),
             ),
@@ -459,7 +459,7 @@ class SettingsScreen extends StatelessWidget {
                     ? const Color(0xFF666666)
                     : const Color(0xFFB0B0B0),
                 fontSize: smallFontSize,
-                fontFamily: 'monospace',
+                fontFamily: 'Galmuri11',
               ),
             ),
           ],

@@ -271,7 +271,7 @@ class _TitleScreenState extends State<TitleScreen>
               ? AppTheme.titleGold.withValues(alpha: 0.7)
               : AppTheme.titleGold,
           letterSpacing: 2,
-          fontFamily: 'monospace',
+          fontFamily: 'Galmuri11',
         ),
       ),
     );
@@ -331,7 +331,7 @@ class _TitleScreenState extends State<TitleScreen>
                   color: enabled
                       ? AppTheme.titleMenuText
                       : AppTheme.titleMenuDisabled,
-                  fontFamily: 'monospace',
+                  fontFamily: 'Galmuri11',
                   letterSpacing: 1,
                 ),
               ),
