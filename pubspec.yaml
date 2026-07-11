@@ -1,5 +1,5 @@
 name: soul_dungeon
-description: "텍스트 로그라이크 RPG — 카드 전투, 전직, 던전 탐험"
+description: "BEASTBOUND — 몬스터 테이밍 덱빌더 로그라이크. 싸운 적이 곧 나의 덱이 된다."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -96,9 +96,6 @@ flutter:
         - asset: assets/fonts/Galmuri11.ttf
         - asset: assets/fonts/Galmuri11-Bold.ttf
           weight: 700
-    - family: NotoSansKR
-      fonts:
-        - asset: assets/fonts/NotoSansKR-Variable.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
