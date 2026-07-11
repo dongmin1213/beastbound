@@ -27,7 +27,7 @@ void main() {
       final typewriter = tester.widget<TypewriterWidget>(
         find.byType(TypewriterWidget),
       );
-      expect(typewriter.text, contains('무엇을 준비하겠는가'));
+      expect(typewriter.text, contains('무엇을 챙기겠는가'));
     });
 
     testWidgets('선택 프롬프트 완료 → 선택지 표시', (tester) async {

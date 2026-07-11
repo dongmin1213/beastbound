@@ -197,7 +197,7 @@ class BossFlowHandler {
 
   /// 엔딩 화면 표시 — 보스 선택 결과 텍스트 + 엔딩 텍스트 + 재시작 선택지.
   void showEnding(String bossResultText) {
-    const endingText = '던전을 정복했다. 너와 동료들의 여정이 정점에 이르렀다.';
+    const endingText = '가장 깊은 곳의 지배자마저 무릎 꿇렸다. 너와 동료들의 유대가 정점에 이르렀다.';
 
     // RunBloc에 런 완료 이벤트 발행
     runController.runBloc.add(const AdvanceFloor());
@@ -221,7 +221,7 @@ class BossFlowHandler {
         isVictory: true,
       ),
       TextBlockData(
-        text: '던전의 여정이 끝났다.',
+        text: '이번 여정이 끝났다.',
         choices: [
           const ChoiceData(
             id: 'restart_run',
