@@ -218,6 +218,22 @@ class MonsterCards {
       'reaper_immortal_will', 'reaper_soul_harvest', 'reaper_nether_gate',
       'reaper_death_sentence', 'sage_magic_explosion',
     ],
+    // ── 보스 (동료로 획득 시) — 강력한 무브풀 ──
+    'boss_slime_king': ['guardian_fortress','guardian_iron_guard','guardian_unyielding','guardian_thorn_burst','colorless_last_stand'],
+    'boss_sewer_croc': ['warrior_execute','warrior_berserker','warrior_crush','warrior_onslaught','warrior_blood_strike'],
+    'boss_rat_monarch': ['assassin_chain_strike','colorless_double_strike','colorless_sprint','assassin_shadow_step','whirlwind'],
+    'boss_spider_lord': ['assassin_poison_burst','assassin_poison_cloud','colorless_poison_jar','assassin_assassination','illusionist_phantom_army'],
+    'boss_warden_chief': ['guardian_fortress','guardian_wall_charge','guardian_unyielding','guardian_chains','warrior_execute'],
+    'boss_ghost_convict': ['reaper_soul_harvest','reaper_life_drain','reaper_nether_gate','reaper_death_mark','reaper_immortal_will'],
+    'boss_orc_general': ['warrior_onslaught','warrior_berserker','warrior_execute','warrior_war_cry','warrior_crush'],
+    'boss_crystal_golem': ['guardian_fortress','guardian_unyielding','sage_mana_barrier','guardian_iron_guard','warrior_crush'],
+    'boss_mana_overload': ['sage_magic_explosion','sage_chain_lightning','sage_time_distortion','sage_mana_charge','reaper_death_sentence'],
+    'boss_vampire_lord': ['reaper_life_drain','reaper_soul_harvest','reaper_immortal_will','reaper_death_touch','reaper_soul_split'],
+    'boss_arch_demon': ['warrior_berserker','sage_magic_explosion','reaper_death_touch','warrior_execute','saint_retribution'],
+    'boss_corrupt_high_priest': ['saint_judgment','saint_retribution','reaper_death_mark','saint_divine_strike','reaper_soul_harvest'],
+    'boss_dungeon_master': ['sage_time_distortion','illusionist_phantom_army','sage_magic_explosion','illusionist_perfect_copy','reaper_death_sentence'],
+    'boss_void_sovereign': ['illusionist_dimension_shift','sage_time_distortion','colorless_time_rewind','illusionist_perfect_copy','sage_chain_lightning'],
+    'boss_dimension_collapser': ['illusionist_dimension_shift','sage_time_distortion','illusionist_perfect_copy','colorless_time_rewind','sage_magic_explosion'],
   };
 
   /// 몬스터 id → 무브풀 카드 id 목록 (없으면 빈 리스트).

@@ -132,6 +132,22 @@ class MonsterPassives {
     'enemy_void_weaver': MonsterPassive._draw,
     'enemy_dimension_rift': MonsterPassive._draw,
     'enemy_lich_lord': MonsterPassive._heal,
+    // 보스 (동료)
+    'boss_slime_king': MonsterPassive._block,
+    'boss_sewer_croc': MonsterPassive._strength,
+    'boss_rat_monarch': MonsterPassive._draw,
+    'boss_spider_lord': MonsterPassive._poison,
+    'boss_warden_chief': MonsterPassive._block,
+    'boss_ghost_convict': MonsterPassive._heal,
+    'boss_orc_general': MonsterPassive._strength,
+    'boss_crystal_golem': MonsterPassive._block,
+    'boss_mana_overload': MonsterPassive._draw,
+    'boss_vampire_lord': MonsterPassive._heal,
+    'boss_arch_demon': MonsterPassive._strength,
+    'boss_corrupt_high_priest': MonsterPassive._heal,
+    'boss_dungeon_master': MonsterPassive._draw,
+    'boss_void_sovereign': MonsterPassive._draw,
+    'boss_dimension_collapser': MonsterPassive._draw,
   };
 
   /// 몬스터 id → 패시브 (없으면 none).

@@ -723,6 +723,20 @@ class CardCombatHandler {
         ));
 
         if (resolved.roomType == RoomType.boss) {
+          // 보스 처치 = 강력한 동료 획득 (도감 등록 + 빈 슬롯 자동장착).
+          final boss = resolved.enemies.first;
+          TamedMonsterStore.markTamed(boss.id);
+          if (runMonsterIds.length < maxEquippedMonsters &&
+              !runMonsterIds.contains(boss.id)) {
+            runMonsterIds.add(boss.id);
+            runController.completedBlocks.add(CompletedBlock(
+              text: '🐾 강력한 동료 획득: ${boss.name}! (도감 등록 + 장착)',
+            ));
+          } else {
+            runController.completedBlocks.add(CompletedBlock(
+              text: '🐾 ${boss.name}을(를) 도감에 기록했다! (동료 관리에서 장착)',
+            ));
+          }
           updateUI(
             inCardCombat: false,
             choiceSelected: false,

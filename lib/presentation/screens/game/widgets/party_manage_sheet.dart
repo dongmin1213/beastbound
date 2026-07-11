@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:soul_dungeon/core/config/tamed_monster_store.dart';
-import 'package:soul_dungeon/core/models/enemy_combat_data.dart';
-import 'package:soul_dungeon/domain/combat/content/floor_enemies.dart';
 import 'package:soul_dungeon/domain/combat/content/monster_passives.dart';
 import 'package:soul_dungeon/presentation/theme/app_theme.dart';
-import 'package:soul_dungeon/presentation/theme/pixel_art_assets.dart';
+import 'package:soul_dungeon/presentation/theme/monster_display.dart';
 
 /// 동료(장착 몬스터) 관리 시트.
 ///
@@ -21,20 +19,6 @@ class PartyManageSheet extends StatefulWidget {
     required this.maxSlots,
     required this.onChanged,
   });
-
-  /// 도감에 등록된 몬스터 데이터 (id → EnemyCombatData).
-  static EnemyCombatData? _dataFor(String id) {
-    for (final e in [
-      ...FloorEnemies.floor1Normal, ...FloorEnemies.floor1Elite,
-      ...FloorEnemies.floor2Normal, ...FloorEnemies.floor2Elite,
-      ...FloorEnemies.floor3Normal, ...FloorEnemies.floor3Elite,
-      ...FloorEnemies.floor4Normal, ...FloorEnemies.floor4Elite,
-      ...FloorEnemies.floor5Normal, ...FloorEnemies.floor5Elite,
-    ]) {
-      if (e.id == id) return e;
-    }
-    return null;
-  }
 
   @override
   State<PartyManageSheet> createState() => _PartyManageSheetState();
@@ -183,9 +167,8 @@ class _RosterRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final data = PartyManageSheet._dataFor(id);
-    final name = data?.name ?? id;
-    final spritePath = PixelArtAssets.enemySprite(id);
+    final name = MonsterDisplay.name(id);
+    final spritePath = MonsterDisplay.sprite(id);
     final type = MonsterPassives.typeOf(id);
     final passive = MonsterPassives.forMonster(id);
     final tappable = equipped || canEquip;
