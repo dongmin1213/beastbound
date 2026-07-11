@@ -8,7 +8,7 @@ class GuardianCards {
   /// 방패 타격 — 1AP, 5 데미지 + 5 블록. 시작.
   static const shieldBash = CardData(
     id: 'guardian_shield_bash',
-    name: '방패 타격',
+    name: '몸통 강타',
     jobId: 'guardian',
     type: CardType.attack,
     apCost: 1,

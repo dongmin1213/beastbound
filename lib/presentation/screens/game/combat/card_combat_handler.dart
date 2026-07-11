@@ -9,6 +9,8 @@ import 'package:soul_dungeon/domain/combat/bloc/combat_state.dart';
 import 'package:soul_dungeon/domain/combat/content/boss_enemies.dart';
 import 'package:soul_dungeon/domain/combat/content/boss_gimmick_text.dart';
 import 'package:soul_dungeon/domain/combat/content/card_rarity_resolver.dart';
+import 'package:soul_dungeon/domain/combat/content/monster_passives.dart';
+import 'package:soul_dungeon/presentation/theme/monster_display.dart';
 import 'package:soul_dungeon/domain/combat/models/boss_combat_data.dart';
 import 'package:soul_dungeon/domain/combat/logic/enemy_ai.dart';
 import 'package:soul_dungeon/core/models/card_data.dart';
@@ -769,8 +771,10 @@ class CardCombatHandler {
             choiceSelected: false,
             textBlockDataList: [
               TextBlockData(
-                text: resolved.isTamed
-                    ? '길들인 몬스터의 힘을 배운다 — 카드를 선택하세요.'
+                text: resolved.isTamed && resolved.tamedEnemyId != null
+                    ? '🐾 ${MonsterDisplay.name(resolved.tamedEnemyId!)}'
+                        '[${MonsterPassives.typeOf(resolved.tamedEnemyId!).label}]'
+                        '의 기술을 익힌다 — 배울 무브를 하나 고르세요.'
                     : '카드 보상을 선택하세요.',
                 choices: rewardChoices,
               ),
