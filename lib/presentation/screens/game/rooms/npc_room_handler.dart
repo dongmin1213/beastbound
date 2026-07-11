@@ -16,13 +16,9 @@ import 'package:soul_dungeon/domain/dungeon/npc/npc_event.dart';
 import 'package:soul_dungeon/domain/dungeon/npc/npc_generator.dart';
 import 'package:soul_dungeon/domain/dungeon/npc/npc_state.dart';
 import 'package:soul_dungeon/domain/dungeon/shop/shop_item.dart';
-import 'package:soul_dungeon/domain/progression/ghost/ghost_npc_data.dart';
-import 'package:soul_dungeon/domain/progression/ghost/ghost_npc_generator.dart';
-import 'package:soul_dungeon/domain/progression/ghost/ghost_reaction.dart';
 import 'package:soul_dungeon/domain/run/run_event.dart';
 import 'package:soul_dungeon/core/models/game_enums.dart';
 import 'package:soul_dungeon/presentation/screens/game/game_run_controller.dart';
-import 'package:soul_dungeon/presentation/screens/game/ghost/ghost_interaction_handler.dart';
 import 'package:soul_dungeon/presentation/screens/game/room_context.dart';
 import 'package:soul_dungeon/presentation/widgets/choice/choice_data.dart';
 
@@ -31,71 +27,24 @@ class NpcRoomHandler {
   final NpcConfig npcConfig;
   final EconomyConfig economyConfig;
 
-  /// 유령 NPC 풀 (MetaSaveData에서 역직렬화). 런타임에 갱신 가능.
-  List<GhostNpcData> ghostPool;
-
   /// 현재 런 번호 (1-based). totalRuns + 1.
   int currentRunNumber;
 
-  /// 유령 상호작용 핸들러 (presentation).
-  final GhostInteractionHandler? ghostInteractionHandler;
-
   NpcBloc? _npcBloc;
   bool _showingNpc = false;
-  bool _showingGhost = false;
-  GhostReactionLevel? _ghostReactionLevel;
-  GhostNpcData? _currentGhost;
 
   NpcBloc? get bloc => _npcBloc;
   bool get isShowing => _showingNpc;
-  bool get isShowingGhost => _showingGhost;
-  GhostReactionLevel? get ghostReactionLevel => _ghostReactionLevel;
-  GhostNpcData? get currentGhost => _currentGhost;
 
   NpcRoomHandler({
     required RoomContext context,
     required this.npcConfig,
     required this.economyConfig,
-    this.ghostPool = const [],
     this.currentRunNumber = 1,
-    this.ghostInteractionHandler,
   }) : _ctx = context;
 
   void enter(DungeonRoomEntered dState) {
     final floorNumber = dState.floorMap.floorNumber;
-
-    // 유령 NPC 스폰 체크 — 일반 NPC 대신 유령 등장 가능.
-    final currentDisposition = _ctx.runController.playerRunState.disposition;
-    final ghost = GhostNpcGenerator.trySpawn(
-      currentRun: currentRunNumber,
-      ghostPool: ghostPool,
-      currentFloor: floorNumber,
-    );
-
-    if (ghost != null && ghostInteractionHandler != null) {
-      // 성향을 String 키로 변환 (GhostNpcData 호환).
-      final dispositionMap = <String, int>{
-        for (final entry in currentDisposition.entries)
-          entry.key.name: entry.value,
-      };
-
-      final level = GhostNpcGenerator.reactionLevel(
-        ghostDisposition: ghost.dispositionSnapshot,
-        currentDisposition: dispositionMap,
-      );
-
-      _showingGhost = true;
-      _showingNpc = false;
-      _ghostReactionLevel = level;
-      _currentGhost = ghost;
-      ghostInteractionHandler!.showGhostEncounter(ghost, level);
-
-      if (kDebugMode) {
-        GameLogger.debug(LogSystem.dungeon,
-            'Ghost NPC spawned: job=${ghost.jobId}, floor=${ghost.deathFloor}, reaction=${level.name}');
-      }
-      return;
-    }
 
     // 일반 NPC 생성.
     _ctx.setTextBlockData([
@@ -285,22 +234,6 @@ class NpcRoomHandler {
     newDeck[targetIndex] = upgraded;
     rc.playerRunState = rc.playerRunState.copyWith(masterDeck: newDeck);
     rc.appendFeedbackText('${original.name} → ${upgraded.name} 강화!');
-  }
-
-  /// 유령 상호작용 완료 → 방 종료.
-  void onGhostComplete() {
-    _showingGhost = false;
-    _ghostReactionLevel = null;
-    _currentGhost = null;
-    _ctx.notifyStateChanged();
-    _ctx.getDungeonBloc()?.add(const CompleteRoom());
-  }
-
-  /// 유령 전투 시작 전 유령 상태 정리 (전투 핸들러가 방 완료 담당).
-  void clearGhostForCombat() {
-    _showingGhost = false;
-    _ghostReactionLevel = null;
-    _currentGhost = null;
   }
 
   void enterForTest(NpcData npcData, {int? withGold}) {

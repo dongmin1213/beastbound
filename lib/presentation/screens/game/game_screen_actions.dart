@@ -26,7 +26,6 @@ abstract class GameScreenActions {
   void handleCombatAction(ChoiceData choice);
 
   // ── 유령 NPC ──
-  Future<void> handleGhostChoice(ChoiceData choice);
 
   // ── 보스 준비 ──
   Future<void> handleBossPrepFight();

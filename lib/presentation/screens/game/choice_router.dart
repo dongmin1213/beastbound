@@ -28,10 +28,6 @@ class ChoiceRouter {
     if (id == 'retreat') return actions.handleRetreat();
 
     // 유령 NPC 선택지
-    if (id.startsWith('ghost_')) {
-      actions.handleGhostChoice(choice);
-      return;
-    }
 
     // 보스 페이즈 전환
     if (id == 'boss_continue') return actions.handleBossContinue();

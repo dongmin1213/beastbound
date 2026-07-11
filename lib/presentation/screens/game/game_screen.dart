@@ -9,9 +9,7 @@ import 'package:soul_dungeon/presentation/widgets/combat_ui/combat_tutorial_moda
 import 'package:soul_dungeon/core/config/balance_config.dart';
 import 'package:soul_dungeon/core/config/tamed_monster_store.dart';
 import 'package:soul_dungeon/core/events/game_event_bus.dart';
-import 'package:soul_dungeon/core/events/gold_gained_event.dart';
 import 'package:soul_dungeon/core/events/job_unlock_event.dart';
-import 'package:soul_dungeon/core/events/momentum_gain_event.dart';
 import 'package:soul_dungeon/core/input/game_input_mapper.dart';
 import 'package:soul_dungeon/core/input/input_context.dart';
 import 'package:soul_dungeon/core/config/dungeon_balance_config.dart';
@@ -86,14 +84,10 @@ import 'package:soul_dungeon/domain/narrative/bloc/narrator_bloc.dart';
 import 'package:soul_dungeon/domain/progression/bloc/progression_bloc.dart';
 import 'package:soul_dungeon/domain/progression/bloc/progression_event.dart';
 import 'package:soul_dungeon/domain/progression/bloc/progression_state.dart';
-import 'package:soul_dungeon/domain/progression/ghost/ghost_npc_data.dart';
 import 'package:soul_dungeon/domain/combat/save/combat_state_serializer.dart';
-import 'package:soul_dungeon/domain/progression/ghost/ghost_enemy_generator.dart';
-import 'package:soul_dungeon/domain/progression/ghost/ghost_reward_resolver.dart';
 import 'package:soul_dungeon/presentation/screens/game/combat/boss_flow_handler.dart';
 import 'package:soul_dungeon/presentation/screens/game/combat/card_combat_handler.dart';
 import 'package:soul_dungeon/presentation/screens/game/dungeon_navigation_handler.dart';
-import 'package:soul_dungeon/presentation/screens/game/ghost/ghost_interaction_handler.dart';
 import 'package:soul_dungeon/presentation/screens/game/choice_router.dart';
 import 'package:soul_dungeon/presentation/screens/game/prep_phase_handler.dart';
 import 'package:soul_dungeon/presentation/screens/game/game_screen_actions.dart';
@@ -245,7 +239,6 @@ class GameScreenState extends State<GameScreen>
   late final PrepPhaseHandler _prepPhaseHandler;
 
   // 유령 NPC 상호작용 핸들러
-  GhostInteractionHandler? _ghostInteractionHandler;
 
   // 전투 중 게이지 표시 (UI 상태 — presentation 소유)
   bool _inCombat = false;
@@ -444,18 +437,11 @@ class GameScreenState extends State<GameScreen>
       economyConfig: widget.economyConfig,
       soulGainMultiplier: soulGainMult,
     );
-    // Ghost Interaction Handler 초기화 (NpcRoomHandler에 주입).
-    _ghostInteractionHandler = GhostInteractionHandler(
-      gameEventBus: _gameEventBus,
-      setTextBlockData: setTextBlockData,
-    );
     _npcHandler = NpcRoomHandler(
       context: _roomContext,
       npcConfig: widget.npcConfig,
       economyConfig: widget.economyConfig,
-      ghostPool: _initialGhostPool(),
       currentRunNumber: _currentRunNumber(),
-      ghostInteractionHandler: _ghostInteractionHandler,
     );
     _restHandler = RestRoomHandler(
       context: _roomContext,
@@ -1116,94 +1102,10 @@ class GameScreenState extends State<GameScreen>
   }
 
   @override
-  Future<void> handleGhostChoice(ChoiceData choice) async {
-    // 유령 상호작용 완료 → NPC 방 종료.
-    if (choice.id == 'ghost_continue' && _npcHandler.isShowingGhost) {
-      _runController.appendFeedbackText('유령의 잔상이 사라졌다.');
-      _npcHandler.onGhostComplete();
-      return;
-    }
 
-    // 유령 PvP 전투 — 승리 보상은 유령 직업 카드.
-    if (choice.id == 'ghost_fight') {
-      final ghost = _npcHandler.currentGhost;
-      if (ghost != null) {
-        final ghostEnemy = GhostEnemyGenerator.generate(ghost);
-        _npcHandler.clearGhostForCombat();
-        await _cardCombatHandler.startCombat(
-          enemies: [ghostEnemy],
-          roomType: RoomType.elite,
-          rewardJobOverride: ghost.jobId,
-        );
-      }
-      return;
-    }
-
-    // 보상/리스크 판정 + 적용.
-    final level = _npcHandler.ghostReactionLevel;
-    if (level != null) {
-      final outcome = GhostRewardResolver.resolve(
-        choiceId: choice.id,
-        level: level,
-      );
-      _applyGhostOutcome(outcome);
-    }
-
-    _ghostInteractionHandler?.handleGhostChoice(choice);
-  }
 
   /// 유령 보상/리스크 적용 → 피드백 텍스트 추가.
-  void _applyGhostOutcome(GhostOutcome outcome) {
-    final rc = _runController;
-    final prs = rc.playerRunState;
 
-    // 보상 적용.
-    if (outcome.hasReward) {
-      switch (outcome.rewardType) {
-        case 'hp':
-          final heal = outcome.rewardValue;
-          final newHp = (prs.currentHp + heal).clamp(0, prs.maxHp);
-          final actual = newHp - prs.currentHp;
-          if (actual > 0) {
-            rc.playerRunState = prs.copyWith(currentHp: newHp);
-            rc.runBloc.add(ChangeHp(actual));
-            rc.appendFeedbackText('유령의 기운이 감돌며 HP가 $actual 회복되었다.');
-          }
-        case 'momentum':
-          rc.gameEventBus.emit(MomentumGainEvent(amount: outcome.rewardValue));
-          rc.appendFeedbackText('유령의 기억이 기세를 ${outcome.rewardValue} 충전했다.');
-        case 'gold':
-          final gold = outcome.rewardValue;
-          rc.playerRunState = rc.playerRunState.copyWith(
-            gold: rc.playerRunState.gold + gold,
-          );
-          rc.runBloc.add(GainGold(gold));
-          rc.gameEventBus.emit(GoldGainedEvent(
-            amount: gold,
-            totalGold: rc.playerRunState.gold,
-          ));
-          rc.appendFeedbackText('유령이 남긴 $gold 골드를 주웠다.');
-      }
-    }
-
-    // 리스크 적용.
-    if (outcome.hasRisk) {
-      switch (outcome.riskType) {
-        case 'hpLoss':
-          final loss = outcome.riskValue;
-          final newHp = (rc.playerRunState.currentHp - loss).clamp(1, rc.playerRunState.maxHp);
-          final actual = rc.playerRunState.currentHp - newHp;
-          if (actual > 0) {
-            rc.playerRunState = rc.playerRunState.copyWith(currentHp: newHp);
-            rc.runBloc.add(ChangeHp(-actual));
-            rc.appendFeedbackText('유령의 한기에 HP가 $actual 감소했다.');
-          }
-        case 'momentumReset':
-          context.read<MomentumBloc>().add(const MomentumReset());
-          rc.appendFeedbackText('유령의 슬픔이 기세를 잠식했다.');
-      }
-    }
-  }
 
   @override
   void handlePathSelection(ChoiceData choice) =>
@@ -2475,11 +2377,7 @@ class GameScreenState extends State<GameScreen>
   }
 
   /// 유령 NPC 풀 초기화 — MetaSaveData에서 역직렬화.
-  List<GhostNpcData> _initialGhostPool() {
-    final meta = widget.initialMeta;
-    if (meta == null || meta.ghostNpcPoolRaw.isEmpty) return const [];
-    return GhostNpcData.fromRawList(meta.ghostNpcPoolRaw);
-  }
+
 
   /// 현재 런 번호 (1-based) — totalRuns + 1.
   int _currentRunNumber() {
@@ -2493,22 +2391,8 @@ class GameScreenState extends State<GameScreen>
     final prs = _runController.playerRunState;
     final floor = prs.currentFloor;
 
-    // 유령 풀에 현재 캐릭터 등록.
-    final dispositionMap = <String, int>{
-      for (final entry in prs.disposition.entries) entry.key.name: entry.value,
-    };
-    final ghostData = GhostNpcData(
-      deathFloor: floor,
-      jobId: prs.currentJobId ?? 'wanderer',
-      dispositionSnapshot: dispositionMap,
-      runNumber: _currentRunNumber(),
-    );
-
     context.read<ProgressionBloc>().add(
-      RecordDeath(
-        floorReached: floor,
-        ghostDataRaw: ghostData.toJson(),
-      ),
+      RecordDeath(floorReached: floor),
     );
   }
 
