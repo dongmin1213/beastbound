@@ -3,6 +3,7 @@ import 'package:soul_dungeon/core/models/enemy_combat_data.dart';
 import 'package:soul_dungeon/domain/combat/content/floor_enemies.dart';
 import 'package:soul_dungeon/core/config/tamed_monster_store.dart';
 import 'package:soul_dungeon/domain/combat/content/monster_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/monster_passives.dart';
 import 'package:soul_dungeon/presentation/theme/app_theme.dart';
 import 'package:soul_dungeon/presentation/theme/pixel_art_assets.dart';
 
@@ -93,7 +94,7 @@ class BestiaryScreen extends StatelessWidget {
                   crossAxisCount: 2,
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
-                  childAspectRatio: 0.82,
+                  childAspectRatio: 0.74,
                 ),
                 itemCount: monsters.length,
                 itemBuilder: (context, i) => _MonsterCard(
@@ -214,6 +215,18 @@ class _MonsterCard extends StatelessWidget {
                     ),
                   ],
                 ),
+                if (!MonsterPassives.forMonster(monster.id).isNone) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    '✦ ${MonsterPassives.forMonster(monster.id).label}',
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Color(0xFF8FB0E0),
+                      fontSize: 10,
+                      fontFamily: 'monospace',
+                    ),
+                  ),
+                ],
               ],
             ),
           ),

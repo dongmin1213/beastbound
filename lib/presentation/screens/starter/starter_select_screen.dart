@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soul_dungeon/domain/combat/content/monster_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/monster_passives.dart';
 import 'package:soul_dungeon/presentation/theme/app_theme.dart';
 import 'package:soul_dungeon/presentation/theme/pixel_art_assets.dart';
 
@@ -213,13 +214,30 @@ class _StarterCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 6),
-                    Text(
-                      '시작 덱 $deckSize장',
-                      style: const TextStyle(
-                        color: Color(0xFF6A6280),
-                        fontSize: 11,
-                        fontFamily: 'monospace',
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          '시작 덱 $deckSize장',
+                          style: const TextStyle(
+                            color: Color(0xFF6A6280),
+                            fontSize: 11,
+                            fontFamily: 'monospace',
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        if (!MonsterPassives.forMonster(starter.id).isNone)
+                          Flexible(
+                            child: Text(
+                              '✦ ${MonsterPassives.forMonster(starter.id).label}',
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: starter.accent,
+                                fontSize: 11,
+                                fontFamily: 'monospace',
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
                   ],
                 ),

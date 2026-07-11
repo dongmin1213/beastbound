@@ -140,10 +140,11 @@ class CardCombatView extends StatelessWidget {
                   backgroundColor: floorVisuals.frameBackground,
                   // Reforged 2단계: 정적 초상화(MultiEnemyAreaWidget) 대신
                   // Flame 연출 씬 — 플레이어/적이 공격·피격·사망한다.
-                  // (현 단계는 적 패널 밴드에 고정 높이로 배치. 이후 포켓몬식
-                  //  씬-지배 구성으로 전환 시 이 SizedBox를 Expanded로 교체.)
+                  // 높이는 화면 비례(반응형) — 작은 뷰포트에서도 오버플로우 없음.
+                  // (이후 포켓몬식 씬-지배 구성 전환 시 Expanded로 교체.)
                   child: SizedBox(
-                    height: 220,
+                    height: (MediaQuery.of(context).size.height * 0.26)
+                        .clamp(150.0, 240.0),
                     child: FlameCombatScene(
                       combatBloc: combatBloc,
                       floorVisuals: floorVisuals,

@@ -1354,5 +1354,39 @@ void main() {
       expect(MonsterCards.movepool('enemy_unknown_xyz'), isEmpty);
       expect(MonsterCards.hasMovepool('enemy_goblin'), isTrue);
     });
+
+    blocTest<CombatBloc, CombatState>(
+      '로스터 몬스터 패시브가 초기 PowerEffects로 주입됨',
+      build: () => bloc,
+      act: (b) => b.add(StartCardCombat(
+        enemies: [FloorEnemies.rat],
+        masterDeck: testDeck,
+        playerRunState: initialPlayerState,
+        momentumTier: 2,
+        rewardMonsterIds: const ['enemy_slime', 'enemy_poison_toad'],
+      )),
+      verify: (b) {
+        final st = b.state as CardCombatActive;
+        // 슬라임(방어+3) + 독두꺼비(독+2)
+        expect(st.powerEffects.blockPerTurnStart, 3);
+        expect(st.powerEffects.poisonPerTurnStart, 2);
+      },
+    );
+
+    blocTest<CombatBloc, CombatState>(
+      '로스터 없으면 패시브 없음 (기존 동작)',
+      build: () => bloc,
+      act: (b) => b.add(StartCardCombat(
+        enemies: [FloorEnemies.rat],
+        masterDeck: testDeck,
+        playerRunState: initialPlayerState,
+        momentumTier: 2,
+      )),
+      verify: (b) {
+        final st = b.state as CardCombatActive;
+        expect(st.powerEffects.blockPerTurnStart, 0);
+        expect(st.powerEffects.poisonPerTurnStart, 0);
+      },
+    );
   });
 }

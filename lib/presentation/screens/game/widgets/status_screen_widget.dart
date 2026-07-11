@@ -6,7 +6,6 @@ import 'package:soul_dungeon/core/models/card_data.dart';
 import 'package:soul_dungeon/core/models/card_relic_data.dart';
 import 'package:soul_dungeon/core/models/curse_data.dart';
 import 'package:soul_dungeon/core/models/job_path.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 import 'package:soul_dungeon/core/models/game_enums.dart';
 import 'package:soul_dungeon/core/models/player_run_state.dart';
 import 'package:soul_dungeon/presentation/screens/game/deck_view_handler.dart';
@@ -41,14 +40,6 @@ class StatusScreenWidget extends StatelessWidget {
   static const _textSecondary = Color(0xFF888888);
   static const _textMuted = Color(0xFF555555);
 
-  static const _dispositionColors = {
-    DispositionAxis.struggle: Color(0xFFEF5350),
-    DispositionAxis.mercy: Color(0xFF66BB6A),
-    DispositionAxis.wisdom: Color(0xFF42A5F5),
-    DispositionAxis.shadow: Color(0xFFAB47BC),
-    DispositionAxis.will: Color(0xFFFFB300),
-    DispositionAxis.harmony: Color(0xFF4FC3F7),
-  };
 
   @override
   Widget build(BuildContext context) {
@@ -75,8 +66,7 @@ class StatusScreenWidget extends StatelessWidget {
                 children: [
                   _buildPlayerInfo(context),
                   _buildBuildArchetype(context),
-                  _buildSectionDivider(context, '성향'),
-                  _buildDisposition(context),
+                  // 성향(disposition) 시스템 폐기 — 몬스터 패시브로 대체.
                   _buildSectionDivider(context, '덱'),
                   _buildDeck(context),
                   if (blessings.isNotEmpty) ...[
@@ -233,59 +223,6 @@ class StatusScreenWidget extends StatelessWidget {
 
   // ── Disposition ──
 
-  Widget _buildDisposition(BuildContext context) {
-    final fontSize = ResponsiveScale.scaleFontSize(context, 11);
-    final maxVal = runState.disposition.values.fold<int>(
-      20,
-      (prev, v) => v > prev ? v : prev,
-    );
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Column(
-        children: DispositionAxis.values.map((axis) {
-          final value = runState.disposition[axis] ?? 0;
-          final color = _dispositionColors[axis] ?? _textMuted;
-
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 2),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 40,
-                  child: Text(
-                    axis.displayName,
-                    style: TextStyle(color: color, fontSize: fontSize),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: GaugeBar(
-                    current: value,
-                    max: maxVal,
-                    fillColor: color,
-                    height: 4,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                SizedBox(
-                  width: 28,
-                  child: Text(
-                    value > 0 ? '+$value' : '$value',
-                    style: TextStyle(
-                      color: value > 0 ? _textPrimary : _textMuted,
-                      fontSize: fontSize,
-                    ),
-                    textAlign: TextAlign.right,
-                  ),
-                ),
-              ],
-            ),
-          );
-        }).toList(),
-      ),
-    );
-  }
 
   // ── Deck ──
 

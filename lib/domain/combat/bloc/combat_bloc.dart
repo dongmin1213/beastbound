@@ -34,6 +34,7 @@ import 'package:soul_dungeon/core/models/enemy_combat_data.dart';
 import 'package:soul_dungeon/core/models/enemy_modifier.dart';
 import 'package:soul_dungeon/domain/combat/content/colorless_cards.dart';
 import 'package:soul_dungeon/domain/combat/content/monster_cards.dart';
+import 'package:soul_dungeon/domain/combat/content/monster_passives.dart';
 import 'package:soul_dungeon/domain/combat/content/encounter_pool.dart';
 import 'package:soul_dungeon/domain/combat/logic/action_interaction.dart';
 import 'package:soul_dungeon/core/models/curse_modifier_pool.dart';
@@ -436,6 +437,9 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     // 이번 런 로스터 몬스터 — 승리 보상 풀 소스 (몬스터 테이밍 컨셉).
     _rewardMonsterIds = event.rewardMonsterIds;
 
+    // 로스터 몬스터 패시브 → 초기 PowerEffects로 주입 (매 턴 지속 효과).
+    final rosterPassive = MonsterPassives.aggregate(event.rewardMonsterIds);
+
     // 초기 AP는 event.momentumTier 대신 실제 초기 기세값에서 산출 (첫 턴 불일치 수정)
     // totalMomentumBonus는 아래에서 계산되므로, 우선 event.momentumTier를 임시 사용
     // → 최종 AP는 totalMomentumBonus 확정 후 재산출
@@ -665,6 +669,13 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       lastMomentumTier: correctTierInt,
       initialMomentumBonus: totalMomentumBonus,
       rewardJobOverride: event.rewardJobOverride,
+      powerEffects: PowerEffects(
+        blockPerTurnStart: rosterPassive.blockPerTurn,
+        poisonPerTurnStart: rosterPassive.poisonPerTurn,
+        healPerTurn: rosterPassive.healPerTurn,
+        strengthPerTurn: rosterPassive.strengthPerTurn,
+        drawPerTurn: rosterPassive.drawPerTurn,
+      ),
     ));
     gameEventBus.emit(CombatStartedEvent(
       isElite: event.roomType == RoomType.elite,

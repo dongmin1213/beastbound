@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:soul_dungeon/core/config/game_hint_manager.dart';
 import 'package:soul_dungeon/core/events/combat_reward_event.dart';
 import 'package:soul_dungeon/core/events/game_event_bus.dart';
 import 'package:soul_dungeon/core/events/gold_gained_event.dart';
@@ -90,10 +89,7 @@ class GameRunController {
     }
     playerRunState = playerRunState.copyWith(disposition: newDisposition);
     runBloc.add(ChangeDisposition(deltas));
-    // 성향 첫 변화 힌트
-    GameHintManager.shouldShow(GameHintManager.hintDisposition).then((show) {
-      if (show) appendFeedbackText(GameHintManager.dispositionText);
-    });
+    // 성향 시스템 폐기 — 미터/힌트 미표시. 값은 도메인에 남지만 소비처 없음.
     onDispositionChanged?.call();
   }
 
