@@ -106,6 +106,18 @@ core ← domain ← presentation
 
 ---
 
+## 다국어(i18n) — 하드코딩 금지
+
+- **지원 언어: 한국어(ko, 템플릿) + 영어(en).** 폰트 `Galmuri11`이 한/영 모두 커버.
+- 구조: `flutter_localizations` + gen-l10n. `l10n.yaml` + `lib/l10n/app_ko.arb`(템플릿)/`app_en.arb` → `AppLocalizations` 자동 생성. `pubspec: generate: true`.
+- **신규 UI 문자열은 절대 하드코딩 금지.** ARB에 키 추가 → `AppLocalizations.of(context).키` 사용. ko/en 양쪽 값 채울 것.
+- 언어 전환: `LocaleController.instance.setLocale(Locale('ko'|'en'|null))` (SharedPreferences 영속, null=시스템). 설정 화면에 토글.
+- `MaterialApp`에 `locale`/`supportedLocales`/`localizationsDelegates` 배선됨(app.dart, `main.dart`에서 `LocaleController.init`).
+- ARB 수정 후 `flutter gen-l10n` (또는 pub get). 폰트 패밀리는 `AppTheme.pixelFont` 상수 사용(문자열 하드코딩 지양).
+- **미완:** 기존 게임 콘텐츠(카드명/설명, 몬스터명, 서사, 보스/이벤트/기억 텍스트) 대량 문자열은 아직 ko 하드코딩 상태 — 점진적으로 ARB(또는 콘텐츠 키-로컬라이즈 전략)로 이관 필요. **새 콘텐츠 추가 시부터는 반드시 i18n 통해서.**
+
+---
+
 ## Anti-Patterns
 
 | 금지 | 대안 |
