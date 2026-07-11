@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:soul_dungeon/l10n/app_localizations.dart';
+import 'package:soul_dungeon/core/config/locale_controller.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soul_dungeon/audio/bloc/audio_bloc.dart';
@@ -99,6 +101,11 @@ class SettingsScreen extends StatelessWidget {
                                 audioBloc.add(const ToggleSfxMute()),
                           ),
                           const SizedBox(height: 24),
+                          _buildSectionHeader(
+                              context, AppLocalizations.of(context).settingsLanguage),
+                          const SizedBox(height: 16),
+                          _buildLanguageToggle(context),
+                          const SizedBox(height: 24),
                           _buildSectionHeader(context, '데이터'),
                           const SizedBox(height: 16),
                           _buildResetButton(context),
@@ -139,6 +146,50 @@ class SettingsScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildLanguageToggle(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final active = Localizations.localeOf(context).languageCode;
+
+    Widget btn(String label, Locale locale) {
+      final selected = active == locale.languageCode;
+      return Expanded(
+        child: GestureDetector(
+          onTap: () => LocaleController.instance.setLocale(locale),
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 4),
+            decoration: BoxDecoration(
+              color: selected
+                  ? AppTheme.titleGold.withValues(alpha: 0.18)
+                  : null,
+              border: Border.all(
+                color: selected ? AppTheme.titleGold : const Color(0xFF555555),
+                width: selected ? 1.5 : 1,
+              ),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              label,
+              style: TextStyle(
+                color: selected ? AppTheme.titleGold : const Color(0xFFB0B0B0),
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Row(
+      children: [
+        btn(l10n.languageKorean, const Locale('ko')),
+        btn(l10n.languageEnglish, const Locale('en')),
+      ],
     );
   }
 

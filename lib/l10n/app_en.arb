@@ -1,0 +1,14 @@
+{
+  "@@locale": "en",
+  "appTagline": "The foes you fight become your deck",
+  "menuNewGame": "New Game",
+  "menuContinue": "Continue",
+  "menuBestiary": "Bestiary",
+  "menuSettings": "Settings",
+  "commonConfirm": "OK",
+  "commonBack": "Back",
+  "commonClose": "Close",
+  "settingsLanguage": "Language",
+  "languageKorean": "한국어",
+  "languageEnglish": "English"
+}

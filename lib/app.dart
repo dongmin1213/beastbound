@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:soul_dungeon/core/app_branding.dart';
 import 'package:flutter/material.dart';
+import 'package:soul_dungeon/l10n/app_localizations.dart';
+import 'package:soul_dungeon/core/config/locale_controller.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:soul_dungeon/audio/bloc/audio_bloc.dart';
@@ -357,10 +359,15 @@ class _SoulDungeonAppState extends State<SoulDungeonApp> {
         BlocProvider<ProgressionBloc>.value(value: _progressionBloc),
         BlocProvider<AudioBloc>.value(value: _audioBloc),
       ],
-      child: MaterialApp.router(
+      child: ValueListenableBuilder<Locale?>(
+        valueListenable: LocaleController.instance,
+        builder: (context, locale, _) => MaterialApp.router(
         title: AppBranding.title,
         theme: AppTheme.dark,
         debugShowCheckedModeBanner: false,
+        locale: locale,
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
         routerConfig: _router,
         builder: (context, child) {
           // 시스템 글자 크기/화면 배율 설정이 앱 레이아웃을 깨뜨리지 않도록
@@ -373,6 +380,7 @@ class _SoulDungeonAppState extends State<SoulDungeonApp> {
             child: child!,
           );
         },
+      ),
       ),
     );
   }

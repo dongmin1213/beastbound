@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:soul_dungeon/core/app_branding.dart';
+import 'package:soul_dungeon/l10n/app_localizations.dart';
 import 'package:soul_dungeon/core/models/game_enums.dart';
 import 'package:soul_dungeon/presentation/theme/app_theme.dart';
 import 'package:soul_dungeon/presentation/theme/floor_theme_visuals.dart';
@@ -140,6 +141,7 @@ class _TitleScreenState extends State<TitleScreen>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppTheme.screenBackground,
       body: SafeArea(
@@ -162,13 +164,13 @@ class _TitleScreenState extends State<TitleScreen>
                     const SizedBox(height: 12),
 
                     // 부제
-                    _buildSubtitle(),
+                    _buildSubtitle(l10n),
                     const SizedBox(height: 48),
 
                     // 메뉴
                     _buildMenuItem(
                       context: context,
-                      text: '새 게임',
+                      text: l10n.menuNewGame,
                       opacity: _menuNewGameOpacity,
                       enabled: true,
                       onTap: widget.onNewGame,
@@ -176,7 +178,7 @@ class _TitleScreenState extends State<TitleScreen>
                     const SizedBox(height: 16),
                     _buildMenuItem(
                       context: context,
-                      text: '이어하기',
+                      text: l10n.menuContinue,
                       opacity: _menuContinueOpacity,
                       enabled: widget.hasSaveData,
                       onTap: widget.hasSaveData ? widget.onContinue : null,
@@ -184,7 +186,7 @@ class _TitleScreenState extends State<TitleScreen>
                     const SizedBox(height: 16),
                     _buildMenuItem(
                       context: context,
-                      text: '도감',
+                      text: l10n.menuBestiary,
                       opacity: _menuSoulShopOpacity,
                       enabled: widget.onSoulShop != null,
                       onTap: widget.onSoulShop,
@@ -192,7 +194,7 @@ class _TitleScreenState extends State<TitleScreen>
                     const SizedBox(height: 16),
                     _buildMenuItem(
                       context: context,
-                      text: '설정',
+                      text: l10n.menuSettings,
                       opacity: _menuSettingsOpacity,
                       enabled: widget.onSettings != null,
                       onTap: widget.onSettings,
@@ -290,13 +292,13 @@ class _TitleScreenState extends State<TitleScreen>
     return titleWidget;
   }
 
-  Widget _buildSubtitle() {
+  Widget _buildSubtitle(AppLocalizations l10n) {
     return AnimatedOpacity(
       opacity: _subtitleOpacity,
       duration: const Duration(milliseconds: 600),
-      child: const Text(
-        AppBranding.tagline,
-        style: TextStyle(
+      child: Text(
+        l10n.appTagline,
+        style: const TextStyle(
           fontSize: 14,
           color: AppTheme.titleSubtext,
           letterSpacing: 1,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soul_dungeon/core/config/tamed_monster_store.dart';
+import 'package:soul_dungeon/core/config/locale_controller.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soul_dungeon/app.dart';
@@ -27,6 +28,7 @@ Future<void> main() async {
   final prefs = await SharedPreferences.getInstance();
   GameHintManager.init(prefs);
   TamedMonsterStore.init(prefs);
+  await LocaleController.init(prefs);
   final saveManager = SaveManager(
     SharedPrefsSaveStorage(prefs),
     cardResolver: CardPool.findById,

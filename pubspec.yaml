@@ -30,6 +30,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
 
   equatable: ^2.0.7
   flutter_bloc: ^9.1.1
@@ -68,6 +71,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  # i18n(다국어) 코드 생성 — l10n.yaml + lib/l10n/*.arb → AppLocalizations.
+  generate: true
 
   assets:
     - assets/config/
