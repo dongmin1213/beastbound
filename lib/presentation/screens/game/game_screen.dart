@@ -2211,6 +2211,17 @@ class GameScreenState extends State<GameScreen>
                     visitedNodeIds: currentState.visitedNodeIds,
                     frameBackground: _currentFloorVisuals.frameBackground,
                     titleBarColor: _currentFloorVisuals.combatUiTint,
+                    // 맵에서 이동 가능한 방을 탭하면 바로 그 방으로 진입.
+                    onNodeTap: (nodeId) {
+                      Navigator.of(dialogContext).pop();
+                      _dungeonNavHandler.handlePathSelection(
+                        ChoiceData(
+                          id: 'path_$nodeId',
+                          text: '',
+                          resultTextBlocks: const [],
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
