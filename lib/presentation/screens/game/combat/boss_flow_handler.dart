@@ -2,11 +2,8 @@ import 'package:soul_dungeon/core/config/balance_config.dart';
 import 'package:soul_dungeon/core/config/game_hint_manager.dart';
 import 'package:soul_dungeon/core/events/boss_choice_event.dart';
 import 'package:soul_dungeon/core/events/game_event_bus.dart';
-import 'package:soul_dungeon/core/models/job_path.dart';
 import 'package:soul_dungeon/domain/combat/bloc/combat_bloc.dart';
 import 'package:soul_dungeon/domain/combat/bloc/combat_event.dart';
-import 'package:soul_dungeon/domain/ending/ending.dart';
-import 'package:soul_dungeon/domain/ending/ending_text_content.dart';
 import 'package:soul_dungeon/domain/narrative/content/boss_text_variants.dart';
 import 'package:soul_dungeon/domain/progression/soul/soul_calculator.dart';
 import 'package:soul_dungeon/domain/run/run_event.dart';
@@ -179,20 +176,8 @@ class BossFlowHandler {
     );
 
     if (floor >= 5) {
-      // 최종 층 — 엔딩 분기 결정
-      final allChoices = [
-        ...runController.playerRunState.bossChoices,
-        BossChoice(floor: floor, bossId: bossId, choiceType: choiceType),
-      ];
-      final currentJob = JobPath.values
-          .where((j) => j.id == playerJobId)
-          .firstOrNull;
-      final ending = EndingResolver.resolve(
-        allChoices,
-        isHiddenJob: currentJob?.isHidden ?? false,
-        unlockedMemoryCount: getUnlockedMemoryCount(),
-      );
-      showEnding(resultText, ending);
+      // 최종 층 클리어 — 던전 정복.
+      showEnding(resultText);
     } else {
       setTextBlockData([
         TextBlockData(
@@ -211,14 +196,14 @@ class BossFlowHandler {
   }
 
   /// 엔딩 화면 표시 — 보스 선택 결과 텍스트 + 엔딩 텍스트 + 재시작 선택지.
-  void showEnding(String bossResultText, EndingType ending) {
-    final endingText = EndingTextContent.displayTextFor(ending);
+  void showEnding(String bossResultText) {
+    const endingText = '던전을 정복했다. 너와 동료들의 여정이 정점에 이르렀다.';
 
     // RunBloc에 런 완료 이벤트 발행
     runController.runBloc.add(const AdvanceFloor());
 
     // 메타 데이터 업데이트
-    recordRunCompleted(ending.name);
+    recordRunCompleted('clear');
 
     // 클리어 소울 보상 계산 (표시용 — 배율 적용)
     final baseSoul = SoulCalculator.calculateClearReward(

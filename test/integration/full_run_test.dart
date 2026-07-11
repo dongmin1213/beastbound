@@ -8,7 +8,6 @@ import 'package:soul_dungeon/core/save/save_data.dart';
 import 'package:soul_dungeon/core/save/save_manager.dart';
 import 'package:soul_dungeon/core/save/save_storage.dart';
 import 'package:soul_dungeon/domain/dungeon/generator/dungeon_generator.dart';
-import 'package:soul_dungeon/domain/ending/ending.dart';
 import 'package:soul_dungeon/domain/narrative/bloc/narrator_bloc.dart';
 import 'package:soul_dungeon/domain/narrative/bloc/narrator_state.dart';
 import 'package:soul_dungeon/domain/run/run_bloc.dart';
@@ -34,34 +33,18 @@ void main() {
       eventBus.dispose();
     });
 
-    test('5층 완주 → 메타 기록 + 엔딩 저장', () async {
-      // 1. 런 상태 생성 — 5보스 처치 선택
-      final choices = List.generate(
-        5,
-        (i) => BossChoice(
-          floor: i + 1,
-          bossId: 'boss_${i + 1}',
-          choiceType: BossChoiceType.slay,
-        ),
-      );
-
-      // 2. EndingResolver 검증
-      final ending = EndingResolver.resolve(choices);
-      expect(ending, EndingType.slay);
-
-      // 3. 메타 데이터 업데이트 (GameScreen._recordRunCompleted 시뮬레이션)
-      final meta = MetaSaveData(
+    test('5층 완주 → 메타 기록 (클리어)', () async {
+      const meta = MetaSaveData(
         totalRuns: 1,
-        endingsReached: {ending.name},
+        endingsReached: {'clear'},
       );
       await saveManager.saveMeta(meta);
 
-      // 4. 메타 로드 → 기록 확인
       final loaded = await saveManager.loadMeta();
       expect(loaded, isA<Success<MetaSaveData>>());
       final loadedMeta = (loaded as Success<MetaSaveData>).data;
       expect(loadedMeta.totalRuns, 1);
-      expect(loadedMeta.endingsReached, contains('slay'));
+      expect(loadedMeta.endingsReached, contains('clear'));
     });
 
     test('퍼마데스 → 사망 기록 + 런 세이브 삭제', () async {
@@ -194,51 +177,6 @@ void main() {
       expect((narrator.state as NarratorDistorted).silent, isTrue);
 
       await narrator.close();
-    });
-
-    test('4가지 엔딩 도달 가능', () {
-      // slay: 전원 처치
-      final slayChoices = List.generate(
-        5,
-        (i) => BossChoice(
-          floor: i + 1,
-          bossId: 'boss_${i + 1}',
-          choiceType: BossChoiceType.slay,
-        ),
-      );
-      expect(EndingResolver.resolve(slayChoices), EndingType.slay);
-
-      // liberate: 전원 해방
-      final liberateChoices = List.generate(
-        5,
-        (i) => BossChoice(
-          floor: i + 1,
-          bossId: 'boss_${i + 1}',
-          choiceType: BossChoiceType.liberate,
-        ),
-      );
-      expect(EndingResolver.resolve(liberateChoices), EndingType.liberate);
-
-      // coexist: 전원 공존
-      final coexistChoices = List.generate(
-        5,
-        (i) => BossChoice(
-          floor: i + 1,
-          bossId: 'boss_${i + 1}',
-          choiceType: BossChoiceType.coexist,
-        ),
-      );
-      expect(EndingResolver.resolve(coexistChoices), EndingType.coexist);
-
-      // hidden: 2+2+1 (maxCount ≤ 2)
-      final hiddenChoices = [
-        const BossChoice(floor: 1, bossId: 'b1', choiceType: BossChoiceType.slay),
-        const BossChoice(floor: 2, bossId: 'b2', choiceType: BossChoiceType.slay),
-        const BossChoice(floor: 3, bossId: 'b3', choiceType: BossChoiceType.liberate),
-        const BossChoice(floor: 4, bossId: 'b4', choiceType: BossChoiceType.liberate),
-        const BossChoice(floor: 5, bossId: 'b5', choiceType: BossChoiceType.coexist),
-      ];
-      expect(EndingResolver.resolve(hiddenChoices), EndingType.hidden);
     });
 
     test('메타 데이터 누적 — 여러 런', () async {

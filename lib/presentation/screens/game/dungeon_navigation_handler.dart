@@ -25,7 +25,6 @@ import 'package:soul_dungeon/core/models/game_enums.dart';
 import 'package:soul_dungeon/core/models/map_node.dart';
 import 'package:soul_dungeon/presentation/screens/game/combat/boss_flow_handler.dart';
 import 'package:soul_dungeon/presentation/screens/game/combat/combat_session_state.dart';
-import 'package:soul_dungeon/domain/ending/ending.dart';
 import 'package:soul_dungeon/domain/narrative/content/boss_text_variants.dart';
 import 'package:soul_dungeon/presentation/screens/game/disposition_hint_generator.dart';
 import 'package:soul_dungeon/presentation/screens/game/game_run_controller.dart';
@@ -521,15 +520,7 @@ class DungeonNavigationHandler {
           lastChoice.choiceType,
           jobId: runController.playerRunState.currentJobId,
         );
-        final currentJob = JobPath.values
-            .where((j) => j.id == runController.playerRunState.currentJobId)
-            .firstOrNull;
-        final ending = EndingResolver.resolve(
-          bossChoices,
-          isHiddenJob: currentJob?.isHidden ?? false,
-          unlockedMemoryCount: bossFlowHandler.getUnlockedMemoryCount(),
-        );
-        bossFlowHandler.showEnding(resultText, ending);
+        bossFlowHandler.showEnding(resultText);
       }
       return;
     }
