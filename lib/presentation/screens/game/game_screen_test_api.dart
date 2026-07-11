@@ -94,7 +94,6 @@ extension GameScreenTestApi on GameScreenState {
   @visibleForTesting
   void simulateRoomEnteredForTest() {
     _runController.onRoomEntered();
-    _dungeonNavHandler.tryShowDispositionHint();
   }
 
   /// 테스트 전용: 성향 값 설정 + 분화 체크.

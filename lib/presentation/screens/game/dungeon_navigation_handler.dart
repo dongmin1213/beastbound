@@ -26,7 +26,6 @@ import 'package:soul_dungeon/core/models/map_node.dart';
 import 'package:soul_dungeon/presentation/screens/game/combat/boss_flow_handler.dart';
 import 'package:soul_dungeon/presentation/screens/game/combat/combat_session_state.dart';
 import 'package:soul_dungeon/domain/narrative/content/boss_text_variants.dart';
-import 'package:soul_dungeon/presentation/screens/game/disposition_hint_generator.dart';
 import 'package:soul_dungeon/presentation/screens/game/game_run_controller.dart';
 import 'package:soul_dungeon/presentation/screens/game/path_description_generator.dart';
 import 'package:soul_dungeon/presentation/widgets/choice/choice_data.dart';
@@ -223,7 +222,6 @@ class DungeonNavigationHandler {
           runController.appendFeedbackText(msg);
         }
 
-        tryShowDispositionHint();
 
       case DungeonFloorReady():
         if (_hasShownDungeonIntro) {
@@ -708,21 +706,6 @@ class DungeonNavigationHandler {
     } else {
       // 미분화 → 1차 전직 평가
       buildBloc.add(EvaluateClassChange(disposition));
-    }
-  }
-
-  /// 성향 힌트 표시 시도 — 조건 충족 시 CompletedBlock 추가.
-  void tryShowDispositionHint() {
-    final hint = DispositionHintGenerator.generateHint(
-      disposition: runController.playerRunState.disposition,
-      roomsSinceLastHint: runController.roomsSinceLastHint,
-      hintIndex: runController.hintIndex,
-      config: dispositionConfig,
-      harmonyMaxDeviation: wandererMaxDeviation,
-    );
-    if (hint != null) {
-      runController.appendDispositionHint(hint);
-      runController.onHintShown();
     }
   }
 
