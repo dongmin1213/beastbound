@@ -2202,7 +2202,8 @@ class GameScreenState extends State<GameScreen>
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   maxWidth: 360,
-                  maxHeight: MediaQuery.of(context).size.height * 0.6,
+                  // 맵 전체 + '탭하세요' 힌트가 스크롤 없이 최대한 보이도록.
+                  maxHeight: MediaQuery.of(context).size.height * 0.82,
                 ),
                 child: SingleChildScrollView(
                   child: MinimapWidget(
