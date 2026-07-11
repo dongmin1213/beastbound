@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:soul_dungeon/core/config/balance_config.dart';
 import 'package:soul_dungeon/domain/dungeon/event/event_room_data.dart';
-import 'package:soul_dungeon/domain/dungeon/event/job_event_variants.dart';
 
 /// 이벤트 방 생성기 — static 팩토리 (MysteryResultGenerator 패턴).
 /// 시드 기반 PRNG로 결정론적 이벤트 선택.
@@ -44,16 +43,6 @@ class EventRoomGenerator {
       baseEvent = hiddenEvents[random.nextInt(hiddenEvents.length)];
     } else {
       baseEvent = events[random.nextInt(events.length)];
-    }
-
-    // 직업별 변형 선택지 추가
-    final variant = JobEventVariants.getVariant(baseEvent.title, playerJobId);
-    if (variant != null) {
-      return EventRoomData(
-        title: baseEvent.title,
-        narrativeText: baseEvent.narrativeText,
-        choices: [...baseEvent.choices, variant],
-      );
     }
 
     return baseEvent;
