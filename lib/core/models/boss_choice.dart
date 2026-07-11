@@ -1,5 +1,3 @@
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
-
 /// 보스 전투 후 선택 기록.
 /// floor: 해당 층, bossId: 보스 식별자, choiceType: 선택 유형.
 class BossChoice {
@@ -31,16 +29,15 @@ class BossChoice {
 
 /// 보스 승리 후 6가지 선택지 — 매 보스전 3개 랜덤 표시.
 enum BossChoiceType {
-  slay('처치', DispositionAxis.struggle),
-  liberate('해방', DispositionAxis.mercy),
-  coexist('공존', DispositionAxis.harmony),
-  study('깨달음을 얻는다', DispositionAxis.wisdom),
-  consume('흡수한다', DispositionAxis.shadow),
-  protect('봉인한다', DispositionAxis.will);
+  slay('처치'),
+  liberate('해방'),
+  coexist('공존'),
+  study('깨달음을 얻는다'),
+  consume('흡수한다'),
+  protect('봉인한다');
 
   final String displayName;
-  final DispositionAxis dispositionAxis;
-  const BossChoiceType(this.displayName, this.dispositionAxis);
+  const BossChoiceType(this.displayName);
 
   /// 6→3 엔딩 카테고리 매핑.
   /// slay/consume → slay, liberate/protect → liberate, coexist/study → coexist.

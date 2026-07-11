@@ -93,11 +93,6 @@ class EventRoomHandler {
       rc.runBloc.add(ChangeHp(choice.hpChange));
     }
 
-    // 성향 변화
-    if (choice.dispositionRewards.isNotEmpty) {
-      rc.applyDisposition(choice.dispositionRewards);
-    }
-
     // 카드 업그레이드
     String? upgradeText;
     if (choice.upgradeRandomCard) {
@@ -174,11 +169,6 @@ class EventRoomHandler {
       feedbackLines.add('HP ${choice.hpChange} 회복!');
     } else if (choice.hpChange < 0) {
       feedbackLines.add('HP ${-choice.hpChange} 손실!');
-    }
-    if (choice.dispositionRewards.isNotEmpty) {
-      final maxEntry = choice.dispositionRewards.entries
-          .reduce((a, b) => a.value >= b.value ? a : b);
-      feedbackLines.add('${maxEntry.key.displayName}의 기운이 느껴진다.');
     }
     if (upgradeText != null) {
       feedbackLines.add(upgradeText);

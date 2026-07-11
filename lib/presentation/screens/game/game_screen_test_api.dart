@@ -82,25 +82,15 @@ extension GameScreenTestApi on GameScreenState {
   }
 
   /// 테스트 전용: 런 리셋 시뮬레이션 (퍼마데스 후 재시작).
-  /// production _handleRestartRun()과 동일하게 BuildBloc도 리셋.
   @visibleForTesting
   void resetRunForTest(int maxHp) {
     _runController.resetRun(maxHp);
-    _buildBloc.add(const ResetBuild());
-    _buildBloc.add(const InitializeBuild());
   }
 
-  /// 테스트 전용: 방 진입 + 성향 힌트 표시 시뮬레이션.
+  /// 테스트 전용: 방 진입 시뮬레이션.
   @visibleForTesting
   void simulateRoomEnteredForTest() {
     _runController.onRoomEntered();
-  }
-
-  /// 테스트 전용: 성향 값 설정 + 분화 체크.
-  @visibleForTesting
-  void applyDispositionForTest(Map<DispositionAxis, int> deltas) {
-    _runController.applyDisposition(deltas);
-    _dungeonNavHandler.checkClassChange();
   }
 
   /// 테스트 전용: completedBlocks 읽기.

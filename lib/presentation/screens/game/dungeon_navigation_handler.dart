@@ -6,8 +6,6 @@ import 'package:soul_dungeon/core/config/floor_config.dart';
 import 'package:soul_dungeon/core/events/game_event_bus.dart';
 import 'package:soul_dungeon/core/events/room_completed_event.dart';
 import 'package:soul_dungeon/core/logging/game_logger.dart';
-import 'package:soul_dungeon/domain/build/bloc/build_bloc.dart';
-import 'package:soul_dungeon/core/models/job_path.dart';
 import 'package:soul_dungeon/domain/combat/bloc/combat_bloc.dart';
 import 'package:soul_dungeon/domain/combat/bloc/combat_event.dart';
 import 'package:soul_dungeon/domain/combat/content/boss_enemies.dart';
@@ -15,12 +13,10 @@ import 'package:soul_dungeon/domain/combat/models/boss_combat_data.dart';
 import 'package:soul_dungeon/domain/combat/content/boss_gimmick_text.dart';
 import 'package:soul_dungeon/domain/combat/content/encounter_pool.dart';
 import 'package:soul_dungeon/domain/combat/content/enemy_pool.dart';
-import 'package:soul_dungeon/domain/combat/logic/starting_deck_builder.dart';
 import 'package:soul_dungeon/core/models/enemy_combat_data.dart';
 import 'package:soul_dungeon/domain/dungeon/bloc/dungeon_bloc.dart';
 import 'package:soul_dungeon/domain/dungeon/bloc/dungeon_event.dart';
 import 'package:soul_dungeon/domain/dungeon/bloc/dungeon_state.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 import 'package:soul_dungeon/core/models/game_enums.dart';
 import 'package:soul_dungeon/core/models/map_node.dart';
 import 'package:soul_dungeon/presentation/screens/game/combat/boss_flow_handler.dart';
@@ -40,7 +36,6 @@ class DungeonNavigationHandler {
   final GameRunController runController;
   final BossFlowHandler bossFlowHandler;
   final CombatBloc combatBloc;
-  final BuildBloc buildBloc;
   final GameEventBus gameEventBus;
 
   /// 텍스트 블록 설정 콜백.
@@ -83,8 +78,6 @@ class DungeonNavigationHandler {
   final void Function(CombatSessionState) updateCombatSession;
 
   /// Config.
-  final DispositionConfig dispositionConfig;
-  final int wandererMaxDeviation;
   final CombatBalanceConfig combatConfig;
   final FloorsConfig floorsConfig;
 
@@ -107,7 +100,6 @@ class DungeonNavigationHandler {
     required this.runController,
     required this.bossFlowHandler,
     required this.combatBloc,
-    required this.buildBloc,
     required this.gameEventBus,
     required this.setTextBlockData,
     required this.updateUI,
@@ -118,8 +110,6 @@ class DungeonNavigationHandler {
     required this.getDungeonBloc,
     required this.getCombatSession,
     required this.updateCombatSession,
-    required this.dispositionConfig,
-    required this.wandererMaxDeviation,
     required this.combatConfig,
     this.floorsConfig = const FloorsConfig([]),
     required this.purchasedUpgradeIds,
@@ -132,7 +122,6 @@ class DungeonNavigationHandler {
   // ── 내부 상태 ──────────────────────────────────────────────────────────
   bool _hasShownDungeonIntro = false;
   bool _pendingDungeonIntro = false;
-  bool _showedClassChoiceUI = false;
   String? _pendingEliteNodeId;
   int? _pendingBossFloor;
   BossCombatData? _pendingBossData;
@@ -153,9 +142,6 @@ class DungeonNavigationHandler {
   /// 던전 인트로 표시 완료 마킹 — 이어하기 전투 복원 시 사용.
   set hasShownDungeonIntro(bool value) => _hasShownDungeonIntro = value;
 
-  /// 디버그 강제 전직 시 resumeAfterClassChange 허용을 위한 외부 플래그.
-  set forceResumeAfterClassChange(bool value) => _showedClassChoiceUI = value;
-
   /// 이어하기로 복원된 전투의 방 nodeId 설정 — 전투 완료 시 dungeonBloc 갱신.
   set restoredCombatNodeId(String? value) => _restoredCombatNodeId = value;
 
@@ -163,7 +149,6 @@ class DungeonNavigationHandler {
   void reset() {
     _hasShownDungeonIntro = false;
     _pendingDungeonIntro = false;
-    _showedClassChoiceUI = false;
     _pendingEliteNodeId = null;
     _pendingBossFloor = null;
     _pendingBossData = null;
@@ -250,95 +235,6 @@ class DungeonNavigationHandler {
         getDungeonBloc()?.add(GenerateFloor(floor: floor, seed: retrySeed));
         break;
     }
-  }
-
-  /// BuildBloc 상태 변경 핸들러 — 분화 텍스트 표시 + AcknowledgeClassChange.
-  void onBuildStateChanged(BuildContext context, BuildState bState) {
-    if (bState is BuildClassChoosing) {
-      // 후보 2개 이상 → 전직 선택 UI 표시 (resumeAfterClassChange 필요)
-      _showedClassChoiceUI = true;
-      _showClassChangeChoices(
-        bState.candidates,
-        isSecondClassChange: bState.isSecondClassChange,
-      );
-    } else if (bState is BuildClassChanging) {
-      final job = bState.newJob;
-      if (bState.isSecondClassChange) {
-        // 2차 전직: 기존 덱에 새 직업 카드 5장 추가 + jobId 갱신
-        final existingDeck = runController.playerRunState.masterDeck;
-        final newDeck = StartingDeckBuilder.addSecondClassCards(
-          existingDeck,
-          job.id,
-        );
-        runController.playerRunState =
-            runController.playerRunState.copyWith(masterDeck: newDeck);
-        // 2차 전직 jobId도 저장하여 이어하기 시 복원 가능
-        runController.setCurrentJob(job.id);
-        runController.appendClassChangeText(
-          '영혼이 더 높은 경지에 이른다. ${job.displayName}(으)로 각성한다!',
-        );
-      } else {
-        // 1차 전직: 기존 동작
-        runController.setCurrentJob(job.id);
-        // 시작 덱 생성 (직업 분화 시, 소울 업그레이드 + 저주 카드 반영)
-        // 기존 덱에서 스타터 카드 제외한 획득 카드만 보존
-        final starterDeck = StartingDeckBuilder.build(
-          job.id,
-          purchasedUpgradeIds: purchasedUpgradeIds,
-          activeCurseIds: runController.playerRunState.activeCurseIds,
-        );
-        final acquiredCards = runController.playerRunState.masterDeck
-            .where((card) => !card.id.startsWith('starter_'))
-            .toList();
-        final mergedDeck = [...starterDeck, ...acquiredCards];
-        runController.playerRunState =
-            runController.playerRunState.copyWith(masterDeck: mergedDeck);
-        runController.appendClassChangeText(
-          '영혼의 깊은 곳에서 ${job.displayName}의 힘이 깨어난다.',
-        );
-      }
-      buildBloc.add(const AcknowledgeClassChange());
-    }
-  }
-
-  /// 전직 후보 선택 UI 표시.
-  void _showClassChangeChoices(
-    List<JobPath> candidates, {
-    bool isSecondClassChange = false,
-  }) {
-    final choices = candidates.map((job) {
-      final prefix = job.isHidden ? '✦ ' : '';
-      return ChoiceData(
-        id: 'class_select_${job.id}',
-        text: '$prefix${job.displayName}',
-        resultTextBlocks: [job.description],
-        choiceStyle: job.isHidden ? ChoiceStyle.caution : ChoiceStyle.normal,
-      );
-    }).toList();
-
-    final headerText = isSecondClassChange
-        ? '영혼이 더 높은 경지로 향하는 갈림길에 섰다.'
-        : '영혼이 분화의 갈림길에 섰다.';
-
-    setTextBlockData([
-      TextBlockData(text: headerText),
-      TextBlockData(
-        text: '어떤 길을 걸을 것인가?',
-        choices: choices,
-      ),
-    ], endCombat: false);
-  }
-
-  /// 전직 후보 선택 처리 — ChoiceRouter에서 호출.
-  void handleClassSelect(String jobId) {
-    final bState = buildBloc.state;
-    if (bState is! BuildClassChoosing) return;
-
-    final selected = bState.candidates.firstWhere(
-      (j) => j.id == jobId,
-      orElse: () => bState.candidates.first,
-    );
-    buildBloc.add(SelectClassCandidate(selected));
   }
 
   // ════════════════════════════════════════════════════════════════════════
@@ -450,61 +346,9 @@ class DungeonNavigationHandler {
     });
   }
 
-  /// 전직 완료 후 던전 진행 재개.
+  /// 보스방 클리어 후 층 진행 선택지 표시.
   ///
-  /// 보류된 인트로가 있으면 소진(일반 플로우),
-  /// DungeonFloorReady이면 직접 경로 선택지 표시,
-  /// DungeonRoomEntered이면 방 완료 처리 후 다음 진행.
-  void resumeAfterClassChange() {
-    GameLogger.info(LogSystem.dungeon,
-        '[RESUME] resumeAfterClassChange called | pendingIntro=$_pendingDungeonIntro showedUI=$_showedClassChoiceUI');
-    if (_pendingDungeonIntro) {
-      GameLogger.info(LogSystem.dungeon, '[RESUME] → pendingDungeonIntro path');
-      checkPendingDungeonIntro();
-      return;
-    }
-    // 자동 전직(후보 1명)은 선택 UI 없이 완료 → 경로 선택지가 이미 표시 중이므로
-    // showPathChoices 재호출 시 _showingChoices가 리셋되어 선택 불가 버그 발생.
-    // 전직 선택 UI를 표시한 경우에만 경로 선택지를 복원한다.
-    if (!_showedClassChoiceUI) {
-      GameLogger.info(LogSystem.dungeon, '[RESUME] → EARLY RETURN: _showedClassChoiceUI is false');
-      return;
-    }
-    _showedClassChoiceUI = false;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!isMounted()) {
-        GameLogger.warning(LogSystem.dungeon, '[RESUME] → NOT MOUNTED, abort');
-        return;
-      }
-      final dState = getDungeonBloc()?.state;
-      GameLogger.info(LogSystem.dungeon,
-          '[RESUME] postFrame → dungeonState=${dState?.runtimeType}');
-      if (dState is DungeonFloorReady) {
-        // 탐색 화면(디버그 전직 등) — 즉시 경로 선택지 표시
-        GameLogger.info(LogSystem.dungeon, '[RESUME] → showPathChoices');
-        showPathChoices(dState);
-      } else if (dState is DungeonRoomEntered) {
-        if (dState.roomType == RoomType.boss) {
-          // 보스방에서 전직 발생 → advance_floor 선택지 재표시
-          // (보스 보상의 applyDisposition이 전직 트리거 → 기존 advance_floor 텍스트 유실)
-          GameLogger.info(LogSystem.dungeon, '[RESUME] → _showAdvanceFloorAfterBoss');
-          _showAdvanceFloorAfterBoss();
-        } else {
-          // 일반 방에서 전직 완료 — 방 완료 처리 후 다음 진행
-          GameLogger.info(LogSystem.dungeon, '[RESUME] → completeDungeonRoom');
-          completeDungeonRoom();
-        }
-      } else {
-        GameLogger.warning(LogSystem.dungeon,
-            '[RESUME] → NO MATCH for dungeonState ${dState?.runtimeType}, screen stuck!');
-      }
-    });
-  }
-
-  /// 보스방 전직 후 층 진행 선택지 표시.
-  ///
-  /// 보스 보상의 applyDisposition → checkClassChange → 전직 선택 UI 표시 시
-  /// 기존 advance_floor 텍스트가 교체되므로, 전직 완료 후 재표시.
+  /// 보스 노드에서 DungeonFloorReady로 복귀한 경우 층 진행 선택지를 표시한다.
   void _showAdvanceFloorAfterBoss() {
     final floor = runController.playerRunState.currentFloor;
     if (floor >= 5) {
@@ -556,9 +400,6 @@ class DungeonNavigationHandler {
     final nodeId = _pendingEliteNodeId;
     if (nodeId == null) return;
     _pendingEliteNodeId = null;
-    runController.applyDisposition({
-      DispositionAxis.struggle: dispositionConfig.eliteChallengeReward,
-    });
     getDungeonBloc()?.add(SelectNode(nodeId));
   }
 
@@ -567,9 +408,6 @@ class DungeonNavigationHandler {
     final avoidedId = _pendingEliteNodeId;
     _pendingEliteNodeId = null;
     if (avoidedId != null) _avoidedEliteNodeIds.add(avoidedId);
-    runController.applyDisposition({
-      DispositionAxis.shadow: dispositionConfig.eliteAvoidReward,
-    });
     _pendingDungeonIntro = true;
     setTextBlockData([
       const TextBlockData(text: '다른 길을 선택하기로 했다.'),
@@ -603,7 +441,6 @@ class DungeonNavigationHandler {
     runController.clearCompletedBlocks();
     _hasShownDungeonIntro = false;
     _pendingDungeonIntro = false;
-    _showedClassChoiceUI = false;
 
     updateUI(
       combatSession: getCombatSession().resetBoss(),
@@ -692,21 +529,6 @@ class DungeonNavigationHandler {
 
   void _resetBossState() {
     bossFlowHandler.resetBossState();
-  }
-
-  /// BuildBloc에 전직 평가 이벤트 전달 — 성향 변경 후 호출.
-  /// 이미 1차 전직 완료(BuildSpecialized) 시 2차 전직 평가,
-  /// 미분화(BuildUnspecialized) 시 1차 전직 평가.
-  void checkClassChange() {
-    final disposition = runController.playerRunState.disposition;
-    final bState = buildBloc.state;
-    if (bState is BuildSpecialized) {
-      // 1차 전직 완료 → 2차 전직 평가
-      buildBloc.add(EvaluateSecondClassChange(disposition));
-    } else {
-      // 미분화 → 1차 전직 평가
-      buildBloc.add(EvaluateClassChange(disposition));
-    }
   }
 
   /// 보스 방 진입 — 준비 화면 표시 후 전투 시작.

@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:soul_dungeon/core/config/balance_config.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 import 'package:soul_dungeon/core/models/item_pool_selector.dart';
 import 'package:soul_dungeon/core/models/reward_pool.dart';
 import 'package:soul_dungeon/domain/dungeon/npc/npc_data.dart';
@@ -217,20 +216,12 @@ class NpcGenerator {
 
     // goldReward: trader=0, sage/wanderer=npcDialogueGoldReward
     final int goldReward;
-    final Map<DispositionAxis, int> dispositionRewards;
     final bool upgradeRandomCard;
     if (npcType == NpcType.trader) {
       goldReward = 0;
-      dispositionRewards = const {};
       upgradeRandomCard = false;
     } else {
       goldReward = npcConfig.npcDialogueGoldReward;
-      // 현자 → 지혜+1, 방랑자 → 자비+1
-      dispositionRewards = switch (npcType) {
-        NpcType.sage => const {DispositionAxis.wisdom: 1},
-        NpcType.wanderer => const {DispositionAxis.mercy: 1},
-        _ => const {},
-      };
       // ~15% 확률로 카드 강화 보상
       upgradeRandomCard = rng.nextInt(100) < 15;
     }
@@ -243,7 +234,6 @@ class NpcGenerator {
       dialogueText: dialogueText,
       tradeItems: tradeItems,
       goldReward: goldReward,
-      dispositionRewards: dispositionRewards,
       upgradeRandomCard: upgradeRandomCard,
     );
   }

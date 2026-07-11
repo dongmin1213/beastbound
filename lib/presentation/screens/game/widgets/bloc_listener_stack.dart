@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:soul_dungeon/domain/build/bloc/build_bloc.dart';
 import 'package:soul_dungeon/domain/dungeon/bloc/dungeon_bloc.dart';
 import 'package:soul_dungeon/domain/dungeon/bloc/dungeon_state.dart';
 import 'package:soul_dungeon/domain/dungeon/event/event_room_bloc.dart';
@@ -16,13 +15,10 @@ import 'package:soul_dungeon/domain/dungeon/shop/shop_state.dart';
 
 /// BlocListener 조건부 래핑 — GameScreen에서 추출 (Step 5).
 ///
-/// Build/Dungeon/Shop/Mystery/Rest/Event/NPC 7개의 BlocListener를
+/// Dungeon/Shop/Mystery/Rest/Event/NPC BlocListener를
 /// 조건부로 중첩하여 child를 감싼다.
 class BlocListenerStack extends StatelessWidget {
   final Widget child;
-
-  final BuildBloc buildBloc;
-  final void Function(BuildContext, BuildState) onBuildStateChanged;
 
   final DungeonBloc? dungeonBloc;
   final void Function(BuildContext, DungeonBlocState)? onDungeonStateChanged;
@@ -45,8 +41,6 @@ class BlocListenerStack extends StatelessWidget {
   const BlocListenerStack({
     super.key,
     required this.child,
-    required this.buildBloc,
-    required this.onBuildStateChanged,
     this.dungeonBloc,
     this.onDungeonStateChanged,
     this.shopBloc,
@@ -64,13 +58,6 @@ class BlocListenerStack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var result = child;
-
-    // BuildBloc listener (직업 분화)
-    result = BlocListener<BuildBloc, BuildState>(
-      bloc: buildBloc,
-      listener: onBuildStateChanged,
-      child: result,
-    );
 
     if (dungeonBloc != null) {
       result = BlocProvider<DungeonBloc>.value(

@@ -159,16 +159,6 @@ class BossFlowHandler {
       playerJobId: playerJobId,
     ));
 
-    // 성향 변경 (해당 축 +3)
-    // 최종 층(5층)에서는 applyDisposition 스킵 — 엔딩 처리 중 전직 평가가
-    // 트리거되면 엔딩 텍스트가 전직 선택 UI로 교체되어 게임 진행 불가 버그 발생.
-    // 엔딩 결정은 bossChoices 기반이므로 성향값 갱신 불필요.
-    if (floor < 5) {
-      runController.applyDisposition({
-        choiceType.dispositionAxis: BossChoiceHandler.dispositionDelta,
-      });
-    }
-
     // 결과 텍스트 — 보스/직업별 변형 적용
     final resultText = BossTextVariants.choiceResultText(
       bossId,

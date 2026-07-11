@@ -1,6 +1,5 @@
 import 'package:soul_dungeon/core/text/korean_particles.dart';
 import 'package:soul_dungeon/domain/build/data/card_blessing_pool.dart';
-import 'package:soul_dungeon/core/models/job_path.dart';
 import 'package:soul_dungeon/domain/combat/logic/card_effect_resolver.dart';
 import 'package:soul_dungeon/domain/combat/logic/enemy_ai.dart';
 import 'package:soul_dungeon/domain/combat/logic/special_action_resolver.dart';
@@ -244,10 +243,6 @@ class CombatFlowManager {
     buf.writeln('══════ 여정의 기록 ══════');
     buf.writeln();
 
-    // 직업
-    final jobName = _resolveJobName(runState.currentJobId);
-    buf.writeln('직업: $jobName');
-
     // 도달 층수
     if (isVictory) {
       buf.writeln('도달: 던전 클리어!');
@@ -307,13 +302,6 @@ class CombatFlowManager {
         'floor': runState.currentFloor,
       },
     );
-  }
-
-  /// jobId → 표시 이름 변환.
-  static String _resolveJobName(String? jobId) {
-    if (jobId == null) return '무직';
-    final job = JobPath.values.where((j) => j.id == jobId).firstOrNull;
-    return job?.displayName ?? jobId;
   }
 
   /// 플레이어 행동 + 적 행동 조합으로 결과 TextBlockData 생성.

@@ -3,21 +3,18 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:soul_dungeon/core/config/balance_config.dart';
 import 'package:soul_dungeon/core/events/game_event_bus.dart';
-import 'package:soul_dungeon/core/events/job_unlock_event.dart';
 import 'package:soul_dungeon/core/events/permadeath_event.dart';
 import 'package:soul_dungeon/core/events/run_completed_event.dart';
 import 'package:soul_dungeon/core/error/result.dart';
 import 'package:soul_dungeon/core/logging/game_logger.dart';
 import 'package:soul_dungeon/core/save/save_data.dart';
 import 'package:soul_dungeon/core/save/save_manager.dart';
-import 'package:soul_dungeon/core/models/job_path.dart';
 import 'package:soul_dungeon/domain/progression/bloc/progression_event.dart';
 import 'package:soul_dungeon/domain/progression/bloc/progression_state.dart';
 import 'package:soul_dungeon/domain/progression/memory/memory_unlock_checker.dart';
 import 'package:soul_dungeon/domain/progression/soul/soul_calculator.dart';
 import 'package:soul_dungeon/domain/progression/soul/soul_upgrade_data.dart';
 import 'package:soul_dungeon/domain/progression/soul/soul_upgrade_pool.dart';
-import 'package:soul_dungeon/domain/progression/unlock/job_unlock_checker.dart';
 
 /// 메타 진행 Bloc — 소울 경제, 업그레이드, 런 기록 중앙 관리.
 ///
@@ -42,7 +39,6 @@ class ProgressionBloc extends Bloc<ProgressionEvent, ProgressionState> {
     on<RecordDeath>(_onRecordDeath);
     on<RecordRunCompletion>(_onRecordRunCompletion);
     on<UnlockMemory>(_onUnlockMemory);
-    on<UnlockHiddenJob>(_onUnlockHiddenJob);
     on<ResetAllProgression>(_onResetAll);
 
     _runCompletedSub = gameEventBus.on<RunCompletedEvent>().listen((event) {
@@ -192,28 +188,6 @@ class ProgressionBloc extends Bloc<ProgressionEvent, ProgressionState> {
     updated = _autoUnlockMemories(updated);
     emit(ProgressionLoaded(updated));
     _save(updated);
-
-    // 히든 직업 해금 체크
-    _checkAndUnlockJobs(updated, newClearCount, newWinsByJob);
-  }
-
-  /// 히든 직업 해금 조건 판정 + 해금 이벤트 발행.
-  void _checkAndUnlockJobs(
-    MetaSaveData meta,
-    int totalWins,
-    Map<String, int> winsByJob,
-  ) {
-    final newUnlocks = JobUnlockChecker.checkNewUnlocks(
-      alreadyUnlocked: meta.unlockedHiddenJobIds,
-      totalWins: totalWins,
-      winsByJob: winsByJob,
-    );
-
-    if (newUnlocks.isEmpty) return;
-
-    for (final jobId in newUnlocks) {
-      add(UnlockHiddenJob(jobId));
-    }
   }
 
   /// 기억 조각 자동 해금 — MetaSaveData 갱신 후 호출.
@@ -235,39 +209,6 @@ class ProgressionBloc extends Bloc<ProgressionEvent, ProgressionState> {
     );
     emit(ProgressionLoaded(updated));
     _save(updated);
-  }
-
-  void _onUnlockHiddenJob(
-    UnlockHiddenJob event,
-    Emitter<ProgressionState> emit,
-  ) {
-    final current = state;
-    if (current is! ProgressionLoaded) return;
-    if (current.unlockedHiddenJobIds.contains(event.jobId)) return;
-
-    // JobPath에서 displayName 조회
-    final job = JobPath.values.where((j) => j.id == event.jobId).firstOrNull;
-    final displayName = job?.displayName ?? event.jobId;
-
-    GameLogger.info(
-      LogSystem.progression,
-      'Hidden job unlocked: ${event.jobId} ($displayName)',
-    );
-
-    final updated = current.meta.copyWith(
-      unlockedHiddenJobIds: {
-        ...current.unlockedHiddenJobIds,
-        event.jobId,
-      },
-    );
-    emit(ProgressionLoaded(updated));
-    _save(updated);
-
-    // GameEventBus로 해금 이벤트 발행 (presentation에서 알림 표시용)
-    gameEventBus.emit(JobUnlockEvent(
-      jobId: event.jobId,
-      displayName: displayName,
-    ));
   }
 
   Future<void> _onResetAll(

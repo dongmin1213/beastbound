@@ -1,7 +1,6 @@
-import 'package:flutter/foundation.dart' show listEquals, mapEquals;
+import 'package:flutter/foundation.dart' show listEquals;
 
 import 'package:soul_dungeon/domain/dungeon/shop/shop_item.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 
 /// NPC 유형 — 방랑 상인(대화+거래), 현자(대화+골드보상), 방랑자(대화+골드보상).
 enum NpcType { trader, sage, wanderer }
@@ -16,9 +15,6 @@ class NpcData {
   final List<ShopItem> tradeItems;
   final int goldReward;
 
-  /// 대화 보상 성향 변화 — 현자(지혜+1), 방랑자(자비+1).
-  final Map<DispositionAxis, int> dispositionRewards;
-
   /// 대화 보상 카드 강화 — 드문 확률로 true.
   final bool upgradeRandomCard;
 
@@ -30,16 +26,14 @@ class NpcData {
     required this.dialogueText,
     required this.tradeItems,
     required this.goldReward,
-    this.dispositionRewards = const {},
     this.upgradeRandomCard = false,
   });
 
   bool get hasTradeItems => tradeItems.isNotEmpty;
 
-  /// 대화 보상이 하나라도 있는지 (골드/성향/카드강화).
+  /// 대화 보상이 하나라도 있는지 (골드/카드강화).
   bool get hasDialogueReward =>
       goldReward > 0 ||
-      dispositionRewards.isNotEmpty ||
       upgradeRandomCard;
 
   NpcData copyWith({List<ShopItem>? tradeItems}) {
@@ -51,7 +45,6 @@ class NpcData {
       dialogueText: dialogueText,
       tradeItems: tradeItems ?? this.tradeItems,
       goldReward: goldReward,
-      dispositionRewards: dispositionRewards,
       upgradeRandomCard: upgradeRandomCard,
     );
   }
@@ -67,18 +60,16 @@ class NpcData {
           dialogueText == other.dialogueText &&
           listEquals(tradeItems, other.tradeItems) &&
           goldReward == other.goldReward &&
-          mapEquals(dispositionRewards, other.dispositionRewards) &&
           upgradeRandomCard == other.upgradeRandomCard;
 
   @override
   int get hashCode =>
       Object.hash(id, npcType, name, greetingText, dialogueText,
           Object.hashAll(tradeItems), goldReward,
-          Object.hashAllUnordered(dispositionRewards.entries),
           upgradeRandomCard);
 
   @override
   String toString() =>
       'NpcData($id, $npcType, $name, items: ${tradeItems.length}, reward: $goldReward, '
-      'disposition: $dispositionRewards, upgrade: $upgradeRandomCard)';
+      'upgrade: $upgradeRandomCard)';
 }

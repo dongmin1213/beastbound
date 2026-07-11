@@ -8,11 +8,10 @@ import 'package:soul_dungeon/core/events/momentum_gain_event.dart';
 import 'package:soul_dungeon/domain/build/data/relic_pool.dart';
 import 'package:soul_dungeon/domain/run/run_bloc.dart';
 import 'package:soul_dungeon/domain/run/run_event.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 import 'package:soul_dungeon/core/models/player_run_state.dart';
 import 'package:soul_dungeon/presentation/widgets/choice/choice_data.dart';
 
-/// 플레이어 런 상태(HP, 골드, 성향) + completedBlocks 중앙 관리.
+/// 플레이어 런 상태(HP, 골드) + completedBlocks 중앙 관리.
 ///
 /// GameScreen에서 분산되어 있던 PlayerRunState 변경, RunBloc 동기화,
 /// completedBlocks 소유권을 단일 컨트롤러로 통합.
@@ -21,19 +20,10 @@ class GameRunController {
   final RunBloc runBloc;
   final GameEventBus gameEventBus;
   final List<CompletedBlock> completedBlocks = [];
-  final List<CompletedBlock> _pendingClassChangeBlocks = [];
-  List<CompletedBlock> _survivingClassChangeBlocks = [];
   final List<CompletedBlock> _pendingEventResultBlocks = [];
   final VoidCallback onStateChanged;
   final bool Function() isScrolledUp;
   final VoidCallback scrollToBottom;
-  VoidCallback? onDispositionChanged;
-
-  /// 초기 roomsSinceLastHint — 첫 힌트는 cooldown 없이 표시.
-  static const _initialRoomsSinceHint = 99;
-
-  int roomsSinceLastHint = _initialRoomsSinceHint;
-  int hintIndex = 0;
 
   StreamSubscription<CombatRewardEvent>? _combatRewardSub;
 
@@ -79,58 +69,16 @@ class GameRunController {
     runBloc.add(SetGold(gold));
   }
 
-  /// 성향 변화 적용 — playerRunState 로컬 갱신 + RunBloc 이벤트 발행.
-  void applyDisposition(Map<DispositionAxis, int> deltas) {
-    final newDisposition =
-        Map<DispositionAxis, int>.of(playerRunState.disposition);
-    for (final entry in deltas.entries) {
-      newDisposition[entry.key] =
-          (newDisposition[entry.key] ?? 0) + entry.value;
-    }
-    playerRunState = playerRunState.copyWith(disposition: newDisposition);
-    runBloc.add(ChangeDisposition(deltas));
-    // 성향 시스템 폐기 — 미터/힌트 미표시. 값은 도메인에 남지만 소비처 없음.
-    onDispositionChanged?.call();
-  }
-
   /// RunBloc에 전체 상태 동기화.
   void syncToRunBloc() {
     runBloc.add(SetPlayerRunState(playerRunState));
   }
 
-  /// 방 진입 시 호출 — roomsSinceLastHint 카운터 증가 + 유물 트리거.
+  /// 방 진입 시 호출 — 유물 트리거.
   ///
   /// 반환값: 유물 효과 피드백 문자열 목록 (UI에 표시용).
   List<String> onRoomEntered() {
-    roomsSinceLastHint++;
     return _applyRelicTrigger('roomEnter');
-  }
-
-  /// 힌트 표시 후 호출 — 카운터 리셋 + 인덱스 증가.
-  void onHintShown() {
-    roomsSinceLastHint = 0;
-    hintIndex++;
-  }
-
-  /// 성향 힌트를 completedBlocks에 추가.
-  void appendDispositionHint(String text) {
-    _appendBlock(text, blockType: TextBlockType.dispositionHint);
-  }
-
-  /// 직업 분화 시 currentJobId 설정 + RunBloc 동기화.
-  void setCurrentJob(String jobId) {
-    playerRunState = playerRunState.copyWith(currentJobId: jobId);
-    runBloc.add(SetJobId(jobId));
-  }
-
-  /// 직업 분화 텍스트를 pending 큐에 저장 — 다음 setTextBlockData 시 flush.
-  ///
-  /// 이벤트방 등에서 성향 획득 → 전직 발생 시, 방 이동으로 텍스트가
-  /// 즉시 교체되는 문제 방지. 다음 방 화면 상단에 표시된다.
-  void appendClassChangeText(String text) {
-    _pendingClassChangeBlocks.add(
-      CompletedBlock(text: text, blockType: TextBlockType.classChange),
-    );
   }
 
   /// 이벤트 결과 텍스트를 pending 큐에 저장 — 다음 setTextBlockData 시 flush.
@@ -150,8 +98,6 @@ class GameRunController {
       currentFloor: current + 1,
       completedFloors: {...playerRunState.completedFloors, current},
     );
-    roomsSinceLastHint = _initialRoomsSinceHint;
-    hintIndex = 0;
     runBloc.add(const AdvanceFloor());
 
     // 층 전환 시 유물 트리거 (HP 회복)
@@ -164,33 +110,16 @@ class GameRunController {
   /// 런 리셋 — 퍼마데스 후 재시작.
   void resetRun(int maxHp) {
     playerRunState = PlayerRunState.initial(maxHp: maxHp);
-    roomsSinceLastHint = _initialRoomsSinceHint;
-    hintIndex = 0;
-    _pendingClassChangeBlocks.clear();
-    _survivingClassChangeBlocks = [];
     _pendingEventResultBlocks.clear();
     runBloc.add(ResetRun(maxHp: maxHp));
   }
 
   /// completedBlocks 초기화 — setTextBlockData 전용.
   ///
-  /// pending된 전직 텍스트가 있으면 clear 후 flush하여
+  /// pending된 이벤트 결과 텍스트가 있으면 clear 후 flush하여
   /// 다음 화면 상단에 표시되도록 한다.
-  /// 전직 텍스트는 한 번의 추가 clear에서도 살아남아
-  /// setTextBlockData가 연속 호출되는 경우에도 표시된다.
   void clearCompletedBlocks() {
     completedBlocks.clear();
-    // 이전 clear에서 살아남은 전직 텍스트 재삽입 (1회만 생존)
-    if (_survivingClassChangeBlocks.isNotEmpty) {
-      completedBlocks.addAll(_survivingClassChangeBlocks);
-      _survivingClassChangeBlocks = [];
-    }
-    // 새 pending 전직 텍스트 flush + 다음 clear에서도 생존하도록 보관
-    if (_pendingClassChangeBlocks.isNotEmpty) {
-      _survivingClassChangeBlocks = List.from(_pendingClassChangeBlocks);
-      completedBlocks.addAll(_pendingClassChangeBlocks);
-      _pendingClassChangeBlocks.clear();
-    }
     // 이벤트 결과 텍스트 flush (1회성 — 생존 불필요)
     if (_pendingEventResultBlocks.isNotEmpty) {
       completedBlocks.addAll(_pendingEventResultBlocks);

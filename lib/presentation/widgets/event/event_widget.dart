@@ -92,9 +92,6 @@ class EventWidget extends StatelessWidget {
     if (choice.upgradeRandomCard) parts.add('카드 강화');
     if (choice.removeRandomCard) parts.add('카드 제거');
     if (choice.cardRewardId != null) parts.add('카드 획득');
-    for (final e in choice.dispositionRewards.entries) {
-      parts.add('${e.key.displayName} +${e.value}');
-    }
     return parts.join(' / ');
   }
 }

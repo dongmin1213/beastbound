@@ -92,9 +92,6 @@ class ChoiceRouter {
       return actions.handleSelectCardReward(choice);
     }
 
-    // 전직 후보 선택
-    if (id.startsWith('class_select_')) return actions.handleClassSelect(choice);
-
     // Default: 전투 행동 처리
     actions.handleCombatAction(choice);
   }

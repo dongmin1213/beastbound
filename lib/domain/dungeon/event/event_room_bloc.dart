@@ -34,8 +34,6 @@ class EventRoomBloc extends Bloc<EventRoomEvent, EventRoomState> {
       choiceLabel: selectedChoice.label,
       goldChange: selectedChoice.goldChange,
       hpChange: selectedChoice.hpChange,
-      dispositionChanges: selectedChoice.dispositionRewards
-          .map((k, v) => MapEntry(k.name, v)),
     ));
 
     emit(EventRoomCompleted(selectedChoice));

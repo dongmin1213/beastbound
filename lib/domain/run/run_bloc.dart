@@ -6,7 +6,6 @@ import 'package:soul_dungeon/core/events/game_event_bus.dart';
 import 'package:soul_dungeon/core/events/run_completed_event.dart';
 import 'package:soul_dungeon/domain/run/run_event.dart';
 import 'package:soul_dungeon/domain/run/run_state.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 import 'package:soul_dungeon/core/models/player_run_state.dart';
 
 /// RunBloc — 플레이어 런 상태(HP/gold/floor) 관리.
@@ -30,7 +29,6 @@ class RunBloc extends Bloc<RunEvent, RunState> {
     on<SyncFromCombat>(_onSyncFromCombat);
     on<SetPlayerRunState>(_onSetPlayerRunState);
     on<ResetRun>(_onResetRun);
-    on<ChangeDisposition>(_onChangeDisposition);
     on<SetJobId>(_onSetJobId);
     on<AcquireBlessing>(_onAcquireBlessing);
     on<AcquireRelic>(_onAcquireRelic);
@@ -163,20 +161,6 @@ class RunBloc extends Bloc<RunEvent, RunState> {
       playerRunState: prs.copyWith(
         activeCurseIds: [...prs.activeCurseIds, event.curseId],
       ),
-    ));
-  }
-
-  void _onChangeDisposition(
-      ChangeDisposition event, Emitter<RunState> emit) {
-    final current = state;
-    if (current is! RunActive) return;
-    final prs = current.playerRunState;
-    final newDisposition = Map<DispositionAxis, int>.of(prs.disposition);
-    for (final e in event.deltas.entries) {
-      newDisposition[e.key] = (newDisposition[e.key] ?? 0) + e.value;
-    }
-    emit(RunActive(
-      playerRunState: prs.copyWith(disposition: newDisposition),
     ));
   }
 

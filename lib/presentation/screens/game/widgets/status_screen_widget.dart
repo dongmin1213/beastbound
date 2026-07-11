@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:soul_dungeon/core/logging/game_logger.dart';
-import 'package:soul_dungeon/domain/build/logic/build_archetype_detector.dart';
 import 'package:soul_dungeon/core/models/card_blessing_data.dart';
 import 'package:soul_dungeon/core/models/card_data.dart';
 import 'package:soul_dungeon/core/models/card_relic_data.dart';
 import 'package:soul_dungeon/core/models/curse_data.dart';
-import 'package:soul_dungeon/core/models/job_path.dart';
 import 'package:soul_dungeon/core/models/game_enums.dart';
 import 'package:soul_dungeon/core/models/player_run_state.dart';
 import 'package:soul_dungeon/presentation/screens/game/deck_view_handler.dart';
@@ -13,7 +10,6 @@ import 'package:soul_dungeon/presentation/theme/app_theme.dart';
 import 'package:soul_dungeon/presentation/theme/pixel_art_assets.dart';
 import 'package:soul_dungeon/presentation/theme/responsive_scale.dart';
 import 'package:soul_dungeon/presentation/widgets/common/pixel_art_icon.dart';
-import 'package:soul_dungeon/presentation/widgets/common/programmatic_job_icon.dart';
 import 'package:soul_dungeon/presentation/widgets/combat_ui/gauge_bar.dart';
 import 'package:soul_dungeon/presentation/theme/floor_theme_visuals.dart';
 import 'package:soul_dungeon/presentation/widgets/combat_ui/card_detail_overlay.dart';
@@ -43,14 +39,12 @@ class StatusScreenWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final jobName = _resolveJobName(runState.currentJobId);
-    final subtitle =
-        '$jobName  ${runState.currentFloor}층  G: ${runState.gold}';
+    final subtitle = '${runState.currentFloor}층  G: ${runState.gold}';
 
     final floorVisuals = FloorThemeVisuals.fromFloor(runState.currentFloor);
 
     return RetroWindowFrame(
-      title: 'SOUL STATUS — $subtitle',
+      title: 'STATUS — $subtitle',
       titleBarColor: floorVisuals.combatUiTint,
       borderColor: AppTheme.titleGold,
       backgroundColor: floorVisuals.frameBackground,
@@ -65,8 +59,6 @@ class StatusScreenWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildPlayerInfo(context),
-                  _buildBuildArchetype(context),
-                  // 성향(disposition) 시스템 폐기 — 몬스터 패시브로 대체.
                   _buildSectionDivider(context, '덱'),
                   _buildDeck(context),
                   if (blessings.isNotEmpty) ...[
@@ -97,7 +89,7 @@ class StatusScreenWidget extends StatelessWidget {
     final fontSize = ResponsiveScale.scaleFontSize(context, 12);
 
     return Semantics(
-      label: 'HP ${runState.currentHp}/${runState.maxHp}, ${runState.gold}골드, 직업: ${_resolveJobName(runState.currentJobId)}, ${runState.currentFloor}층',
+      label: 'HP ${runState.currentHp}/${runState.maxHp}, ${runState.gold}골드, ${runState.currentFloor}층',
       child: Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Column(
@@ -143,41 +135,6 @@ class StatusScreenWidget extends StatelessWidget {
                   fontSize: fontSize,
                 ),
               ),
-              const SizedBox(width: 16),
-              if (runState.currentJobId != null) ...[
-                if (PixelArtAssets.jobSprite(runState.currentJobId!) != null) ...[
-                  PixelArtIcon(
-                    PixelArtAssets.jobSprite(runState.currentJobId!)!,
-                    size: fontSize + 4,
-                  ),
-                  const SizedBox(width: 4),
-                ] else ...[
-                  Builder(builder: (context) {
-                    final job = JobPath.values
-                        .where((j) => j.id == runState.currentJobId)
-                        .firstOrNull;
-                    if (job != null && job.tier == 2) {
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 4),
-                        child: ProgrammaticJobIcon(
-                          job: job,
-                          size: fontSize + 4,
-                        ),
-                      );
-                    }
-                    return const SizedBox.shrink();
-                  }),
-                ],
-              ],
-              Text(
-                '직업: ${_resolveJobName(runState.currentJobId)}',
-                style: TextStyle(
-                  color: runState.currentJobId != null
-                      ? AppTheme.titleGold
-                      : _textMuted,
-                  fontSize: fontSize,
-                ),
-              ),
             ],
           ),
         ],
@@ -185,44 +142,6 @@ class StatusScreenWidget extends StatelessWidget {
     ),
     );
   }
-
-  // ── Build Archetype ──
-
-  Widget _buildBuildArchetype(BuildContext context) {
-    final deck = runState.effectiveDeck;
-    if (deck.isEmpty) return const SizedBox.shrink();
-
-    final result = BuildArchetypeDetector.detect(deck, runState.currentJobId);
-    final fontSize = ResponsiveScale.scaleFontSize(context, 11);
-
-    final floorTint = FloorThemeVisuals.fromFloor(runState.currentFloor).combatUiTint;
-
-    return Padding(
-      padding: const EdgeInsets.only(top: 4, bottom: 4),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        decoration: BoxDecoration(
-          color: floorTint,
-          borderRadius: BorderRadius.circular(4),
-          border: const Border(
-            left: BorderSide(color: AppTheme.titleGold, width: 2),
-          ),
-        ),
-        child: Text(
-          '현재 빌드: ${result.formatted()}',
-          style: TextStyle(
-            color: AppTheme.titleGold,
-            fontSize: fontSize,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
-
-  // ── Disposition ──
-
 
   // ── Deck ──
 
@@ -435,16 +354,6 @@ class StatusScreenWidget extends StatelessWidget {
   }
 
   // ── Helpers ──
-
-  String _resolveJobName(String? jobId) {
-    if (jobId == null) return '미분화';
-    try {
-      return JobPath.values.firstWhere((j) => j.id == jobId).displayName;
-    } catch (e) {
-      GameLogger.warning(LogSystem.ui, 'Unknown jobId: $jobId ($e)');
-      return jobId;
-    }
-  }
 
   Color _cardColor(CardType type) {
     return switch (type) {

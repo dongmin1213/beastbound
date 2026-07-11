@@ -44,7 +44,4 @@ abstract class GameScreenActions {
   // ── 미스터리 방 선택 (모험가의 지도) ──
   bool get hasPendingMysteryChoice;
   void handleMysteryChoice(ChoiceData choice);
-
-  // ── 전직 선택 ──
-  void handleClassSelect(ChoiceData choice);
 }

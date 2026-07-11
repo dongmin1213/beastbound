@@ -7,7 +7,6 @@ import 'package:soul_dungeon/core/save/save_data.dart';
 import 'package:soul_dungeon/core/save/save_encryptor.dart';
 import 'package:soul_dungeon/core/models/boss_choice.dart';
 import 'package:soul_dungeon/core/models/card_data.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 import 'package:soul_dungeon/core/models/game_enums.dart';
 import 'package:soul_dungeon/core/models/player_run_state.dart';
 
@@ -162,9 +161,6 @@ class SaveSerializer {
       'currentHp': state.currentHp,
       'maxHp': state.maxHp,
       'gold': state.gold,
-      'disposition': state.disposition.map(
-        (k, v) => MapEntry(k.name, v),
-      ),
       'currentJobId': state.currentJobId,
       'ownedBlessingIds': state.ownedBlessingIds,
       'ownedRelicIds': state.ownedRelicIds,
@@ -225,7 +221,6 @@ class SaveSerializer {
       currentHp: currentHp.clamp(0, maxHp),
       maxHp: maxHp,
       gold: (json['gold'] as int?) ?? 0,
-      disposition: _parseDisposition(json['disposition']),
       currentJobId: json['currentJobId'] as String?,
       ownedBlessingIds: _parseStringList(json['ownedBlessingIds']),
       ownedRelicIds: _parseStringList(json['ownedRelicIds']),
@@ -246,17 +241,6 @@ class SaveSerializer {
       momentumConsecutiveCount: (json['momentumConsecutiveCount'] as int?) ?? 0,
       bossVictoryPending: json['bossVictoryPending'] as bool? ?? false,
     );
-  }
-
-  static Map<DispositionAxis, int> _parseDisposition(dynamic raw) {
-    if (raw == null || raw is! Map) {
-      return {for (final axis in DispositionAxis.values) axis: 0};
-    }
-    final map = raw as Map<String, dynamic>;
-    return {
-      for (final axis in DispositionAxis.values)
-        axis: (map[axis.name] as int?) ?? 0,
-    };
   }
 
   static List<String> _parseStringList(dynamic raw) {

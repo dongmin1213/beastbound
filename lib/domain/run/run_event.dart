@@ -1,6 +1,5 @@
 import 'package:soul_dungeon/core/config/floor_region.dart';
 import 'package:soul_dungeon/core/models/boss_choice.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 import 'package:soul_dungeon/core/models/player_run_state.dart';
 
 /// RunBloc 이벤트 — sealed class (Dart 3 switch exhaustiveness).
@@ -59,13 +58,7 @@ final class ResetRun extends RunEvent {
   const ResetRun({required this.maxHp});
 }
 
-/// 성향 변경 — 이벤트/엘리트 선택 시 성향 포인트 누적.
-final class ChangeDisposition extends RunEvent {
-  final Map<DispositionAxis, int> deltas;
-  const ChangeDisposition(this.deltas);
-}
-
-/// 직업 ID 설정 — 성향 임계치 도달 시 직업 분화.
+/// 직업 ID 설정 — 세이브 로드 복원 등.
 final class SetJobId extends RunEvent {
   final String jobId;
   const SetJobId(this.jobId);

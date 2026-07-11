@@ -3,7 +3,6 @@ import 'package:soul_dungeon/core/events/game_event_bus.dart';
 import 'package:soul_dungeon/core/events/npc_interaction_event.dart';
 import 'package:soul_dungeon/domain/dungeon/npc/npc_event.dart';
 import 'package:soul_dungeon/domain/dungeon/npc/npc_state.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 
 /// NPC Bloc — 생성자 주입, 3파일 분리.
 /// NPC 대화/거래 로직 담당. presentation 의존 없음.
@@ -86,8 +85,6 @@ class NpcBloc extends Bloc<NpcEvent, NpcState> {
 
     final goldReward =
         dialogueRead && npc.goldReward > 0 ? npc.goldReward : 0;
-    final dispositionRewards =
-        dialogueRead ? npc.dispositionRewards : const <DispositionAxis, int>{};
     final upgradeRandomCard = dialogueRead && npc.upgradeRandomCard;
 
     // NpcInteractionEvent GameEventBus 발행
@@ -100,7 +97,6 @@ class NpcBloc extends Bloc<NpcEvent, NpcState> {
     emit(NpcClosed(
       goldReward: goldReward,
       totalGoldSpent: currentState.totalGoldSpent,
-      dispositionRewards: dispositionRewards,
       upgradeRandomCard: upgradeRandomCard,
     ));
   }

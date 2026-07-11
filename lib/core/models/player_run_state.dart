@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:soul_dungeon/core/models/card_data.dart';
 import 'package:soul_dungeon/core/models/boss_choice.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 import 'package:soul_dungeon/core/models/game_enums.dart';
 
 /// 런 전체 플레이어 상태. 불변 클래스.
@@ -10,7 +9,6 @@ class PlayerRunState {
   final int currentHp;
   final int maxHp;
   final int gold;
-  final Map<DispositionAxis, int> disposition;
   final String? currentJobId;
   final List<String> ownedBlessingIds;
   final List<String> ownedRelicIds;
@@ -41,7 +39,6 @@ class PlayerRunState {
   // 보스 처치 후 보상 선택 대기 중 (이어하기 — 보스 보상 화면 복원용)
   final bool bossVictoryPending;
 
-  static const _dispositionEquality = MapEquality<DispositionAxis, int>();
   static const _listEquality = ListEquality<String>();
   static const _bossChoiceEquality = ListEquality<BossChoice>();
   static const _setEquality = SetEquality<int>();
@@ -53,7 +50,6 @@ class PlayerRunState {
     required this.currentHp,
     required this.maxHp,
     this.gold = 0,
-    this.disposition = const {},
     this.currentJobId,
     this.ownedBlessingIds = const [],
     this.ownedRelicIds = const [],
@@ -87,7 +83,6 @@ class PlayerRunState {
       currentHp: maxHp,
       maxHp: maxHp,
       gold: 0,
-      disposition: {for (final axis in DispositionAxis.values) axis: 0},
       currentJobId: null,
       ownedBlessingIds: const [],
       ownedRelicIds: const [],
@@ -122,7 +117,6 @@ class PlayerRunState {
     int? currentHp,
     int? maxHp,
     int? gold,
-    Map<DispositionAxis, int>? disposition,
     Object? currentJobId = _sentinel,
     List<String>? ownedBlessingIds,
     List<String>? ownedRelicIds,
@@ -147,7 +141,6 @@ class PlayerRunState {
       currentHp: currentHp ?? this.currentHp,
       maxHp: maxHp ?? this.maxHp,
       gold: gold ?? this.gold,
-      disposition: disposition ?? this.disposition,
       currentJobId: currentJobId == _sentinel
           ? this.currentJobId
           : currentJobId as String?,
@@ -193,7 +186,6 @@ class PlayerRunState {
           currentFloor == other.currentFloor &&
           dungeonSeed == other.dungeonSeed &&
           dungeonNodeId == other.dungeonNodeId &&
-          _dispositionEquality.equals(disposition, other.disposition) &&
           _listEquality.equals(ownedBlessingIds, other.ownedBlessingIds) &&
           _listEquality.equals(ownedRelicIds, other.ownedRelicIds) &&
           _listEquality.equals(activeCurseIds, other.activeCurseIds) &&
@@ -220,7 +212,6 @@ class PlayerRunState {
         currentFloor,
         dungeonSeed,
         dungeonNodeId,
-        _dispositionEquality.hash(disposition),
         _listEquality.hash(ownedBlessingIds),
         _listEquality.hash(ownedRelicIds),
         _listEquality.hash(activeCurseIds),
@@ -240,7 +231,7 @@ class PlayerRunState {
       'PlayerRunState($currentHp/$maxHp, gold: $gold, floor: $currentFloor, '
       'job: $currentJobId, blessings: ${ownedBlessingIds.length}, '
       'relics: ${ownedRelicIds.length}, curses: ${activeCurseIds.length}, '
-      'bossChoices: ${bossChoices.length}, disposition: $disposition, '
+      'bossChoices: ${bossChoices.length}, '
       'deck: ${masterDeck.length}, removed: ${removedCardIds.length}, '
       'tempStr: $tempStrengthBonus, tempBlk: $tempBlockBonus, tempMom: $tempMomentumBonus, '
       'dungeonSeed: $dungeonSeed, dungeonNode: $dungeonNodeId, '

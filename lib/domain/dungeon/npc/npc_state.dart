@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:soul_dungeon/domain/dungeon/npc/npc_data.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 
 /// NpcBloc 상태 — sealed class (Dart 3 switch exhaustiveness).
 sealed class NpcState extends Equatable {
@@ -33,21 +32,19 @@ final class NpcReady extends NpcState {
   List<Object?> get props => [npc, playerGold, dialogueRead, totalGoldSpent];
 }
 
-/// NPC 종료 — 골드 보상, 성향 보상, 카드 강화, 총 소비 금화.
+/// NPC 종료 — 골드 보상, 카드 강화, 총 소비 금화.
 final class NpcClosed extends NpcState {
   final int goldReward;
   final int totalGoldSpent;
-  final Map<DispositionAxis, int> dispositionRewards;
   final bool upgradeRandomCard;
 
   const NpcClosed({
     required this.goldReward,
     required this.totalGoldSpent,
-    this.dispositionRewards = const {},
     this.upgradeRandomCard = false,
   });
 
   @override
   List<Object?> get props =>
-      [goldReward, totalGoldSpent, dispositionRewards, upgradeRandomCard];
+      [goldReward, totalGoldSpent, upgradeRandomCard];
 }

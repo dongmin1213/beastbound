@@ -67,15 +67,6 @@ final class UnlockMemory extends ProgressionEvent {
   List<Object?> get props => [memoryId];
 }
 
-/// 히든 직업 해금 — 해금 조건 충족 시 직접 dispatch.
-final class UnlockHiddenJob extends ProgressionEvent {
-  final String jobId;
-  const UnlockHiddenJob(this.jobId);
-
-  @override
-  List<Object?> get props => [jobId];
-}
-
 /// 완전 초기화 — 모든 메타 진행 데이터(소울, 업그레이드, 해금 등) 삭제.
 final class ResetAllProgression extends ProgressionEvent {
   const ResetAllProgression();

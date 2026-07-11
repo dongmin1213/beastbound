@@ -179,11 +179,6 @@ class NpcRoomHandler {
       ));
     }
 
-    // 성향 변화 적용
-    if (state.dispositionRewards.isNotEmpty) {
-      rc.applyDisposition(state.dispositionRewards);
-    }
-
     // 카드 강화 적용
     if (state.upgradeRandomCard) {
       _applyUpgradeRandomCard(rc);
@@ -196,12 +191,6 @@ class NpcRoomHandler {
       rc.appendFeedbackText('거래 완료!');
     } else if (state.goldReward > 0) {
       rc.appendFeedbackText('${state.goldReward} 골드 획득!');
-    }
-
-    if (state.dispositionRewards.isNotEmpty) {
-      final maxEntry = state.dispositionRewards.entries
-          .reduce((a, b) => a.value >= b.value ? a : b);
-      rc.appendFeedbackText('${maxEntry.key.displayName}의 기운이 느껴진다.');
     }
 
     _npcBloc?.close();

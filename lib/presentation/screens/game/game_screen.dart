@@ -9,7 +9,6 @@ import 'package:soul_dungeon/presentation/widgets/combat_ui/combat_tutorial_moda
 import 'package:soul_dungeon/core/config/balance_config.dart';
 import 'package:soul_dungeon/core/config/tamed_monster_store.dart';
 import 'package:soul_dungeon/core/events/game_event_bus.dart';
-import 'package:soul_dungeon/core/events/job_unlock_event.dart';
 import 'package:soul_dungeon/core/input/game_input_mapper.dart';
 import 'package:soul_dungeon/core/input/input_context.dart';
 import 'package:soul_dungeon/core/config/dungeon_balance_config.dart';
@@ -30,9 +29,7 @@ import 'package:soul_dungeon/domain/dungeon/bloc/dungeon_state.dart';
 import 'package:soul_dungeon/domain/dungeon/generator/dungeon_generator.dart';
 import 'package:soul_dungeon/domain/momentum/bloc/momentum_bloc.dart';
 import 'package:soul_dungeon/core/models/environment_clue.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 import 'package:soul_dungeon/core/models/game_enums.dart';
-import 'package:soul_dungeon/core/models/job_path.dart';
 import 'package:soul_dungeon/domain/run/run_bloc.dart';
 import 'package:soul_dungeon/domain/run/run_event.dart';
 import 'package:soul_dungeon/core/models/player_run_state.dart';
@@ -75,7 +72,6 @@ import 'package:soul_dungeon/presentation/screens/game/combat/combat_action_proc
 import 'package:soul_dungeon/presentation/screens/game/combat/combat_outcome_resolver.dart';
 import 'package:soul_dungeon/presentation/screens/game/combat/combat_session_state.dart';
 import 'package:soul_dungeon/presentation/screens/game/rooms/event_room_handler.dart';
-import 'package:soul_dungeon/domain/build/bloc/build_bloc.dart';
 import 'package:soul_dungeon/core/models/devil_deal_data.dart';
 import 'package:soul_dungeon/domain/build/logic/preset_manager.dart';
 import 'package:soul_dungeon/core/save/save_manager.dart';
@@ -275,9 +271,6 @@ class GameScreenState extends State<GameScreen>
   // CombatBloc (전투 로직 소유)
   late final CombatBloc _combatBloc;
 
-  // BuildBloc (직업 분화)
-  late final BuildBloc _buildBloc;
-
   // NarratorBloc (서술자 신뢰도) — app.dart에서 주입 또는 initState에서 생성
   NarratorBloc? _narratorBloc;
 
@@ -303,9 +296,6 @@ class GameScreenState extends State<GameScreen>
   // 미니맵 모달 중복 오픈 방지
   bool _minimapDialogOpen = false;
   final PresetManager _presetManager = PresetManager();
-
-  // 히든 직업 해금 구독
-  StreamSubscription<JobUnlockEvent>? _jobUnlockSub;
 
   // GameEventBus 참조 (convenience accessor)
   GameEventBus get _gameEventBus => _runController.gameEventBus;
@@ -391,16 +381,6 @@ class GameScreenState extends State<GameScreen>
       isScrolledUp: () => _userScrolledUp,
       scrollToBottom: _scrollToBottom,
     );
-
-    // BuildBloc 초기화 (RunBloc과 동일 수명 주기)
-    _buildBloc = BuildBloc(
-      config: widget.buildConfig,
-      gameEventBus: gameEventBus,
-      unlockedHiddenJobIds: widget.initialMeta?.unlockedHiddenJobIds ?? const {},
-    );
-    _buildBloc.add(InitializeBuild(
-      currentJobId: initialPlayerState.currentJobId,
-    ));
 
     _combatSession = _combatSession.copyWith(currentEncounter: widget.initialEncounter);
     _textBlockDataList = _resolveInitialBlocks();
@@ -552,7 +532,6 @@ class GameScreenState extends State<GameScreen>
       runController: _runController,
       bossFlowHandler: _bossFlowHandler,
       combatBloc: _combatBloc,
-      buildBloc: _buildBloc,
       gameEventBus: _gameEventBus,
       setTextBlockData: setTextBlockData,
       updateUI: _updateUI,
@@ -580,8 +559,6 @@ class GameScreenState extends State<GameScreen>
       getDungeonBloc: () => _dungeonBloc,
       getCombatSession: () => _combatSession,
       updateCombatSession: (s) => _combatSession = s,
-      dispositionConfig: widget.dispositionConfig,
-      wandererMaxDeviation: widget.buildConfig.wandererMaxDeviation,
       combatConfig: widget.combatConfig,
       floorsConfig: widget.floorsConfig,
       purchasedUpgradeIds: widget.initialMeta?.purchasedUpgradeIds ?? const {},
@@ -590,24 +567,6 @@ class GameScreenState extends State<GameScreen>
       allBlocksRead: () => _currentBlockIndex >= _textBlockDataList.length,
       showFloorTransition: _showFloorTransition,
     );
-
-    // 성향 변화 → 전직 체크 자동 연결 (다음 프레임으로 지연 — 현재 텍스트 처리 완료 후).
-    // 스타터 몬스터 모드에서는 직업 분화를 비활성화한다(직업 개념 폐기).
-    if (widget.starterMonsterId == null) {
-      _runController.onDispositionChanged = () {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted) _dungeonNavHandler.checkClassChange();
-        });
-      };
-    }
-
-    // 세이브 로드 시 전직 재평가 — 성향이 임계치 이상인데 직업 미분화인 경우 보정
-    if (widget.starterMonsterId == null &&
-        initialPlayerState.currentJobId == null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) _dungeonNavHandler.checkClassChange();
-      });
-    }
 
     // Prep Phase Handler 초기화 (Step 4)
     _prepPhaseHandler = PrepPhaseHandler(
@@ -630,20 +589,6 @@ class GameScreenState extends State<GameScreen>
 
     // CombatRewardEvent 구독
     _runController.initRewardSubscription(() => mounted);
-
-    // 히든 직업 해금 이벤트 구독
-    _jobUnlockSub = _gameEventBus.on<JobUnlockEvent>().listen((event) {
-      if (mounted) {
-        _showJobUnlockNotification(event.displayName);
-        // BuildBloc에 해금 정보 갱신
-        final progressionState = context.read<ProgressionBloc>().state;
-        if (progressionState is ProgressionLoaded) {
-          _buildBloc.updateUnlockedHiddenJobIds(
-            progressionState.unlockedHiddenJobIds,
-          );
-        }
-      }
-    });
 
     // initialEncounter가 있으면 StartCombat 발행
     if (_combatSession.currentEncounter != null) {
@@ -1248,15 +1193,6 @@ class GameScreenState extends State<GameScreen>
   void handleSelectCardReward(ChoiceData choice) =>
       _cardCombatHandler.handleSelectCardReward(choice);
 
-  @override
-  void handleClassSelect(ChoiceData choice) {
-    setState(() {
-      _choiceSelected = true;
-    });
-    final jobId = choice.id.substring('class_select_'.length);
-    _dungeonNavHandler.handleClassSelect(jobId);
-  }
-
   void _handleBossContinue() => _cardCombatHandler.handleBossContinue();
 
   void _handleBossChoice(ChoiceData choice) => _cardCombatHandler.handleBossChoice(choice);
@@ -1327,31 +1263,6 @@ class GameScreenState extends State<GameScreen>
           _runController.runBloc.add(SetPlayerRunState(_runController.playerRunState));
           setState(() {});
         },
-        onForceClassChange: (job) {
-          _buildBloc.add(DebugForceClassChange(job));
-          // 디버그 강제 전직: 경로 선택지 복원을 위해 플래그 설정
-          _dungeonNavHandler.forceResumeAfterClassChange = true;
-          Future.delayed(const Duration(milliseconds: 300), () {
-            if (mounted) _dungeonNavHandler.resumeAfterClassChange();
-          });
-        },
-        onShowClassChoices: (candidates, {bool isSecond = false}) {
-          _buildBloc.add(DebugShowClassChoices(
-            candidates,
-            isSecondClassChange: isSecond,
-          ));
-        },
-        onSimulateBossClassChange: _dungeonBloc != null ? () {
-          // 던전을 보스방 진입 상태로 전환 → 전직 선택 UI 표시
-          _dungeonBloc!.add(const RestoreRoom(roomType: RoomType.boss));
-          Future.delayed(const Duration(milliseconds: 200), () {
-            if (!mounted) return;
-            _buildBloc.add(DebugShowClassChoices(
-              [Warrior(), Reaper()],
-              isSecondClassChange: false,
-            ));
-          });
-        } : null,
       ),
     );
   }
@@ -1439,17 +1350,6 @@ class GameScreenState extends State<GameScreen>
         blockChoices != null &&
         blockChoices.isNotEmpty) {
       final extraChoices = <ChoiceData>[];
-      // 직업 특수 행동 (BuildSpecialized/BuildAdvancedSpecialized 상태일 때)
-      final bState = _buildBloc.state;
-      if (bState is BuildAdvancedSpecialized) {
-        extraChoices.add(CombatFlowManager.buildSpecialActionChoice(
-          bState.secondaryJob.specialActionType,
-        ));
-      } else if (bState is BuildSpecialized) {
-        extraChoices.add(CombatFlowManager.buildSpecialActionChoice(
-          bState.currentJob.specialActionType,
-        ));
-      }
       // 환경 해금 상태이면 환경 선택지
       if (combatState.environmentUnlocked &&
           combatState.discoveredClues.isNotEmpty) {
@@ -1622,33 +1522,6 @@ class GameScreenState extends State<GameScreen>
     return true;
   }
 
-  void _onBuildStateChanged(BuildContext context, BuildState bState) {
-      if (kDebugMode) {
-        GameLogger.debug(LogSystem.ui,
-            '[BUILD_STATE] ${bState.runtimeType} | inCombat=$_inCombat inCardCombat=$_inCardCombat choiceSelected=$_choiceSelected');
-      }
-      _dungeonNavHandler.onBuildStateChanged(context, bState);
-      // 전직 완료 후 던전 진행 재개 (디버그 강제 전직 시에도 안전)
-      // 전투 중에는 호출 금지 — 엘리트 도전 성향 보상으로 전직 발생 시
-      // resumeAfterClassChange가 completeDungeonRoom을 호출하여 방 즉시 완료되는 버그 방지
-      if (bState is BuildSpecialized || bState is BuildAdvancedSpecialized) {
-        if (!_inCombat && !_inCardCombat) {
-          if (kDebugMode) {
-            GameLogger.debug(LogSystem.ui,
-                '[BUILD_STATE] → scheduling resumeAfterClassChange (100ms)');
-          }
-          Future.delayed(const Duration(milliseconds: 100), () {
-            if (mounted) _dungeonNavHandler.resumeAfterClassChange();
-          });
-        } else {
-          if (kDebugMode) {
-            GameLogger.debug(LogSystem.ui,
-                '[BUILD_STATE] → SKIP resumeAfterClassChange (combat active)');
-          }
-        }
-      }
-  }
-
   void completeDungeonRoom() => _dungeonNavHandler.completeDungeonRoom();
 
   void _endCombatAndCompleteRoom() =>
@@ -1776,8 +1649,6 @@ class GameScreenState extends State<GameScreen>
         // 뒤로가기 무시 — 게임 중 실수로 앱 종료 방지
       },
       child: BlocListenerStack(
-        buildBloc: _buildBloc,
-        onBuildStateChanged: _onBuildStateChanged,
         dungeonBloc: _dungeonBloc,
         onDungeonStateChanged: _dungeonBloc != null
             ? _onDungeonStateChanged
@@ -2363,31 +2234,6 @@ class GameScreenState extends State<GameScreen>
     );
   }
 
-  /// 히든 직업 해금 알림 — SnackBar로 표시.
-  void _showJobUnlockNotification(String jobDisplayName) {
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          '\u2728 새로운 직업 해금: $jobDisplayName',
-          style: const TextStyle(
-            color: Color(0xFFFFD700),
-            fontFamily: 'monospace',
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        backgroundColor: const Color(0xFF1A1A2E),
-        duration: const Duration(seconds: 4),
-        behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.all(16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-          side: const BorderSide(color: Color(0xFFFFD700), width: 1),
-        ),
-      ),
-    );
-  }
-
   /// 유령 NPC 풀 초기화 — MetaSaveData에서 역직렬화.
 
 
@@ -2410,10 +2256,8 @@ class GameScreenState extends State<GameScreen>
 
   @override
   void dispose() {
-    _jobUnlockSub?.cancel();
     WidgetsBinding.instance.removeObserver(this);
     _runController.dispose();
-    _buildBloc.close();
     _combatBloc.close();
     _runController.runBloc.close();
     _shopHandler.dispose();

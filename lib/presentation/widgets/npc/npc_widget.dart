@@ -243,9 +243,6 @@ class _NpcWidgetState extends State<NpcWidget> {
     );
     final parts = <String>[];
     if (npc.goldReward > 0) parts.add('${npc.goldReward} 골드');
-    for (final e in npc.dispositionRewards.entries) {
-      parts.add('${e.key.displayName} +${e.value}');
-    }
     if (npc.upgradeRandomCard) parts.add('카드 강화');
 
     return [

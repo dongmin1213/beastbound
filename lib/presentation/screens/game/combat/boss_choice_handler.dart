@@ -99,7 +99,4 @@ class BossChoiceHandler {
       _ => null,
     };
   }
-
-  /// 선택에 따른 성향 변경 델타.
-  static int dispositionDelta = 3;
 }

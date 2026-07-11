@@ -1,5 +1,4 @@
 import 'package:collection/collection.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 
 /// 이벤트 방 선택지 모델.
 /// 수동 ==/hashCode 오버라이드 (MysteryOutcome 패턴).
@@ -8,7 +7,6 @@ class EventChoice {
   final String outcomeText;
   final int goldChange;
   final int hpChange;
-  final Map<DispositionAxis, int> dispositionRewards;
 
   /// 보상으로 받는 카드 ID (null=없음).
   final String? cardRewardId;
@@ -19,14 +17,11 @@ class EventChoice {
   /// 랜덤 카드 업그레이드 여부.
   final bool upgradeRandomCard;
 
-  static const _dispositionEquality = MapEquality<DispositionAxis, int>();
-
   const EventChoice({
     required this.label,
     required this.outcomeText,
     required this.goldChange,
     required this.hpChange,
-    this.dispositionRewards = const {},
     this.cardRewardId,
     this.removeRandomCard = false,
     this.upgradeRandomCard = false,
@@ -42,9 +37,7 @@ class EventChoice {
           hpChange == other.hpChange &&
           cardRewardId == other.cardRewardId &&
           removeRandomCard == other.removeRandomCard &&
-          upgradeRandomCard == other.upgradeRandomCard &&
-          _dispositionEquality.equals(
-              dispositionRewards, other.dispositionRewards);
+          upgradeRandomCard == other.upgradeRandomCard;
 
   @override
   int get hashCode => Object.hash(
@@ -54,13 +47,12 @@ class EventChoice {
       hpChange,
       cardRewardId,
       removeRandomCard,
-      upgradeRandomCard,
-      _dispositionEquality.hash(dispositionRewards));
+      upgradeRandomCard);
 
   @override
   String toString() =>
       'EventChoice(label: $label, gold: $goldChange, hp: $hpChange, '
-      'disposition: $dispositionRewards, cardRewardId: $cardRewardId, '
+      'cardRewardId: $cardRewardId, '
       'removeRandomCard: $removeRandomCard, upgradeRandomCard: $upgradeRandomCard)';
 }
 
