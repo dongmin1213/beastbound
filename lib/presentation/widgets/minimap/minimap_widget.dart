@@ -95,7 +95,20 @@ class MinimapWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: mapRows,
+          children: [
+            ...mapRows,
+            if (onNodeTap != null) ...[
+              const SizedBox(height: 8),
+              Text(
+                '▸ 이동할 방을 탭하세요',
+                style: TextStyle(
+                  color: AppTheme.minimapAvailableColor,
+                  fontSize: ResponsiveScale.scaleFontSize(context, 9),
+                  fontFamily: 'monospace',
+                ),
+              ),
+            ],
+          ],
         ),
       ),
     );
@@ -130,6 +143,11 @@ class MinimapWidget extends StatelessWidget {
               roomType: nodesAtDepth[i].roomType,
               visualState: _nodeState(nodesAtDepth[i]),
               typeRevealed: _isTypeRevealed(nodesAtDepth[i]),
+              // 이동 가능(available) 노드만 탭으로 진입.
+              onTap: (onNodeTap != null &&
+                      _nodeState(nodesAtDepth[i]) == NodeVisualState.available)
+                  ? () => onNodeTap!(nodesAtDepth[i].id)
+                  : null,
             ),
           ],
           const SizedBox(width: 20),
