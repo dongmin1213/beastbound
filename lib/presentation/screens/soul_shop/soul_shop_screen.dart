@@ -167,7 +167,7 @@ class _SoulShopBody extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 40),
                   child: Text(
-                    '아직 해금할 수 있는 업그레이드가 없습니다.\n던전에서 소울을 모아 오세요.',
+                    '아직 해금할 수 있는 업그레이드가 없습니다.\n심층에서 소울을 모아 오세요.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: const Color(0xFF666666),
