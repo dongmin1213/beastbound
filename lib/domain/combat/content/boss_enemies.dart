@@ -424,10 +424,10 @@ class BossEnemies {
 
   // ── 5층 보스 (3종) ────────────────────────────────────────
 
-  /// 5층 보스: 던전 마스터 — 3페이즈 형태 변환.
+  /// 5층 보스: 태초의 주인 — 3페이즈 형태 변환.
   static const dungeonMaster = BossCombatData(
     id: 'boss_dungeon_master',
-    name: '던전 마스터',
+    name: '태초의 주인',
     floor: 5,
     phases: [
       BossPhaseConfig(

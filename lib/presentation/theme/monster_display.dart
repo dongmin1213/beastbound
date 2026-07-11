@@ -20,7 +20,7 @@ class MonsterDisplay {
     'boss_vampire_lord': '뱀파이어 군주',
     'boss_arch_demon': '대악마',
     'boss_corrupt_high_priest': '타락 대사제',
-    'boss_dungeon_master': '던전 마스터',
+    'boss_dungeon_master': '태초의 주인',
     'boss_void_sovereign': '공허의 군주',
     'boss_dimension_collapser': '차원 붕괴자',
   };

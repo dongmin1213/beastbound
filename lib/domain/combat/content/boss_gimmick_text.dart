@@ -135,7 +135,7 @@ class BossGimmickText {
       'boss_corrupt_high_priest' =>
         '제단 위에서 타락한 기도문이 울려퍼진다. 성스러운 빛이 검게 물든다.',
       'boss_dungeon_master' =>
-        '던전의 심장부. 이곳의 주인이 천천히 눈을 뜬다. 공간 자체가 긴장한다.',
+        '심층의 가장 깊은 곳. 이곳의 주인이 천천히 눈을 뜬다. 공간 자체가 긴장한다.',
       'boss_void_sovereign' =>
         '공허의 왕좌에서 형태 없는 존재가 일어선다. 주변 공간이 일그러진다.',
       'boss_dimension_collapser' =>

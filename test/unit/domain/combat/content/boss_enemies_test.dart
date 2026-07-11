@@ -78,7 +78,7 @@ void main() {
       });
     });
 
-    group('던전 마스터 (5층)', () {
+    group('태초의 주인 (5층)', () {
       test('3페이즈', () {
         expect(BossEnemies.dungeonMaster.totalPhases, 3);
       });

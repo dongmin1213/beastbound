@@ -4,7 +4,7 @@ import 'package:soul_dungeon/core/models/boss_choice.dart';
 
 void main() {
   group('BossTextVariants', () {
-    test('returns generic text for all 5 bosses x 3 choices', () {
+    test('returns generic text for all 5 bosses x all choices', () {
       const bosses = [
         'boss_slime_king',
         'boss_spider_lord',
@@ -20,34 +20,7 @@ void main() {
       }
     });
 
-    test('returns job-specific text for warrior', () {
-      final text = BossTextVariants.choiceResultText(
-        'boss_slime_king',
-        BossChoiceType.slay,
-        jobId: 'warrior',
-      );
-      expect(text, contains('전사'));
-    });
-
-    test('returns job-specific text for sage', () {
-      final text = BossTextVariants.choiceResultText(
-        'boss_spider_lord',
-        BossChoiceType.liberate,
-        jobId: 'sage',
-      );
-      expect(text, contains('현자'));
-    });
-
-    test('returns job-specific text for assassin', () {
-      final text = BossTextVariants.choiceResultText(
-        'boss_slime_king',
-        BossChoiceType.slay,
-        jobId: 'assassin',
-      );
-      expect(text, contains('독'));
-    });
-
-    test('falls back to generic for unmatched job', () {
+    test('jobId는 무시된다 (직업 개념 폐기) — generic과 동일', () {
       final generic = BossTextVariants.choiceResultText(
         'boss_slime_king',
         BossChoiceType.liberate,
@@ -55,7 +28,7 @@ void main() {
       final withJob = BossTextVariants.choiceResultText(
         'boss_slime_king',
         BossChoiceType.liberate,
-        jobId: 'guardian',
+        jobId: 'warrior',
       );
       expect(withJob, generic);
     });
@@ -65,7 +38,7 @@ void main() {
         'boss_unknown',
         BossChoiceType.slay,
       );
-      expect(text, contains('처치'));
+      expect(text, contains('쓰러뜨렸다'));
     });
   });
 }
