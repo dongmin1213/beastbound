@@ -69,11 +69,20 @@ class ChoiceCardWidget extends StatelessWidget {
     final floorTint = floorVisuals.combatUiTint;
     final floorBorder = floorVisuals.combatFleeBorder;
 
+    // GBC식 둥근 버튼: 큰 라운드 + 두꺼운 테두리 + 단단한 하단 그림자(입체감).
+    const radius = 9.0;
+    const hardShadow = BoxShadow(
+      color: Color(0x66000000),
+      blurRadius: 0,
+      offset: Offset(0, 2),
+    );
+
     if (isSelected) {
       return BoxDecoration(
         color: AppTheme.choiceSelectedBackground,
-        border: Border.all(color: AppTheme.choiceSelectedBorder),
-        borderRadius: BorderRadius.circular(2),
+        border: Border.all(color: AppTheme.choiceSelectedBorder, width: 2),
+        borderRadius: BorderRadius.circular(radius),
+        boxShadow: const [hardShadow],
       );
     }
     return switch (style) {
@@ -81,15 +90,17 @@ class ChoiceCardWidget extends StatelessWidget {
           color: floorBg,
           border: Border.all(
             color: floorBorder,
-            width: 1.0,
+            width: 1.5,
           ),
-          borderRadius: BorderRadius.circular(2),
+          borderRadius: BorderRadius.circular(radius),
+          boxShadow: const [hardShadow],
         ),
       ChoiceStyle.caution => BoxDecoration(
           color: floorTint,
-          border: Border.all(color: floorBorder),
-          borderRadius: BorderRadius.circular(2),
+          border: Border.all(color: floorBorder, width: 1.5),
+          borderRadius: BorderRadius.circular(radius),
           boxShadow: const [
+            hardShadow,
             BoxShadow(
               color: AppTheme.choiceCautionGlow,
               blurRadius: 8,
@@ -99,8 +110,9 @@ class ChoiceCardWidget extends StatelessWidget {
         ),
       ChoiceStyle.reward => BoxDecoration(
           color: floorTint,
-          border: Border.all(color: floorBorder),
-          borderRadius: BorderRadius.circular(2),
+          border: Border.all(color: floorBorder, width: 1.5),
+          borderRadius: BorderRadius.circular(radius),
+          boxShadow: const [hardShadow],
         ),
     };
   }
@@ -294,9 +306,9 @@ class ChoiceCardWidget extends StatelessWidget {
               color: AppTheme.cardBackground,
               border: Border.all(
                 color: borderColor,
-                width: isSelected || isUpgraded ? 1.5 : 1.0,
+                width: isSelected || isUpgraded ? 2.0 : 1.5,
               ),
-              borderRadius: BorderRadius.circular(3),
+              borderRadius: BorderRadius.circular(6),
               boxShadow: shadows,
             ),
             child: Column(
