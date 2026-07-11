@@ -1,110 +1,110 @@
 {
   "schema_version": 1,
-  "description": "기억 조각 15장 — 4범주(기원/상실/유대/순환)",
+  "description": "기억 조각 15장 — BEASTBOUND: 첫 유대에 집착하던 테이머가 여러 유대를 순환시키는 법을 배운다",
   "fragments": [
     {
       "id": "origin_01",
       "category": "origin",
       "title": "첫 번째 발걸음",
-      "description": "이곳에 들어온 이유를 기억한다. 누군가를 찾기 위해... 아니, 무언가를 되찾기 위해.",
+      "description": "심층으로 내려온 이유를 기억한다. 처음 함께한 야수를 잃은 뒤, 그가 남긴 길을 따라 여기까지 왔다.",
       "unlock_condition": "first_run"
     },
     {
       "id": "origin_02",
       "category": "origin",
-      "title": "잊혀진 이름",
-      "description": "\"그 사람\"의 이름이 떠오를 듯 말 듯하다. 입술에 맴도는 음절... 하지만 소리가 되지 않는다.",
+      "title": "이름 대신 온기",
+      "description": "첫 파트너의 이름은 흐릿해졌지만, 곁에 웅크리던 온기만은 또렷하다. 그 하나로 여기까지 왔다.",
       "unlock_condition": "reach_floor_2"
     },
     {
       "id": "origin_03",
       "category": "origin",
-      "title": "입구의 기억",
-      "description": "던전 입구에서 본 비문이 떠오른다. \"되돌릴 수 있다\"는 약속... 그것이 시작이었다.",
+      "title": "서로가 서로를 골랐다",
+      "description": "그때 내가 그를 고른 게 아니었다. 눈이 마주친 순간, 서로가 서로를 골랐다. 시작은 늘 그렇게 조용했다.",
       "unlock_condition": "reach_floor_3"
     },
     {
       "id": "origin_04",
       "category": "origin",
-      "title": "선택의 무게",
-      "description": "이 던전에 발을 들인 것은 자신의 의지였다. 누구도 강요하지 않았다. 그래서 더 무겁다.",
+      "title": "스스로 택한 길",
+      "description": "누구도 등을 떠밀지 않았다. 심층으로 내려가기로 한 건 나 자신이었다. 그래서 이 여정은 온전히 내 몫이다.",
       "unlock_condition": "complete_5_runs"
     },
     {
       "id": "loss_01",
       "category": "loss",
       "title": "빈 자리",
-      "description": "돌아갈 곳에는 항상 두 개의 의자가 있었다. 이제 하나는 비어 있다. 먼지가 쌓여간다.",
+      "description": "곁에는 늘 한 자리가 비어 있다. 처음 함께 걷던 그 자리. 새 동료가 들어서도 그 모양만은 지워지지 않는다.",
       "unlock_condition": "first_death"
     },
     {
       "id": "loss_02",
       "category": "loss",
-      "title": "마지막 대화",
-      "description": "\"곧 돌아올게.\" 마지막으로 한 말이 그것이었다. 그 말을 지키지 못한 것은 자신이었을까, 상대였을까.",
+      "title": "의존이라는 이름",
+      "description": "그가 너무 강해서, 나는 자라지 못했다. 그를 잃고서야 처음으로 내 발로 섰다. 상실은 뒤늦게 찾아온 성장통이었다.",
       "unlock_condition": "die_3_times"
     },
     {
       "id": "loss_03",
       "category": "loss",
-      "title": "깨진 약속",
-      "description": "함께 보려 했던 하늘이 있었다. 계절이 바뀌어도 그 약속은 이행되지 않았다.",
+      "title": "지키지 못한 말",
+      "description": "'곧 돌아올게.' 마지막으로 건넨 말이었다. 지키지 못한 게 나였는지 그였는지, 아직도 모른다.",
       "unlock_condition": "reach_floor_4"
     },
     {
       "id": "loss_04",
       "category": "loss",
-      "title": "사라진 온기",
-      "description": "손끝에 남아 있던 온기가 서서히 식어간다. 기억만이 그 열기를 간직하고 있다.",
+      "title": "식어가는 온기",
+      "description": "손끝에 남은 온기가 천천히 식어간다. 이제 그 열기는 기억 속에만 있다. 그래도 기억은 식지 않는다.",
       "unlock_condition": "die_5_times"
     },
     {
       "id": "bond_01",
       "category": "bond",
-      "title": "유령의 미소",
-      "description": "유령이 처음으로 미소를 지었다. \"당신을 알고 있어요... 예전에도 여기 왔었죠.\"",
+      "title": "명령이 아니라",
+      "description": "언젠가 나는 길들임을 명령으로 착각했다. '좋은 파트너'를 '말 잘 듣는 도구'로 바꿔버린 밤들. 다시는 그러지 않기로 한다.",
       "unlock_condition": "meet_ghost"
     },
     {
       "id": "bond_02",
       "category": "bond",
-      "title": "보스의 눈물",
-      "description": "쓰러진 수호자의 눈에서 빛나는 것을 보았다. 적이 아니었다. 그저 자기 자리를 지키고 있었을 뿐.",
+      "title": "주인의 눈",
+      "description": "쓰러진 영역의 주인, 그 눈에 적의는 없었다. 제 자리를 지키던 상처 입은 짐승이었을 뿐. 나와 다르지 않았다.",
       "unlock_condition": "liberate_boss"
     },
     {
       "id": "bond_03",
       "category": "bond",
-      "title": "함께 걸은 길",
-      "description": "던전의 벽에 새겨진 발자국 두 줄. 한 줄은 자신의 것, 다른 한 줄은... \"그 사람\"의 것이었다.",
+      "title": "함께 걸은 발자국",
+      "description": "바위에 두 줄의 발자국. 한 줄은 나의 것, 다른 한 줄은 지금 곁을 걷는 동료의 것. 첫 파트너의 자리를 이제 다른 온기가 채운다.",
       "unlock_condition": "coexist_boss"
     },
     {
       "id": "bond_04",
       "category": "bond",
-      "title": "이어진 실",
-      "description": "\"그 사람\"과 자신을 잇는 보이지 않는 실. 끊어지지 않는다. 이 던전 안에서도, 밖에서도.",
+      "title": "끊어지지 않는 실",
+      "description": "나와 동료들을 잇는 보이지 않는 실. 장착을 풀어도, 도감 깊이 잠들어도, 그 실은 끊어지지 않는다.",
       "unlock_condition": "complete_3_runs"
     },
     {
       "id": "cycle_01",
       "category": "cycle",
-      "title": "반복의 자각",
-      "description": "이 복도를 전에도 걸었다. 이 적도 전에도 만났다. 하지만 매번 무언가가 다르다.",
+      "title": "반복 속의 차이",
+      "description": "이 길을 전에도 걸었다. 이 주인도 전에 만났다. 하지만 곁에 선 동료가 다르면, 같은 길도 전혀 다른 길이 된다.",
       "unlock_condition": "complete_2_runs"
     },
     {
       "id": "cycle_02",
       "category": "cycle",
-      "title": "던전의 심장",
-      "description": "던전의 중심에서 고동 소리가 들린다. 이곳은 살아 있다. 그리고 무언가를 기다리고 있다.",
+      "title": "심층의 고동",
+      "description": "심층 깊은 곳에서 고동이 들린다. 이 야생은 살아 있고, 무언가를 기다린다. 어쩌면 나를, 어쩌면 내가 놓아준 그를.",
       "unlock_condition": "reach_floor_5"
     },
     {
       "id": "cycle_03",
       "category": "cycle",
-      "title": "끝이자 시작",
-      "description": "모든 엔딩 너머에 새로운 시작이 있다. \"그 사람\"이 남긴 것은 절망이 아니라... 가능성이었다.",
+      "title": "맹세를 내려놓다",
+      "description": "첫 파트너와의 맹세가 실은 서로를 옭아맨 족쇄였음을 이제 안다. 하나를 영원히 붙잡는 대신 매번 다른 셋과 걷는 법을 배운다. 그것이 그가 남긴 마지막 유대의 방식이었다.",
       "unlock_condition": "reach_3_endings"
     }
   ]
