@@ -38,8 +38,9 @@ enum PrepBonusType {
 class PrepPhaseData {
   PrepPhaseData._();
 
-  static const introText = '던전의 입구에 서있다. 출발 전 마지막 준비를 할 수 있다.';
-  static const choicePromptText = '무엇을 준비하겠는가?';
+  static const introText =
+      '야수들이 도사린 심층의 초입에 섰다. 파트너와 함께 내려가기 전, 마지막 채비를 갖춘다.';
+  static const choicePromptText = '무엇을 챙기겠는가?';
 
   static List<PrepChoice> getChoices({
     int startingGoldBonus = 20,

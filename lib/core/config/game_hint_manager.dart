@@ -15,10 +15,10 @@ class GameHintManager {
 
   // ── 힌트 텍스트 ──
   static const goalText =
-      '💡 던전 깊은 곳에 잠든 5층의 보스를 쓰러뜨리는 것이 목표다.';
+      '💡 심층으로 내려가 각 영역의 지배자를 쓰러뜨리는 것이 목표다. 제압한 적은 길들여 네 덱이 된다.';
 
-  static const dispositionText =
-      '💡 성향은 보스 선택에 따라 변하며, 직업 분화와 엔딩에 영향을 준다.';
+  static const tamingText =
+      '💡 적의 체력을 25% 이하로 떨어뜨린 뒤 제압하면 길들일 수 있다. 길들인 몬스터를 장착해 덱을 꾸린다.';
 
   static const momentumText =
       '💡 기세는 다양한 행동을 할수록 올라간다. 높을수록 턴당 AP가 증가한다.';

@@ -848,17 +848,17 @@ class DungeonNavigationHandler {
   String _floorIntroText(int floor) {
     switch (floor) {
       case 1:
-        return '던전 1층에 발을 들인다. 어둠 속에서 여러 갈래의 길이 보인다.';
+        return '이끼 낀 폐허에 들어선다. 무너진 돌 틈마다 야수의 기척이 도사린다.';
       case 2:
-        return '2층으로 내려선다. 공기가 한층 더 무겁다.';
+        return '차가운 동굴로 내려선다. 어둠 속 여러 쌍의 눈이 이쪽을 살핀다.';
       case 3:
-        return '3층. 벽에서 희미한 빛이 새어 나온다.';
+        return '버려진 감옥. 갇혀 있던 것들이 깨어나 어슬렁거린다.';
       case 4:
-        return '4층. 이곳의 어둠은 살아 움직이는 듯하다.';
+        return '뜨거운 사원 깊숙이. 이곳을 지키는 강대한 것들이 도사린다.';
       case 5:
-        return '최심층에 도달했다. 던전의 심장부가 고동친다.';
+        return '심연에 도달했다. 이 야생의 심장이 고동친다. 그 주인이 눈을 뜬다.';
       default:
-        return '던전 $floor층에 발을 들인다.';
+        return '$floor번째 영역, 더 깊은 야생으로 내려간다.';
     }
   }
 

@@ -23,7 +23,7 @@ void main() {
       final typewriter = tester.widget<TypewriterWidget>(
         find.byType(TypewriterWidget),
       );
-      expect(typewriter.text, contains('던전의 입구에 서있다'));
+      expect(typewriter.text, contains('심층의 초입에 섰다'));
     });
 
     testWidgets('앱 시작 → GameEventBus 주입 성공', (tester) async {

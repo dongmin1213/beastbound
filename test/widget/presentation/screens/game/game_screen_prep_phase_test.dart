@@ -123,7 +123,7 @@ void main() {
       final typewriter = tester.widget<TypewriterWidget>(
         find.byType(TypewriterWidget),
       );
-      expect(typewriter.text, contains('던전의 입구에 서있다'));
+      expect(typewriter.text, contains('심층의 초입에 섰다'));
     });
 
     testWidgets('인트로 탭 → 선택지 3개 표시', (tester) async {
@@ -206,7 +206,7 @@ void main() {
       final introWidget = tester.widget<TypewriterWidget>(
         find.byType(TypewriterWidget),
       );
-      expect(introWidget.text, contains('던전 1층에 발을 들인다'));
+      expect(introWidget.text, contains('이끼 낀 폐허에 들어선다'));
     });
 
     testWidgets('골드 선택 → 시작 골드 증가', (tester) async {

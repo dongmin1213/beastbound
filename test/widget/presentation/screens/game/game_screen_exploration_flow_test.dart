@@ -95,7 +95,7 @@ void main() {
     expect(find.byType(TypewriterWidget), findsOneWidget);
     final intro =
         tester.widget<TypewriterWidget>(find.byType(TypewriterWidget));
-    expect(intro.text, contains('던전의 입구에 서있다'));
+    expect(intro.text, contains('심층의 초입에 섰다'));
     debugPrint('STEP 1: 준비 페이즈 인트로 — "${intro.text}"');
 
     // ═══════════════════════════════════════════
@@ -142,7 +142,7 @@ void main() {
     expect(find.byType(TypewriterWidget), findsOneWidget);
     final dungeonIntro =
         tester.widget<TypewriterWidget>(find.byType(TypewriterWidget));
-    expect(dungeonIntro.text, contains('던전 1층에 발을 들인다'));
+    expect(dungeonIntro.text, contains('이끼 낀 폐허에 들어선다'));
     debugPrint('STEP 4: 던전 인트로 — "${dungeonIntro.text}"');
 
     // ═══════════════════════════════════════════
