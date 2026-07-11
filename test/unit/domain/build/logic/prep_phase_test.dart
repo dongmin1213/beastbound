@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:soul_dungeon/domain/build/logic/prep_phase.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 
 void main() {
   group('PrepPhaseData', () {
@@ -14,15 +13,6 @@ void main() {
       for (final choice in choices) {
         expect(choice.id, startsWith('prep_'));
       }
-    });
-
-    test('6개 선택지가 6축 성향을 각각 커버', () {
-      final choices = PrepPhaseData.getChoices();
-      final coveredAxes = <DispositionAxis>{};
-      for (final choice in choices) {
-        coveredAxes.addAll(choice.dispositionBonus.keys);
-      }
-      expect(coveredAxes, containsAll(DispositionAxis.values));
     });
 
     test('골드 보너스 선택지', () {
@@ -56,7 +46,6 @@ void main() {
       final relicChoice = choices.firstWhere((c) => c.id == 'prep_relic');
       expect(relicChoice.bonusType, PrepBonusType.relic);
       expect(relicChoice.relicId, 'relic_005');
-      expect(relicChoice.dispositionBonus[DispositionAxis.wisdom], 2);
     });
 
     test('자비 HP 보너스 선택지', () {
@@ -64,7 +53,6 @@ void main() {
       final mercyChoice = choices.firstWhere((c) => c.id == 'prep_mercy');
       expect(mercyChoice.bonusType, PrepBonusType.hp);
       expect(mercyChoice.bonusValue, 12);
-      expect(mercyChoice.dispositionBonus[DispositionAxis.mercy], 2);
     });
 
     test('균형 보너스 선택지', () {
@@ -77,7 +65,6 @@ void main() {
       expect(balancedChoice.bonusType, PrepBonusType.balanced);
       expect(balancedChoice.bonusValue, 15); // gold
       expect(balancedChoice.secondaryValue, 10); // hp
-      expect(balancedChoice.dispositionBonus[DispositionAxis.harmony], 2);
     });
 
     test('기본값 사용', () {

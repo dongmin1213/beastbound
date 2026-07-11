@@ -49,7 +49,6 @@ class BossChoiceHandler {
     choices.add(ChoiceData(
       id: 'boss_${aggressiveChoice.name}',
       text: '${aggressiveChoice.displayName}'
-          ' (${aggressiveChoice.dispositionAxis.displayName} +$dispositionDelta)'
           '\n${aggressiveChoice.description}',
       resultTextBlocks: const [],
       choiceStyle: ChoiceStyle.caution,
@@ -68,7 +67,6 @@ class BossChoiceHandler {
         choices.add(ChoiceData(
           id: 'boss_${choice.name}',
           text: '${choice.displayName}'
-              ' (${choice.dispositionAxis.displayName} +$dispositionDelta)'
               '\n${choice.description}',
           resultTextBlocks: const [],
           choiceStyle: ChoiceStyle.reward,
@@ -77,8 +75,7 @@ class BossChoiceHandler {
         choices.add(ChoiceData(
           id: 'boss_${choice.name}_locked',
           text: '${choice.displayName}'
-              ' (${choice.dispositionAxis.displayName} +$dispositionDelta'
-              ' / 기세 $momentumThreshold 필요)'
+              ' (기세 $momentumThreshold 필요)'
               '\n${choice.description}',
           resultTextBlocks: const [],
           enabled: false,

@@ -1,4 +1,3 @@
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 
 /// 준비 페이즈 출발 선택 — 런 시작 전 보너스 선택 로직.
 ///
@@ -15,9 +14,6 @@ class PrepChoice {
   /// balanced 타입 보조값 (HP 보너스).
   final int secondaryValue;
 
-  /// 준비 선택 시 부여할 초기 Disposition 보너스.
-  final Map<DispositionAxis, int> dispositionBonus;
-
   const PrepChoice({
     required this.id,
     required this.name,
@@ -27,7 +23,6 @@ class PrepChoice {
     this.blessingId,
     this.relicId,
     this.secondaryValue = 0,
-    this.dispositionBonus = const {},
   });
 }
 
@@ -59,51 +54,45 @@ class PrepPhaseData {
       PrepChoice(
         id: 'prep_gold',
         name: '노련한 탐험가의 주머니',
-        description: '시작 골드 +$startingGoldBonus · 그림자+2',
+        description: '시작 골드 +$startingGoldBonus',
         bonusType: PrepBonusType.gold,
         bonusValue: startingGoldBonus,
-        dispositionBonus: const {DispositionAxis.shadow: 2},
       ),
       PrepChoice(
         id: 'prep_hp',
         name: '생명력의 부적',
-        description: '시작 HP +$startingHpBonus · 의지+2',
+        description: '시작 HP +$startingHpBonus',
         bonusType: PrepBonusType.hp,
         bonusValue: startingHpBonus,
-        dispositionBonus: const {DispositionAxis.will: 2},
       ),
       PrepChoice(
         id: 'prep_blessing',
         name: '선대 모험가의 축복',
-        description: '시작 축복 1개 획득 · 투쟁+2',
+        description: '시작 축복 1개 획득',
         bonusType: PrepBonusType.blessing,
         blessingId: startingBlessingId,
-        dispositionBonus: const {DispositionAxis.struggle: 2},
       ),
       PrepChoice(
         id: 'prep_relic',
         name: '고대의 유물',
-        description: '유물 1개 획득 · 지혜+2',
+        description: '유물 1개 획득',
         bonusType: PrepBonusType.relic,
         relicId: startingRelicId,
-        dispositionBonus: const {DispositionAxis.wisdom: 2},
       ),
       PrepChoice(
         id: 'prep_mercy',
         name: '치유사의 기도',
-        description: '시작 HP +$mercyHpBonus · 자비+2',
+        description: '시작 HP +$mercyHpBonus',
         bonusType: PrepBonusType.hp,
         bonusValue: mercyHpBonus,
-        dispositionBonus: const {DispositionAxis.mercy: 2},
       ),
       PrepChoice(
         id: 'prep_balanced',
         name: '방랑자의 배낭',
-        description: '골드 +$balancedGold & HP +$balancedHp · 조화+2',
+        description: '골드 +$balancedGold & HP +$balancedHp',
         bonusType: PrepBonusType.balanced,
         bonusValue: balancedGold,
         secondaryValue: balancedHp,
-        dispositionBonus: const {DispositionAxis.harmony: 2},
       ),
     ];
   }

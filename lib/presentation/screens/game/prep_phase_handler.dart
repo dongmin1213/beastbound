@@ -7,7 +7,6 @@ import 'package:soul_dungeon/domain/build/logic/preset_manager.dart';
 import 'package:soul_dungeon/domain/dungeon/bloc/dungeon_bloc.dart';
 import 'package:soul_dungeon/domain/dungeon/bloc/dungeon_event.dart';
 import 'package:soul_dungeon/domain/run/run_event.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 import 'package:soul_dungeon/presentation/screens/game/game_run_controller.dart';
 import 'package:soul_dungeon/presentation/widgets/choice/choice_data.dart';
 
@@ -184,19 +183,6 @@ class PrepPhaseHandler {
         runController.runBloc.add(GainGold(goldAmount));
         runController.runBloc.add(ChangeMaxHp(hpAmount));
         resultText = '방랑자의 지혜가 깃들었다. (골드 +$goldAmount, HP +$hpAmount)';
-    }
-
-    // Disposition 보너스 적용
-    if (selected.dispositionBonus.isNotEmpty) {
-      final current = runController.playerRunState.disposition;
-      final updated = Map<DispositionAxis, int>.from(current);
-      for (final entry in selected.dispositionBonus.entries) {
-        updated[entry.key] = (updated[entry.key] ?? 0) + entry.value;
-      }
-      runController.playerRunState = runController.playerRunState.copyWith(
-        disposition: updated,
-      );
-      runController.runBloc.add(ChangeDisposition(selected.dispositionBonus));
     }
 
     // 결과 표시 — 던전 생성은 결과 텍스트 소진 후 보류
