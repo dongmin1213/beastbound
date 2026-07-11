@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:soul_dungeon/core/models/enemy_combat_data.dart';
-import 'package:soul_dungeon/domain/combat/content/floor_enemies.dart';
 import 'package:soul_dungeon/core/config/tamed_monster_store.dart';
+import 'package:soul_dungeon/domain/combat/content/boss_enemies.dart';
+import 'package:soul_dungeon/domain/combat/content/floor_enemies.dart';
 import 'package:soul_dungeon/domain/combat/content/monster_cards.dart';
 import 'package:soul_dungeon/domain/combat/content/monster_passives.dart';
 import 'package:soul_dungeon/presentation/theme/app_theme.dart';
@@ -9,15 +9,15 @@ import 'package:soul_dungeon/presentation/theme/pixel_art_assets.dart';
 
 /// 도감(Bestiary) — 길들일 수 있는 몬스터와 그 무브풀을 보여준다.
 ///
-/// "네가 싸운 적이, 네 덱이 된다"의 메타 화면. 현재는 1층 몬스터를 표시하는
-/// 플레이스홀더 — 포획 영속(로스터/도감 저장)은 이후 시스템 ④에서 연결.
+/// "네가 싸운 적이, 네 덱이 된다"의 메타 화면. 야수(일반/정예) + 영역의 주인(보스)을
+/// 모두 표시한다. 포획 여부는 [TamedMonsterStore]에 영속.
 class BestiaryScreen extends StatelessWidget {
   final VoidCallback onBack;
 
   const BestiaryScreen({super.key, required this.onBack});
 
-  /// 도감에 표시할 몬스터 (전 층). 무브풀이 정의된 종만.
-  static List<EnemyCombatData> get _monsters => [
+  /// 야수(일반/정예) — 무브풀이 정의된 종만.
+  static List<_Entry> get _beasts => [
         ...FloorEnemies.floor1Normal,
         ...FloorEnemies.floor1Elite,
         ...FloorEnemies.floor2Normal,
@@ -28,11 +28,36 @@ class BestiaryScreen extends StatelessWidget {
         ...FloorEnemies.floor4Elite,
         ...FloorEnemies.floor5Normal,
         ...FloorEnemies.floor5Elite,
-      ].where((e) => MonsterCards.hasMovepool(e.id)).toList();
+      ]
+          .where((e) => MonsterCards.hasMovepool(e.id))
+          .map((e) => _Entry(
+                id: e.id,
+                name: e.name,
+                isElite: e.isElite,
+                isBoss: false,
+                spritePath: PixelArtAssets.enemySprite(e.id),
+              ))
+          .toList();
+
+  /// 영역의 주인(보스) — 무브풀이 정의된 종만.
+  static List<_Entry> get _lords => BossEnemies.all
+      .where((b) => MonsterCards.hasMovepool(b.id))
+      .map((b) => _Entry(
+            id: b.id,
+            name: b.name,
+            isElite: false,
+            isBoss: true,
+            spritePath: PixelArtAssets.bossSprite(b.id),
+          ))
+      .toList();
 
   @override
   Widget build(BuildContext context) {
-    final monsters = _monsters;
+    final beasts = _beasts;
+    final lords = _lords;
+    final all = [...beasts, ...lords];
+    final tamedCount = all.where((m) => TamedMonsterStore.isTamed(m.id)).length;
+
     return Scaffold(
       backgroundColor: AppTheme.screenBackground,
       body: SafeArea(
@@ -62,7 +87,7 @@ class BestiaryScreen extends StatelessWidget {
                   ),
                   const Spacer(),
                   Text(
-                    '${monsters.where((m) => TamedMonsterStore.isTamed(m.id)).length}/${monsters.length} 포획',
+                    '$tamedCount/${all.length} 포획',
                     style: const TextStyle(
                       color: Color(0xFF8A80A0),
                       fontSize: 13,
@@ -86,21 +111,17 @@ class BestiaryScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            // ── 몬스터 그리드 ──
+            // ── 섹션: 야수 + 영역의 주인 ──
             Expanded(
-              child: GridView.builder(
+              child: ListView(
                 padding: const EdgeInsets.all(12),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 0.74,
-                ),
-                itemCount: monsters.length,
-                itemBuilder: (context, i) => _MonsterCard(
-                  monster: monsters[i],
-                  tamed: TamedMonsterStore.isTamed(monsters[i].id),
-                ),
+                children: [
+                  _sectionLabel('야수', beasts),
+                  _grid(beasts),
+                  const SizedBox(height: 16),
+                  _sectionLabel('영역의 주인', lords),
+                  _grid(lords),
+                ],
               ),
             ),
           ],
@@ -108,27 +129,93 @@ class BestiaryScreen extends StatelessWidget {
       ),
     );
   }
+
+  Widget _sectionLabel(String title, List<_Entry> entries) {
+    final tamed = entries.where((e) => TamedMonsterStore.isTamed(e.id)).length;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8, left: 2),
+      child: Row(
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              color: Color(0xFFC8BEE0),
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'monospace',
+              letterSpacing: 1,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Text(
+            '$tamed/${entries.length}',
+            style: const TextStyle(
+              color: Color(0xFF6A6280),
+              fontSize: 11,
+              fontFamily: 'monospace',
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _grid(List<_Entry> entries) {
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 10,
+        crossAxisSpacing: 10,
+        childAspectRatio: 0.74,
+      ),
+      itemCount: entries.length,
+      itemBuilder: (context, i) => _MonsterCard(
+        entry: entries[i],
+        tamed: TamedMonsterStore.isTamed(entries[i].id),
+      ),
+    );
+  }
+}
+
+/// 도감 표시용 통합 엔트리 (야수 + 보스).
+class _Entry {
+  final String id;
+  final String name;
+  final bool isElite;
+  final bool isBoss;
+  final String? spritePath;
+
+  const _Entry({
+    required this.id,
+    required this.name,
+    required this.isElite,
+    required this.isBoss,
+    required this.spritePath,
+  });
 }
 
 class _MonsterCard extends StatelessWidget {
-  final EnemyCombatData monster;
+  final _Entry entry;
   final bool tamed;
 
-  const _MonsterCard({required this.monster, this.tamed = false});
+  const _MonsterCard({required this.entry, this.tamed = false});
 
   @override
   Widget build(BuildContext context) {
-    final spritePath = PixelArtAssets.enemySprite(monster.id);
-    final cardCount = MonsterCards.movepoolIds(monster.id).length;
+    final spritePath = entry.spritePath;
+    final cardCount = MonsterCards.movepoolIds(entry.id).length;
+    final borderColor = entry.isBoss
+        ? const Color(0xFF6A2C4C)
+        : entry.isElite
+            ? const Color(0xFF6A5A2C)
+            : const Color(0xFF3A3352);
 
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xFF15101F),
-        border: Border.all(
-          color: monster.isElite
-              ? const Color(0xFF6A5A2C)
-              : const Color(0xFF3A3352),
-        ),
+        border: Border.all(color: borderColor),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Column(
@@ -167,7 +254,14 @@ class _MonsterCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    if (monster.isElite)
+                    if (entry.isBoss)
+                      const Padding(
+                        padding: EdgeInsets.only(right: 3),
+                        child: Text('☠',
+                            style: TextStyle(
+                                color: Color(0xFFDD6699), fontSize: 11)),
+                      )
+                    else if (entry.isElite)
                       const Padding(
                         padding: EdgeInsets.only(right: 3),
                         child: Text('★',
@@ -176,7 +270,7 @@ class _MonsterCard extends StatelessWidget {
                       ),
                     Expanded(
                       child: Text(
-                        tamed ? monster.name : '???',
+                        tamed ? entry.name : '???',
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           color: Color(0xFFEDE6F5),
@@ -191,8 +285,7 @@ class _MonsterCard extends StatelessWidget {
                 const SizedBox(height: 3),
                 Row(
                   children: [
-                    const Icon(Icons.style,
-                        size: 11, color: Color(0xFF9A8AC0)),
+                    const Icon(Icons.style, size: 11, color: Color(0xFF9A8AC0)),
                     const SizedBox(width: 3),
                     Text(
                       '무브풀 $cardCount장',
@@ -215,10 +308,10 @@ class _MonsterCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                if (!MonsterPassives.forMonster(monster.id).isNone) ...[
+                if (!MonsterPassives.forMonster(entry.id).isNone) ...[
                   const SizedBox(height: 2),
                   Text(
-                    '✦ ${MonsterPassives.forMonster(monster.id).label}',
+                    '✦ ${MonsterPassives.forMonster(entry.id).label}',
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       color: Color(0xFF8FB0E0),
