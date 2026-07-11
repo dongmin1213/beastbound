@@ -1,5 +1,6 @@
 import 'package:soul_dungeon/core/config/config_utils.dart';
 import 'package:soul_dungeon/core/config/dungeon_balance_config.dart';
+import 'package:soul_dungeon/core/config/floor_region.dart';
 import 'package:soul_dungeon/core/logging/game_logger.dart';
 
 /// 층별 난이도 오버라이드 설정.
@@ -80,9 +81,15 @@ class FloorsConfig {
   const FloorsConfig(this._floors);
 
   /// 층 번호(1-based)에 해당하는 FloorConfig를 반환.
+  /// 층별 설정(10개)이면 직접 인덱스, 지역별 설정(5개)이면 지역 기준으로 재사용.
   /// 범위 밖이면 기본 FloorConfig.
   FloorConfig forFloor(int floor) {
-    final index = floor - 1;
+    if (_floors.isEmpty) return const FloorConfig();
+    var index = floor - 1;
+    if (index >= _floors.length) {
+      // 설정 개수가 층 수보다 적으면(예: 지역별 5개) 지역 기준으로 매핑.
+      index = FloorRegion.of(floor) - 1;
+    }
     if (index < 0 || index >= _floors.length) {
       return const FloorConfig();
     }

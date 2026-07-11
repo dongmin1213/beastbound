@@ -1,4 +1,5 @@
 import 'package:soul_dungeon/core/config/balance_config.dart';
+import 'package:soul_dungeon/core/config/floor_region.dart';
 import 'package:soul_dungeon/core/config/game_hint_manager.dart';
 import 'package:soul_dungeon/core/events/boss_choice_event.dart';
 import 'package:soul_dungeon/core/events/game_event_bus.dart';
@@ -175,14 +176,14 @@ class BossFlowHandler {
       jobId: playerJobId,
     );
 
-    if (floor >= 5) {
-      // 최종 층 클리어 — 던전 정복.
+    if (FloorRegion.isFinalFloor(floor)) {
+      // 최종 층 클리어 — 심연의 주인마저 제압.
       showEnding(resultText);
     } else {
       setTextBlockData([
         TextBlockData(
           text: '$resultText\n\n'
-              '$floor층을 클리어했다. 더 깊은 곳으로 향하는 계단이 나타난다.',
+              '$floor층을 넘어섰다. 더 깊은 곳으로 향하는 길이 열린다.',
           choices: [
             ChoiceData(
               id: 'advance_floor',

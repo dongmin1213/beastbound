@@ -1,3 +1,4 @@
+import 'package:soul_dungeon/core/config/floor_region.dart';
 import 'package:soul_dungeon/core/models/boss_choice.dart';
 import 'package:soul_dungeon/core/models/disposition_axis.dart';
 import 'package:soul_dungeon/core/models/player_run_state.dart';
@@ -92,7 +93,7 @@ final class ApplyCurse extends RunEvent {
 /// maxFloor 도달 시 RunCompletedEvent 발행.
 final class AdvanceFloor extends RunEvent {
   final int maxFloor;
-  const AdvanceFloor({this.maxFloor = 5});
+  const AdvanceFloor({this.maxFloor = FloorRegion.totalFloors});
 }
 
 /// 보스 선택 기록 — 보스 승리 후 3선택지(처치/해방/공존) 결과 저장.

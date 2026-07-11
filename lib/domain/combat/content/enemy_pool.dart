@@ -1,15 +1,18 @@
 import 'dart:math';
+import 'package:soul_dungeon/core/config/floor_region.dart';
 import 'package:soul_dungeon/domain/combat/content/floor_enemies.dart';
 import 'package:soul_dungeon/core/models/enemy_combat_data.dart';
 import 'package:soul_dungeon/core/models/enemy_modifier.dart';
 
 /// 층/타입별 적 조회 중앙 레지스트리.
+///
+/// 5지역 × 2층 구조 — 한 지역의 두 층은 같은 적 풀을 공유한다(둘째 층은 HP 스케일링).
 class EnemyPool {
   EnemyPool._();
 
-  /// 층별 일반 적 리스트.
+  /// 층별 일반 적 리스트 (지역 풀 공유).
   static List<EnemyCombatData> normalEnemies(int floor) {
-    return switch (floor) {
+    return switch (FloorRegion.of(floor)) {
       1 => FloorEnemies.floor1Normal,
       2 => FloorEnemies.floor2Normal,
       3 => FloorEnemies.floor3Normal,
@@ -19,9 +22,9 @@ class EnemyPool {
     };
   }
 
-  /// 층별 엘리트 적 리스트.
+  /// 층별 엘리트 적 리스트 (지역 풀 공유).
   static List<EnemyCombatData> eliteEnemies(int floor) {
-    return switch (floor) {
+    return switch (FloorRegion.of(floor)) {
       1 => FloorEnemies.floor1Elite,
       2 => FloorEnemies.floor2Elite,
       3 => FloorEnemies.floor3Elite,

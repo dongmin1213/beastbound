@@ -25,7 +25,7 @@ void main() {
       eventBus.dispose();
     });
 
-    test('1층→5층 순차 진행 (전체 런)', () async {
+    test('1층→5층 순차 진행 (중간 진행 검증)', () async {
       // 1→2
       runBloc.add(const AdvanceFloor());
       await runBloc.stream.first;
@@ -52,29 +52,29 @@ void main() {
       );
     });
 
-    test('5층 AdvanceFloor → RunCompletedEvent + floor 유지', () async {
-      // 4층까지 진행
-      for (var i = 0; i < 4; i++) {
+    test('10층 AdvanceFloor → RunCompletedEvent + floor 유지', () async {
+      // 9층까지 진행
+      for (var i = 0; i < 9; i++) {
         runBloc.add(const AdvanceFloor());
         await runBloc.stream.first;
       }
-      expect((runBloc.state as RunActive).playerRunState.currentFloor, 5);
+      expect((runBloc.state as RunActive).playerRunState.currentFloor, 10);
 
-      // 5층 AdvanceFloor
+      // 10층(최종) AdvanceFloor
       runBloc.add(const AdvanceFloor());
       await runBloc.stream.first;
 
-      // floor 유지 (6이 아님)
-      expect((runBloc.state as RunActive).playerRunState.currentFloor, 5);
+      // floor 유지 (11이 아님)
+      expect((runBloc.state as RunActive).playerRunState.currentFloor, 10);
       expect(
         (runBloc.state as RunActive).playerRunState.completedFloors,
-        {1, 2, 3, 4, 5},
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
       );
 
       // RunCompletedEvent 발행 확인
       final runEvents = eventBus.history.whereType<RunCompletedEvent>().toList();
       expect(runEvents.length, 1);
-      expect(runEvents.first.totalFloors, 5);
+      expect(runEvents.first.totalFloors, 10);
     });
 
     test('FloorCompletedEvent 매 층마다 발행', () async {

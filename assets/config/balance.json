@@ -14,7 +14,11 @@
     "same_action_streak_penalty": -25,
     "environment_momentum_bonus": 20,
     "special_action_momentum_bonus": 20,
-    "thresholds": { "low": 10, "medium": 30, "high": 80 },
+    "thresholds": {
+      "low": 10,
+      "medium": 30,
+      "high": 80
+    },
     "tier_effects": {
       "high": {
         "effective_text": "결정적 일격!",
@@ -45,7 +49,7 @@
   "flee": {
     "base_success_rate": 0.5,
     "ap_cost": 1,
-    "hp_penalty_percent": 0.10,
+    "hp_penalty_percent": 0.1,
     "gold_penalty": 10,
     "wind_amulet_bonus": 0.3
   },
@@ -146,11 +150,96 @@
     "price_multiplier_cursed": 0.8
   },
   "floors": [
-    { "rooms_per_floor": 16, "enemy_hp_multiplier": 1.0, "gold_multiplier": 1.0, "min_events_per_path": 2 },
-    { "rooms_per_floor": 18, "enemy_hp_multiplier": 1.35, "gold_multiplier": 1.2, "elite_min": 1, "elite_max": 2, "min_events_per_path": 2 },
-    { "rooms_per_floor": 20, "enemy_hp_multiplier": 1.65, "gold_multiplier": 1.3, "elite_min": 1, "elite_max": 2, "combat_weight": 75, "mystery_weight": 15, "event_weight": 10 },
-    { "rooms_per_floor": 22, "enemy_hp_multiplier": 1.85, "gold_multiplier": 1.4, "elite_min": 2, "elite_max": 3, "combat_weight": 75, "mystery_weight": 15, "event_weight": 10 },
-    { "rooms_per_floor": 24, "enemy_hp_multiplier": 2.1, "gold_multiplier": 1.5, "elite_min": 2, "elite_max": 3, "elite_min_depth": 2, "combat_weight": 75, "mystery_weight": 15, "event_weight": 10 }
+    {
+      "rooms_per_floor": 18,
+      "enemy_hp_multiplier": 1.0,
+      "gold_multiplier": 1.0,
+      "min_events_per_path": 2
+    },
+    {
+      "rooms_per_floor": 20,
+      "enemy_hp_multiplier": 1.18,
+      "gold_multiplier": 1.1,
+      "min_events_per_path": 2
+    },
+    {
+      "rooms_per_floor": 20,
+      "enemy_hp_multiplier": 1.35,
+      "gold_multiplier": 1.2,
+      "elite_min": 1,
+      "elite_max": 2,
+      "min_events_per_path": 2
+    },
+    {
+      "rooms_per_floor": 22,
+      "enemy_hp_multiplier": 1.5,
+      "gold_multiplier": 1.28,
+      "elite_min": 1,
+      "elite_max": 2,
+      "min_events_per_path": 2
+    },
+    {
+      "rooms_per_floor": 22,
+      "enemy_hp_multiplier": 1.65,
+      "gold_multiplier": 1.3,
+      "elite_min": 1,
+      "elite_max": 2,
+      "combat_weight": 75,
+      "mystery_weight": 15,
+      "event_weight": 10
+    },
+    {
+      "rooms_per_floor": 24,
+      "enemy_hp_multiplier": 1.75,
+      "gold_multiplier": 1.35,
+      "elite_min": 1,
+      "elite_max": 2,
+      "combat_weight": 75,
+      "mystery_weight": 15,
+      "event_weight": 10
+    },
+    {
+      "rooms_per_floor": 24,
+      "enemy_hp_multiplier": 1.85,
+      "gold_multiplier": 1.4,
+      "elite_min": 2,
+      "elite_max": 3,
+      "combat_weight": 75,
+      "mystery_weight": 15,
+      "event_weight": 10
+    },
+    {
+      "rooms_per_floor": 26,
+      "enemy_hp_multiplier": 1.98,
+      "gold_multiplier": 1.45,
+      "elite_min": 2,
+      "elite_max": 3,
+      "combat_weight": 75,
+      "mystery_weight": 15,
+      "event_weight": 10
+    },
+    {
+      "rooms_per_floor": 26,
+      "enemy_hp_multiplier": 2.1,
+      "gold_multiplier": 1.5,
+      "elite_min": 2,
+      "elite_max": 3,
+      "elite_min_depth": 2,
+      "combat_weight": 75,
+      "mystery_weight": 15,
+      "event_weight": 10
+    },
+    {
+      "rooms_per_floor": 28,
+      "enemy_hp_multiplier": 2.3,
+      "gold_multiplier": 1.6,
+      "elite_min": 2,
+      "elite_max": 3,
+      "elite_min_depth": 2,
+      "combat_weight": 75,
+      "mystery_weight": 15,
+      "event_weight": 10
+    }
   ],
   "meta_progression": {
     "soul_clear_bonus": 50,
@@ -176,11 +265,53 @@
     }
   },
   "curses": {
-    "combat_strength_by_level": [0, 2, 3, 5, 7, 10],
-    "reward_reduction_by_level": [0, 0, 0, 1, 1, 1],
-    "shop_price_multiplier_by_level": [1.0, 1.0, 1.3, 1.5, 1.7, 2.0],
-    "curse_card_count_by_level": [0, 0, 1, 1, 2, 2],
-    "narrator_floor_offset_by_level": [0, 0, 1, 1, 2, 2],
-    "level_thresholds": [0, 1, 3, 5, 8, 12]
+    "combat_strength_by_level": [
+      0,
+      2,
+      3,
+      5,
+      7,
+      10
+    ],
+    "reward_reduction_by_level": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1
+    ],
+    "shop_price_multiplier_by_level": [
+      1.0,
+      1.0,
+      1.3,
+      1.5,
+      1.7,
+      2.0
+    ],
+    "curse_card_count_by_level": [
+      0,
+      0,
+      1,
+      1,
+      2,
+      2
+    ],
+    "narrator_floor_offset_by_level": [
+      0,
+      0,
+      1,
+      1,
+      2,
+      2
+    ],
+    "level_thresholds": [
+      0,
+      1,
+      3,
+      5,
+      8,
+      12
+    ]
   }
 }

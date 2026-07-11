@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soul_dungeon/core/config/floor_region.dart';
 import 'package:soul_dungeon/core/models/game_enums.dart';
 
 /// 층별 파티클 방향.
@@ -78,9 +79,9 @@ class FloorThemeVisuals {
     required this.combatFleeBorder,
   });
 
-  /// 층 번호 (1~5) → FloorThemeVisuals.
+  /// 층 번호 (1~10) → FloorThemeVisuals. 5지역이 각 2층에 걸친다.
   static FloorThemeVisuals fromFloor(int floor) {
-    final theme = switch (floor) {
+    final theme = switch (FloorRegion.of(floor)) {
       1 => FloorTheme.ruins,
       2 => FloorTheme.cavern,
       3 => FloorTheme.prison,

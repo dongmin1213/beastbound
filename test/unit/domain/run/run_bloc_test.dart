@@ -799,20 +799,20 @@ void main() {
       );
 
       blocTest<RunBloc, RunState>(
-        '5층(최종) AdvanceFloor → RunCompletedEvent 발행, floor 유지',
+        '10층(최종) AdvanceFloor → RunCompletedEvent 발행, floor 유지',
         build: () => RunBloc(gameEventBus: eventBus),
         seed: () => RunActive(
           playerRunState: PlayerRunState.initial(maxHp: 100).copyWith(
-            currentFloor: 5,
-            completedFloors: {1, 2, 3, 4},
+            currentFloor: 10,
+            completedFloors: {1, 2, 3, 4, 5, 6, 7, 8, 9},
           ),
         ),
         act: (bloc) => bloc.add(const AdvanceFloor()),
         expect: () => [
           RunActive(
             playerRunState: PlayerRunState.initial(maxHp: 100).copyWith(
-              currentFloor: 5,
-              completedFloors: {1, 2, 3, 4, 5},
+              currentFloor: 10,
+              completedFloors: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
             ),
           ),
         ],
@@ -821,13 +821,13 @@ void main() {
               .whereType<RunCompletedEvent>()
               .toList();
           expect(runEvents.length, 1);
-          expect(runEvents.first.totalFloors, 5);
+          expect(runEvents.first.totalFloors, 10);
 
           final floorEvents = eventBus.history
               .whereType<FloorCompletedEvent>()
               .toList();
           expect(floorEvents.length, 1);
-          expect(floorEvents.first.floorNumber, 5);
+          expect(floorEvents.first.floorNumber, 10);
         },
       );
 

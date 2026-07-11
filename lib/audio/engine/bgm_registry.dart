@@ -1,5 +1,7 @@
+import 'package:soul_dungeon/core/config/floor_region.dart';
+
 /// BGM ID -> asset path mapping.
-/// 8종 BGM: 탐색 5층 + 전투 3종 (일반/엘리트/보스).
+/// 8종 BGM: 탐색 5지역 + 전투 3종 (일반/엘리트/보스).
 class BgmRegistry {
   BgmRegistry._();
 
@@ -25,10 +27,10 @@ class BgmRegistry {
   /// Total registered count.
   static int get count => _registry.length;
 
-  /// 층 번호 -> 탐색 BGM ID.
+  /// 층 번호 -> 탐색 BGM ID. 5지역이 각 2층에 걸치므로 지역 기준 트랙 사용.
   static String explorationBgmForFloor(int floor) {
-    final clamped = floor.clamp(1, 5);
-    return 'exploration_floor$clamped';
+    final region = FloorRegion.of(floor);
+    return 'exploration_floor$region';
   }
 
   /// 전투 유형 -> 전투 BGM ID.

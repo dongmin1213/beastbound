@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:soul_dungeon/core/config/floor_region.dart';
 import 'package:soul_dungeon/domain/combat/models/boss_combat_data.dart';
 import 'package:soul_dungeon/core/models/enemy_action_type.dart';
 
@@ -578,30 +579,33 @@ class BossEnemies {
     dungeonMaster, voidSovereign, dimensionCollapser,
   ];
 
+  /// 지역(1~5) → 보스 풀. 풀 첫 항목이 그 지역의 '주인'(메인 보스).
+  static List<BossCombatData> _regionPool(int region) => switch (region) {
+        1 => floor1Bosses,
+        2 => floor2Bosses,
+        3 => floor3Bosses,
+        4 => floor4Bosses,
+        5 => floor5Bosses,
+        _ => const <BossCombatData>[],
+      };
+
   /// 층별 보스 조회 (기본값 — 기존 호환).
+  /// 짝수층(지역 둘째 층) = 지역의 주인, 홀수층(첫 층) = 하위 주인.
   static BossCombatData? forFloor(int floor) {
-    return switch (floor) {
-      1 => slimeKing,
-      2 => spiderLord,
-      3 => orcGeneral,
-      4 => vampireLord,
-      5 => dungeonMaster,
-      _ => null,
-    };
+    final pool = _regionPool(FloorRegion.of(floor));
+    if (pool.isEmpty) return null;
+    if (FloorRegion.isRegionLord(floor)) return pool.first;
+    return pool.length > 1 ? pool[1] : pool.first;
   }
 
-  /// 층별 랜덤 보스 선택 (3종 풀에서).
+  /// 층별 랜덤 보스 선택.
+  /// 주인 층(짝수)은 지역 주인 고정, 첫 층(홀수)은 하위 주인 중 랜덤.
   static BossCombatData? randomForFloor(int floor, {Random? random}) {
-    final pool = switch (floor) {
-      1 => floor1Bosses,
-      2 => floor2Bosses,
-      3 => floor3Bosses,
-      4 => floor4Bosses,
-      5 => floor5Bosses,
-      _ => <BossCombatData>[],
-    };
+    final pool = _regionPool(FloorRegion.of(floor));
     if (pool.isEmpty) return null;
+    if (FloorRegion.isRegionLord(floor)) return pool.first;
+    final lessers = pool.length > 1 ? pool.sublist(1) : pool;
     final rng = random ?? Random();
-    return pool[rng.nextInt(pool.length)];
+    return lessers[rng.nextInt(lessers.length)];
   }
 }

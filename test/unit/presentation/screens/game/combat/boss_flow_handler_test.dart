@@ -142,14 +142,14 @@ void main() {
           reason: '5층에서는 성향값이 변경되면 안 된다');
     });
 
-    test('5층에서 handleBossChoice 시 showEnding을 호출한다', () {
+    test('10층(최종)에서 handleBossChoice 시 showEnding을 호출한다', () {
       final existingChoices = [
         const BossChoice(floor: 1, bossId: 'boss_ash', choiceType: BossChoiceType.slay),
         const BossChoice(floor: 2, bossId: 'boss_tide', choiceType: BossChoiceType.slay),
         const BossChoice(floor: 3, bossId: 'boss_thorn', choiceType: BossChoiceType.slay),
         const BossChoice(floor: 4, bossId: 'boss_void', choiceType: BossChoiceType.slay),
       ];
-      setupHandler(floor: 5, existingBossChoices: existingChoices);
+      setupHandler(floor: 10, existingBossChoices: existingChoices);
 
       handler.handleBossChoice(const ChoiceData(
         id: 'boss_slay',

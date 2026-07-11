@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:soul_dungeon/core/config/floor_region.dart';
 import 'package:soul_dungeon/domain/combat/content/boss_enemies.dart';
 import 'package:soul_dungeon/domain/combat/models/boss_combat_data.dart';
 
@@ -13,17 +14,26 @@ void main() {
       expect(ids.length, 15);
     });
 
-    test('층별 보스 조회', () {
-      for (int floor = 1; floor <= 5; floor++) {
+    test('층별 보스 조회 (10층, 지역 매핑)', () {
+      for (int floor = 1; floor <= FloorRegion.totalFloors; floor++) {
         final boss = BossEnemies.forFloor(floor);
         expect(boss, isNotNull, reason: 'Floor $floor should have a boss');
-        expect(boss!.floor, floor);
+        // boss.floor 필드는 지역(1~5)을 뜻한다.
+        expect(boss!.floor, FloorRegion.of(floor));
       }
     });
 
-    test('유효하지 않은 층은 null', () {
-      expect(BossEnemies.forFloor(0), isNull);
-      expect(BossEnemies.forFloor(6), isNull);
+    test('짝수층 = 지역 주인, 홀수층 = 하위 주인', () {
+      // 폐허(1·2): 2층 = 주인(슬라임 왕), 1층 = 하위 주인
+      expect(BossEnemies.forFloor(2)!.id, BossEnemies.slimeKing.id);
+      expect(BossEnemies.forFloor(1)!.id, isNot(BossEnemies.slimeKing.id));
+      // 심연(9·10): 10층 = 태초의 주인
+      expect(BossEnemies.forFloor(10)!.id, BossEnemies.dungeonMaster.id);
+    });
+
+    test('범위 밖 층은 지역으로 클램프 (non-null)', () {
+      expect(BossEnemies.forFloor(0), isNotNull);
+      expect(BossEnemies.forFloor(11), isNotNull);
     });
 
     group('슬라임 왕 (1층)', () {

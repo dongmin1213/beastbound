@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:soul_dungeon/core/config/floor_region.dart';
 import 'package:soul_dungeon/domain/combat/content/enemy_pool.dart';
 import 'package:soul_dungeon/domain/combat/content/floor_enemies.dart';
 
@@ -9,8 +10,8 @@ void main() {
       expect(EnemyPool.count, 40);
     });
 
-    test('층별 일반 적 5종씩', () {
-      for (int floor = 1; floor <= 5; floor++) {
+    test('층별 일반 적 5종씩 (10층, 지역 풀 공유)', () {
+      for (int floor = 1; floor <= FloorRegion.totalFloors; floor++) {
         expect(
           EnemyPool.normalEnemies(floor).length, 5,
           reason: 'Floor $floor should have 5 normal enemies',
@@ -18,8 +19,8 @@ void main() {
       }
     });
 
-    test('층별 엘리트 3종씩', () {
-      for (int floor = 1; floor <= 5; floor++) {
+    test('층별 엘리트 3종씩 (10층)', () {
+      for (int floor = 1; floor <= FloorRegion.totalFloors; floor++) {
         expect(
           EnemyPool.eliteEnemies(floor).length, 3,
           reason: 'Floor $floor should have 3 elite enemies',
@@ -27,11 +28,14 @@ void main() {
       }
     });
 
-    test('유효하지 않은 층은 빈 리스트', () {
-      expect(EnemyPool.normalEnemies(0), isEmpty);
-      expect(EnemyPool.normalEnemies(6), isEmpty);
-      expect(EnemyPool.eliteEnemies(0), isEmpty);
-      expect(EnemyPool.eliteEnemies(6), isEmpty);
+    test('같은 지역의 두 층은 같은 적 풀 공유', () {
+      // 폐허 1·2 / 동굴 3·4 / 감옥 5·6 / 사원 7·8 / 심연 9·10
+      for (final pair in const [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10]]) {
+        expect(EnemyPool.normalEnemies(pair[0]),
+            EnemyPool.normalEnemies(pair[1]));
+        expect(EnemyPool.eliteEnemies(pair[0]),
+            EnemyPool.eliteEnemies(pair[1]));
+      }
     });
 
     test('randomNormal — 유효한 적 반환', () {
@@ -41,19 +45,16 @@ void main() {
       expect(enemy.isElite, false);
     });
 
-    test('randomElite — 유효한 적 반환', () {
+    test('randomElite — 유효한 적 반환 (층→지역)', () {
       final enemy = EnemyPool.randomElite(3, random: Random(42));
       expect(enemy, isNotNull);
-      expect(enemy!.floor, 3);
+      expect(enemy!.floor, FloorRegion.of(3)); // 동굴 = 지역 2
       expect(enemy.isElite, true);
     });
 
-    test('randomNormal — 유효하지 않은 층은 null', () {
-      expect(EnemyPool.randomNormal(0, random: Random(42)), isNull);
-    });
-
-    test('randomElite — 유효하지 않은 층은 null', () {
-      expect(EnemyPool.randomElite(6, random: Random(42)), isNull);
+    test('깊은 층(7-10)도 유효한 적 반환', () {
+      expect(EnemyPool.randomNormal(9, random: Random(42)), isNotNull);
+      expect(EnemyPool.randomElite(10, random: Random(42)), isNotNull);
     });
 
     test('findById — 존재하는 적', () {
