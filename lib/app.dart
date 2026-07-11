@@ -16,7 +16,6 @@ import 'package:soul_dungeon/domain/narrative/bloc/narrator_bloc.dart';
 import 'package:soul_dungeon/domain/progression/bloc/progression_bloc.dart';
 import 'package:soul_dungeon/domain/progression/bloc/progression_state.dart';
 import 'package:soul_dungeon/presentation/screens/game/game_screen.dart';
-import 'package:soul_dungeon/presentation/screens/job_codex/job_codex_screen.dart';
 import 'package:soul_dungeon/presentation/screens/bestiary/bestiary_screen.dart';
 import 'package:soul_dungeon/presentation/screens/starter/starter_select_screen.dart';
 import 'package:soul_dungeon/presentation/screens/settings/settings_screen.dart';
@@ -238,7 +237,6 @@ class _SoulDungeonAppState extends State<SoulDungeonApp> {
               },
               onContinue: () => context.go('/game?continue=true'),
               onSoulShop: () => context.go('/bestiary'), // 도감(Bestiary)
-              onJobCodex: () => context.go('/job-codex'),
               onSettings: () => context.go('/settings'),
             ),
           ),
@@ -313,14 +311,6 @@ class _SoulDungeonAppState extends State<SoulDungeonApp> {
           path: '/bestiary',
           builder: (context, state) => _MobileFrame(
             child: BestiaryScreen(
-              onBack: () => context.go('/'),
-            ),
-          ),
-        ),
-        GoRoute(
-          path: '/job-codex',
-          builder: (context, state) => _MobileFrame(
-            child: JobCodexScreen(
               onBack: () => context.go('/'),
             ),
           ),

@@ -19,7 +19,6 @@ class TitleScreen extends StatefulWidget {
   final VoidCallback onNewGame;
   final VoidCallback onContinue;
   final VoidCallback? onSoulShop;
-  final VoidCallback? onJobCodex;
   final VoidCallback? onSettings;
   const TitleScreen({
     super.key,
@@ -27,7 +26,6 @@ class TitleScreen extends StatefulWidget {
     required this.onNewGame,
     required this.onContinue,
     this.onSoulShop,
-    this.onJobCodex,
     this.onSettings,
   });
 
