@@ -1,5 +1,4 @@
 import 'package:soul_dungeon/domain/dungeon/event/event_room_data.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 
 /// 직업별 이벤트 추가 선택지 오버레이.
 ///
@@ -23,9 +22,6 @@ class JobEventVariants {
       goldChange: 0,
       hpChange: -3,
       upgradeRandomCard: true,
-      dispositionRewards: {
-        DispositionAxis.struggle: 2,
-      },
     ),
     // 현자 → "수정 동굴": 지혜 기반
     '수정 동굴_sage': const EventChoice(
@@ -33,9 +29,6 @@ class JobEventVariants {
       outcomeText: '현자의 통찰로 수정의 비밀을 풀었다. 마력이 몸에 스며든다.',
       goldChange: 15,
       hpChange: 5,
-      dispositionRewards: {
-        DispositionAxis.wisdom: 2,
-      },
     ),
     // 암살자 → "수상한 상인": 그림자 기반
     '수상한 상인_assassin': const EventChoice(
@@ -43,9 +36,6 @@ class JobEventVariants {
       outcomeText: '상인의 뒤를 잡았다. 숨겨둔 진짜 상품을 손에 넣었다.',
       goldChange: 20,
       hpChange: 0,
-      dispositionRewards: {
-        DispositionAxis.shadow: 3,
-      },
     ),
     // 성자 → "깨진 제단": 자비 기반
     '깨진 제단_saint': const EventChoice(
@@ -53,9 +43,6 @@ class JobEventVariants {
       outcomeText: '성자의 기도에 제단이 반응한다. 따뜻한 빛이 상처를 치유한다.',
       goldChange: 0,
       hpChange: 15,
-      dispositionRewards: {
-        DispositionAxis.mercy: 3,
-      },
     ),
     // 수호자 → "잊혀진 보물상자": 보호 기반
     '잊혀진 보물상자_guardian': const EventChoice(
@@ -63,9 +50,6 @@ class JobEventVariants {
       outcomeText: '수호자의 방패가 함정을 완벽히 막았다. 보물을 온전히 가져간다.',
       goldChange: 25,
       hpChange: 0,
-      dispositionRewards: {
-        DispositionAxis.will: 2,
-      },
     ),
     // 방랑자 → "이상한 거래": 카오스 기반
     '이상한 거래_wanderer': const EventChoice(
@@ -74,9 +58,6 @@ class JobEventVariants {
       goldChange: 10,
       hpChange: 10,
       cardRewardId: 'colorless_random',
-      dispositionRewards: {
-        DispositionAxis.harmony: 2,
-      },
     ),
   };
 }

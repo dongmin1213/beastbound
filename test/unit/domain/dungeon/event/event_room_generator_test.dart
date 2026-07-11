@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:soul_dungeon/core/config/balance_config.dart';
 import 'package:soul_dungeon/domain/dungeon/event/event_room_data.dart';
 import 'package:soul_dungeon/domain/dungeon/event/event_room_generator.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 
 void main() {
   group('EventRoomGenerator', () {
@@ -69,70 +68,5 @@ void main() {
 
     // === Story 4-1: dispositionRewards 검증 ===
 
-    test('demo events have dispositionRewards', () {
-      const config = EventConfig();
-      const dConfig = DispositionConfig();
-
-      final allEvents = <EventRoomData>[];
-      for (int seed = 0; seed < 100; seed++) {
-        allEvents.add(EventRoomGenerator.generate(
-          floor: 1,
-          eventConfig: config,
-          dispositionConfig: dConfig,
-          seed: seed,
-        ));
-      }
-
-      // "길을 잃은 여행자" — 도움: mercy=4 (eventMajorReward 기본값)
-      final traveler = allEvents.firstWhere((e) => e.title == '길을 잃은 여행자');
-      expect(traveler.choices[0].dispositionRewards[DispositionAxis.mercy], 4);
-      // 무시: shadow=1
-      expect(traveler.choices[1].dispositionRewards[DispositionAxis.shadow], 1);
-      // 약탈: shadow=4, struggle=1
-      expect(traveler.choices[2].dispositionRewards[DispositionAxis.shadow], 4);
-      expect(traveler.choices[2].dispositionRewards[DispositionAxis.struggle], 1);
-
-      // "깨진 제단" — 기도: mercy=2, wisdom=1
-      final altar = allEvents.firstWhere((e) => e.title == '깨진 제단');
-      expect(altar.choices[0].dispositionRewards[DispositionAxis.mercy], 2);
-      expect(altar.choices[0].dispositionRewards[DispositionAxis.wisdom], 1);
-      // 지나감: will=1
-      expect(altar.choices[1].dispositionRewards[DispositionAxis.will], 1);
-
-      // "수상한 상인" — 거래: shadow=2
-      final merchant = allEvents.firstWhere((e) => e.title == '수상한 상인');
-      expect(merchant.choices[0].dispositionRewards[DispositionAxis.shadow], 2);
-      // 거절: will=2
-      expect(merchant.choices[1].dispositionRewards[DispositionAxis.will], 2);
-    });
-
-    test('dispositionRewards use DispositionConfig values', () {
-      const config = EventConfig();
-      const customDConfig = DispositionConfig(
-        eventMajorReward: 5,
-        eventMinorReward: 2,
-        eventMediumReward: 4,
-      );
-
-      final allEvents = <EventRoomData>[];
-      for (int seed = 0; seed < 100; seed++) {
-        allEvents.add(EventRoomGenerator.generate(
-          floor: 1,
-          eventConfig: config,
-          dispositionConfig: customDConfig,
-          seed: seed,
-        ));
-      }
-
-      // "길을 잃은 여행자" — 도움: mercy = eventMajorReward (5)
-      final traveler = allEvents.firstWhere((e) => e.title == '길을 잃은 여행자');
-      expect(traveler.choices[0].dispositionRewards[DispositionAxis.mercy], 5);
-      // 무시: shadow = eventMinorReward (2)
-      expect(traveler.choices[1].dispositionRewards[DispositionAxis.shadow], 2);
-
-      // "깨진 제단" — 기도: mercy = eventMediumReward (4)
-      final altar = allEvents.firstWhere((e) => e.title == '깨진 제단');
-      expect(altar.choices[0].dispositionRewards[DispositionAxis.mercy], 4);
-    });
   });
 }

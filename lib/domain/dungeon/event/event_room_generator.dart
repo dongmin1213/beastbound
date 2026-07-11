@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:soul_dungeon/core/config/balance_config.dart';
 import 'package:soul_dungeon/domain/dungeon/event/event_room_data.dart';
 import 'package:soul_dungeon/domain/dungeon/event/job_event_variants.dart';
-import 'package:soul_dungeon/core/models/disposition_axis.dart';
 
 /// 이벤트 방 생성기 — static 팩토리 (MysteryResultGenerator 패턴).
 /// 시드 기반 PRNG로 결정론적 이벤트 선택.
@@ -75,28 +74,18 @@ class EventRoomGenerator {
             outcomeText: '감사의 표시로 여행자가 금화를 건넨다.',
             goldChange: config.goldReward,
             hpChange: 0,
-            dispositionRewards: {
-              DispositionAxis.mercy: dConfig.eventMajorReward,
-            },
           ),
           EventChoice(
             label: '무시하고 지나간다',
             outcomeText: '여행자의 시선을 피해 걸음을 옮긴다.',
             goldChange: 0,
             hpChange: 0,
-            dispositionRewards: {
-              DispositionAxis.shadow: dConfig.eventMinorReward,
-            },
           ),
           EventChoice(
             label: '짐을 약탈한다',
             outcomeText: '여행자가 저항했지만... 결국 금화를 빼앗았다.',
             goldChange: (config.goldReward * 1.5).round(),
             hpChange: -config.hpPenalty,
-            dispositionRewards: {
-              DispositionAxis.shadow: dConfig.eventMajorReward,
-              DispositionAxis.struggle: dConfig.eventMinorReward,
-            },
           ),
         ],
       ),
@@ -110,19 +99,12 @@ class EventRoomGenerator {
             outcomeText: '온기가 몸을 감싼다. 상처가 아물어간다. 하지만 제단에 바친 금화가 사라졌다.',
             goldChange: -(config.goldReward / 2).round(),
             hpChange: config.hpReward,
-            dispositionRewards: {
-              DispositionAxis.mercy: dConfig.eventMediumReward,
-              DispositionAxis.wisdom: dConfig.eventMinorReward,
-            },
           ),
           EventChoice(
             label: '지나간다',
             outcomeText: '의미 없는 유적일 뿐이다. 걸음을 재촉한다.',
             goldChange: 0,
             hpChange: 0,
-            dispositionRewards: {
-              DispositionAxis.will: dConfig.eventMinorReward,
-            },
           ),
         ],
       ),
@@ -136,18 +118,12 @@ class EventRoomGenerator {
             outcomeText: '의심스러운 약을 마셨다. 놀랍게도 효과가 있다.',
             goldChange: -(config.goldReward / 2).round(),
             hpChange: config.hpReward,
-            dispositionRewards: {
-              DispositionAxis.shadow: dConfig.eventMediumReward,
-            },
           ),
           EventChoice(
             label: '거절한다',
             outcomeText: '현명한 선택이야... 아마도. 상인이 어둠 속으로 사라진다.',
             goldChange: 0,
             hpChange: 0,
-            dispositionRewards: {
-              DispositionAxis.will: dConfig.eventMediumReward,
-            },
           ),
         ],
       ),
@@ -162,9 +138,6 @@ class EventRoomGenerator {
             goldChange: 0,
             hpChange: 0,
             upgradeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.will: dConfig.eventMinorReward,
-            },
           ),
           EventChoice(
             label: '남겨두고 떠난다',
@@ -185,9 +158,6 @@ class EventRoomGenerator {
             goldChange: 0,
             hpChange: 0,
             removeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.wisdom: dConfig.eventMinorReward,
-            },
           ),
           EventChoice(
             label: '힘을 흡수한다',
@@ -209,18 +179,12 @@ class EventRoomGenerator {
             goldChange: -15,
             hpChange: 0,
             upgradeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.wisdom: dConfig.eventMediumReward,
-            },
           ),
           EventChoice(
             label: '존경을 표하고 떠난다',
             outcomeText: '노인이 미소 짓는다. 따뜻한 기운이 마음을 감싼다.',
             goldChange: 0,
             hpChange: 0,
-            dispositionRewards: {
-              DispositionAxis.mercy: dConfig.eventMediumReward,
-            },
           ),
         ],
       ),
@@ -240,9 +204,6 @@ class EventRoomGenerator {
             outcomeText: '함정을 해체하고 상자를 열었다. 보물은 절반뿐이다.',
             goldChange: 10,
             hpChange: 0,
-            dispositionRewards: {
-              DispositionAxis.wisdom: dConfig.eventMinorReward,
-            },
           ),
         ],
       ),
@@ -257,9 +218,6 @@ class EventRoomGenerator {
             goldChange: 0,
             hpChange: 15,
             removeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.harmony: dConfig.eventMinorReward,
-            },
           ),
           EventChoice(
             label: '씻는다',
@@ -267,9 +225,6 @@ class EventRoomGenerator {
             goldChange: 0,
             hpChange: 0,
             removeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.will: dConfig.eventMinorReward,
-            },
           ),
         ],
       ),
@@ -284,18 +239,12 @@ class EventRoomGenerator {
             goldChange: 0,
             hpChange: -5,
             upgradeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.will: dConfig.eventMinorReward,
-            },
           ),
           EventChoice(
             label: '유령을 위로한다',
             outcomeText: '유령이 고개를 숙이며 안식을 찾는다.',
             goldChange: 0,
             hpChange: 0,
-            dispositionRewards: {
-              DispositionAxis.mercy: dConfig.eventMajorReward,
-            },
           ),
         ],
       ),
@@ -309,18 +258,12 @@ class EventRoomGenerator {
             outcomeText: '먼지를 뒤집어쓰며 간신히 통과했다. 투쟁의 의지가 불타오른다.',
             goldChange: 0,
             hpChange: 0,
-            dispositionRewards: {
-              DispositionAxis.struggle: dConfig.eventMediumReward,
-            },
           ),
           EventChoice(
             label: '안전한 길을 찾는다',
             outcomeText: '우회하느라 시간과 금화를 소비했지만 안전하다.',
             goldChange: -5,
             hpChange: 0,
-            dispositionRewards: {
-              DispositionAxis.wisdom: dConfig.eventMediumReward,
-            },
           ),
         ],
       ),
@@ -342,9 +285,6 @@ class EventRoomGenerator {
             outcomeText: '단호한 거부. 의지가 강해진다.',
             goldChange: 0,
             hpChange: 0,
-            dispositionRewards: {
-              DispositionAxis.will: dConfig.eventMediumReward,
-            },
           ),
         ],
       ),
@@ -358,18 +298,12 @@ class EventRoomGenerator {
             outcomeText: '수정을 채취해 금화로 바꿀 수 있다.',
             goldChange: 25,
             hpChange: 0,
-            dispositionRewards: {
-              DispositionAxis.shadow: dConfig.eventMinorReward,
-            },
           ),
           EventChoice(
             label: '빛을 흡수한다',
             outcomeText: '수정의 빛이 몸을 감싸며 상처가 아문다.',
             goldChange: 0,
             hpChange: 10,
-            dispositionRewards: {
-              DispositionAxis.harmony: dConfig.eventMinorReward,
-            },
           ),
         ],
       ),
@@ -384,18 +318,12 @@ class EventRoomGenerator {
             goldChange: 0,
             hpChange: 0,
             upgradeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.struggle: dConfig.eventMediumReward,
-            },
           ),
           EventChoice(
             label: '방패를 만진다',
             outcomeText: '석상의 방패에서 따뜻한 기운이 퍼진다. 상처가 치유된다.',
             goldChange: 0,
             hpChange: config.hpReward,
-            dispositionRewards: {
-              DispositionAxis.will: dConfig.eventMinorReward,
-            },
           ),
           EventChoice(
             label: '금화를 바친다',
@@ -403,9 +331,6 @@ class EventRoomGenerator {
             goldChange: -15,
             hpChange: 5,
             upgradeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.harmony: dConfig.eventMediumReward,
-            },
           ),
         ],
       ),
@@ -426,9 +351,6 @@ class EventRoomGenerator {
             goldChange: 0,
             hpChange: -5,
             cardRewardId: 'colorless_random',
-            dispositionRewards: {
-              DispositionAxis.shadow: dConfig.eventMinorReward,
-            },
           ),
         ],
       ),
@@ -442,9 +364,6 @@ class EventRoomGenerator {
             outcomeText: '숨을 죽이고 골렘 옆을 지났다. 그 뒤에서 보물을 발견했다.',
             goldChange: 15,
             hpChange: 0,
-            dispositionRewards: {
-              DispositionAxis.wisdom: dConfig.eventMinorReward,
-            },
           ),
           EventChoice(
             label: '골렘을 깨워 도전한다',
@@ -452,9 +371,6 @@ class EventRoomGenerator {
             goldChange: 0,
             hpChange: -12,
             upgradeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.struggle: dConfig.eventMajorReward,
-            },
           ),
         ],
       ),
@@ -470,18 +386,12 @@ class EventRoomGenerator {
             hpChange: -8,
             cardRewardId: 'colorless_random',
             upgradeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.wisdom: dConfig.eventMediumReward,
-            },
           ),
           EventChoice(
             label: '도구를 판다',
             outcomeText: '연구 도구를 챙겨 나중에 팔 수 있을 것이다.',
             goldChange: 20,
             hpChange: 0,
-            dispositionRewards: {
-              DispositionAxis.shadow: dConfig.eventMinorReward,
-            },
           ),
           EventChoice(
             label: '조합법을 연구한다',
@@ -489,10 +399,6 @@ class EventRoomGenerator {
             goldChange: 0,
             hpChange: 0,
             upgradeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.wisdom: dConfig.eventMediumReward,
-              DispositionAxis.harmony: dConfig.eventMinorReward,
-            },
           ),
         ],
       ),
@@ -507,18 +413,12 @@ class EventRoomGenerator {
             goldChange: 0,
             hpChange: -3,
             upgradeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.wisdom: dConfig.eventMediumReward,
-            },
           ),
           EventChoice(
             label: '책을 판다',
             outcomeText: '고서적은 비싼 가격에 팔 수 있다. 금화를 챙긴다.',
             goldChange: 15,
             hpChange: 0,
-            dispositionRewards: {
-              DispositionAxis.shadow: dConfig.eventMinorReward,
-            },
           ),
         ],
       ),
@@ -533,18 +433,12 @@ class EventRoomGenerator {
             goldChange: 25,
             hpChange: -10,
             removeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.struggle: dConfig.eventMajorReward,
-            },
           ),
           EventChoice(
             label: '안전하게 돌아간다',
             outcomeText: '위험을 피하고 안전한 길로 돌아간다. 잠시 쉬며 체력을 회복한다.',
             goldChange: 0,
             hpChange: 5,
-            dispositionRewards: {
-              DispositionAxis.will: dConfig.eventMinorReward,
-            },
           ),
         ],
       ),
@@ -559,9 +453,6 @@ class EventRoomGenerator {
             goldChange: -20,
             hpChange: 0,
             upgradeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.will: dConfig.eventMediumReward,
-            },
           ),
           EventChoice(
             label: '금속을 수집한다',
@@ -575,9 +466,6 @@ class EventRoomGenerator {
             goldChange: 0,
             hpChange: 5,
             removeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.wisdom: dConfig.eventMinorReward,
-            },
           ),
         ],
       ),
@@ -607,9 +495,6 @@ class EventRoomGenerator {
             goldChange: 0,
             hpChange: -5,
             upgradeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.wisdom: dConfig.eventMajorReward,
-            },
           ),
           EventChoice(
             label: '물러선다',
@@ -633,18 +518,12 @@ class EventRoomGenerator {
             outcomeText: '저주의 일부가 풀려난다. 하지만 대가로 생명력이 소모된다.',
             goldChange: 0,
             hpChange: -10,
-            dispositionRewards: {
-              DispositionAxis.mercy: dConfig.eventMajorReward,
-            },
           ),
           EventChoice(
             label: '제단의 어둠을 흡수한다',
             outcomeText: '어둠의 힘이 금화로 변환된다. 하지만 저주는 더 깊어진다.',
             goldChange: (config.goldReward * 2).round(),
             hpChange: -15,
-            dispositionRewards: {
-              DispositionAxis.shadow: dConfig.eventMajorReward,
-            },
           ),
         ],
       ));
@@ -663,9 +542,6 @@ class EventRoomGenerator {
             goldChange: 0,
             hpChange: 0,
             upgradeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.will: dConfig.eventMinorReward,
-            },
           ),
           EventChoice(
             label: '불필요한 것을 버린다',
@@ -673,9 +549,6 @@ class EventRoomGenerator {
             goldChange: 0,
             hpChange: 5,
             removeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.harmony: dConfig.eventMinorReward,
-            },
           ),
         ],
       ));
@@ -694,9 +567,6 @@ class EventRoomGenerator {
             goldChange: 0,
             hpChange: -8,
             cardRewardId: 'colorless_random',
-            dispositionRewards: {
-              DispositionAxis.harmony: dConfig.eventMediumReward,
-            },
           ),
           EventChoice(
             label: '거울의 빛을 받아들인다',
@@ -721,18 +591,12 @@ class EventRoomGenerator {
             goldChange: 30,
             hpChange: -20,
             upgradeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.struggle: dConfig.eventMajorReward,
-            },
           ),
           EventChoice(
             label: '경의를 표한다',
             outcomeText: '문 앞에 고개를 숙이자, 따뜻한 기운이 감싼다.',
             goldChange: 0,
             hpChange: 5,
-            dispositionRewards: {
-              DispositionAxis.mercy: dConfig.eventMediumReward,
-            },
           ),
         ],
       ));
@@ -751,9 +615,6 @@ class EventRoomGenerator {
             goldChange: 0,
             hpChange: -8,
             cardRewardId: 'colorless_random',
-            dispositionRewards: {
-              DispositionAxis.harmony: dConfig.eventMinorReward,
-            },
           ),
           EventChoice(
             label: '본질을 간파한다',
@@ -761,9 +622,6 @@ class EventRoomGenerator {
             goldChange: 0,
             hpChange: 0,
             removeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.wisdom: dConfig.eventMajorReward,
-            },
           ),
         ],
       ));
@@ -789,9 +647,6 @@ class EventRoomGenerator {
             outcomeText: '우물이 빛나며 온기가 퍼진다. 상처가 깨끗이 아문다.',
             goldChange: -10,
             hpChange: 15,
-            dispositionRewards: {
-              DispositionAxis.mercy: dConfig.eventMinorReward,
-            },
           ),
         ],
       ));
@@ -810,18 +665,12 @@ class EventRoomGenerator {
             goldChange: 30,
             hpChange: -15,
             upgradeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.shadow: dConfig.eventMajorReward,
-            },
           ),
           EventChoice(
             label: '계약서를 찢는다',
             outcomeText: '계약서가 재로 변한다. 마음이 가벼워지고 의지가 강해진다.',
             goldChange: 0,
             hpChange: 0,
-            dispositionRewards: {
-              DispositionAxis.will: dConfig.eventMajorReward,
-            },
           ),
         ],
       ));
@@ -847,9 +696,6 @@ class EventRoomGenerator {
             outcomeText: '시공간의 균열에서 떨어진 보물을 주웠다.',
             goldChange: (config.goldReward * 1.5).round(),
             hpChange: 0,
-            dispositionRewards: {
-              DispositionAxis.harmony: dConfig.eventMinorReward,
-            },
           ),
         ],
       ));
@@ -868,18 +714,12 @@ class EventRoomGenerator {
             goldChange: 0,
             hpChange: 0,
             removeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.wisdom: dConfig.eventMediumReward,
-            },
           ),
           EventChoice(
             label: '무시하고 지나간다',
             outcomeText: '목소리를 떨쳐내고 앞으로 나아간다. 투쟁의 의지가 불타오른다.',
             goldChange: 0,
             hpChange: 0,
-            dispositionRewards: {
-              DispositionAxis.struggle: dConfig.eventMinorReward,
-            },
           ),
         ],
       ));
@@ -899,18 +739,12 @@ class EventRoomGenerator {
             hpChange: -15,
             upgradeRandomCard: true,
             removeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.struggle: dConfig.eventMediumReward,
-            },
           ),
           EventChoice(
             label: '지켜본다',
             outcomeText: '바퀴의 움직임에서 지혜를 얻는다. 바닥에서 금화를 발견했다.',
             goldChange: 10,
             hpChange: 0,
-            dispositionRewards: {
-              DispositionAxis.wisdom: dConfig.eventMediumReward,
-            },
           ),
         ],
       ));
@@ -930,18 +764,12 @@ class EventRoomGenerator {
             hpChange: -10,
             cardRewardId: 'colorless_random',
             upgradeRandomCard: true,
-            dispositionRewards: {
-              DispositionAxis.shadow: dConfig.eventMajorReward,
-            },
           ),
           EventChoice(
             label: '묵념한다',
             outcomeText: '망자들의 영혼이 감사를 전한다. 따뜻한 기운이 상처를 치유한다.',
             goldChange: 0,
             hpChange: 15,
-            dispositionRewards: {
-              DispositionAxis.mercy: dConfig.eventMajorReward,
-            },
           ),
         ],
       ));
