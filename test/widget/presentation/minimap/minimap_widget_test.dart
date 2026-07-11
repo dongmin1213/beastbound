@@ -107,7 +107,7 @@ void main() {
       expect(containers, isNotEmpty);
     });
 
-    testWidgets('미니맵 상호작용 — available 노드 탭 시 콜백 발생', (tester) async {
+    testWidgets('미니맵은 읽기 전용 — 노드 탭해도 콜백 없음', (tester) async {
       final map = _createTestMap();
       String? tappedNodeId;
 
@@ -124,10 +124,9 @@ void main() {
         ),
       );
 
-      // available 노드([$] 상점) 탭 → 그 노드 id로 콜백 발생 (탭 이동 지원)
+      // 미니맵은 시각 참조용(읽기 전용) — 노드 탭은 콜백을 발생시키지 않는다.
       await tester.tap(find.text('[\$]').first);
-      await tester.pump();
-      expect(tappedNodeId, isNotNull);
+      expect(tappedNodeId, isNull);
     });
 
     testWidgets('타입 공개 범위 — 먼 locked 노드는 [·] 표시', (tester) async {
