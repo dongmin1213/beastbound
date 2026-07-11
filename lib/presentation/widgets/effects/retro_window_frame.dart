@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:soul_dungeon/presentation/theme/responsive_scale.dart';
 
-/// 레트로 OS 윈도우 프레임 — "현실접속" 스타일 차용.
+/// GBC/포켓몬식 패널 프레임.
 ///
-/// 타이틀 바 + 얇은 단선 테두리 + 닫기 버튼(선택).
-/// 상점, 이벤트, 휴식, 미스터리, NPC, 미니맵, 상태창 등에 적용.
+/// 둥근 두께 테두리 + 그라데이션 타이틀 바 + 채워진 젬 장식 + (선택)닫기 버튼.
+/// 터미널 단선 창틀에서 핸드헬드 몬스터 게임 패널로 리스킨.
+/// 상점·이벤트·휴식·미스터리·NPC·미니맵·상태창·전투 등 전 화면 공용.
 class RetroWindowFrame extends StatelessWidget {
   final String title;
   final Widget child;
@@ -20,91 +21,118 @@ class RetroWindowFrame extends StatelessWidget {
     super.key,
     required this.title,
     required this.child,
-    this.titleBarColor = const Color(0xFF1A1A2E),
-    this.borderColor = const Color(0xFF555555),
-    this.backgroundColor = const Color(0xFF0D0D14),
+    this.titleBarColor = const Color(0xFF241C3A),
+    this.borderColor = const Color(0xFF8A7AC0),
+    this.backgroundColor = const Color(0xFF120E1E),
     this.onClose,
     this.expand = false,
   });
+
+  /// 색을 흰색 쪽으로 살짝 밝힘 (그라데이션 상단용).
+  Color _lighten(Color c, [double t = 0.14]) =>
+      Color.lerp(c, Colors.white, t) ?? c;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: backgroundColor,
-        border: Border.all(color: borderColor, width: 1),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: borderColor, width: 2),
+        // 핸드헬드 느낌의 단단한 그림자.
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.45),
+            blurRadius: 0,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
-      child: Column(
-        mainAxisSize: expand ? MainAxisSize.max : MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Column(
+          mainAxisSize: expand ? MainAxisSize.max : MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _titleBar(context),
+            if (expand) Expanded(child: child) else child,
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _titleBar(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [_lighten(titleBarColor), titleBarColor],
+        ),
+        border: Border(bottom: BorderSide(color: borderColor, width: 2)),
+      ),
+      child: Row(
         children: [
-          // ── 타이틀 바 ──
+          // 좌측 젬 (채워진 둥근 사각)
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            width: 10,
+            height: 10,
+            margin: const EdgeInsets.only(right: 8),
             decoration: BoxDecoration(
-              color: titleBarColor,
-              border: Border(
-                bottom: BorderSide(color: borderColor, width: 1),
-              ),
-            ),
-            child: Row(
-              children: [
-                // 좌측 장식 도트
-                Container(
-                  width: 8,
-                  height: 8,
-                  margin: const EdgeInsets.only(right: 8),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: borderColor,
-                      width: 1,
-                    ),
-                  ),
+              color: borderColor,
+              borderRadius: BorderRadius.circular(3),
+              boxShadow: [
+                BoxShadow(
+                  color: borderColor.withValues(alpha: 0.6),
+                  blurRadius: 4,
                 ),
-                // 타이틀
-                Expanded(
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                      color: const Color(0xFFB0B0B0),
-                      fontSize: ResponsiveScale.scaleFontSize(context, 12),
-                      fontFamily: 'monospace',
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 0.5,
-                    ),
-                  ),
-                ),
-                // 닫기 버튼 (선택적)
-                if (onClose != null)
-                  Semantics(
-                    button: true,
-                    label: '닫기',
-                    child: GestureDetector(
-                    onTap: onClose,
-                    child: Container(
-                      width: 18,
-                      height: 18,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: borderColor, width: 1),
-                      ),
-                      alignment: Alignment.center,
-                      child: const Text(
-                        '\u00D7',
-                        style: TextStyle(
-                          color: Color(0xFFB0B0B0),
-                          fontSize: 14,
-                          fontFamily: 'monospace',
-                          height: 1.0,
-                        ),
-                      ),
-                    ),
-                  ),
-                  ),
               ],
             ),
           ),
-          // ── 콘텐츠 영역 ──
-          if (expand) Expanded(child: child) else child,
+          // 타이틀
+          Expanded(
+            child: Text(
+              title,
+              style: TextStyle(
+                color: const Color(0xFFF2ECFA),
+                fontSize: ResponsiveScale.scaleFontSize(context, 13),
+                fontFamily: 'monospace',
+                fontWeight: FontWeight.bold,
+                letterSpacing: 0.5,
+              ),
+            ),
+          ),
+          // 닫기 버튼 (선택적)
+          if (onClose != null)
+            Semantics(
+              button: true,
+              label: '닫기',
+              child: GestureDetector(
+                onTap: onClose,
+                child: Container(
+                  width: 20,
+                  height: 20,
+                  decoration: BoxDecoration(
+                    color: backgroundColor,
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(color: borderColor, width: 1.5),
+                  ),
+                  alignment: Alignment.center,
+                  child: const Text(
+                    '×',
+                    style: TextStyle(
+                      color: Color(0xFFF2ECFA),
+                      fontSize: 14,
+                      fontFamily: 'monospace',
+                      fontWeight: FontWeight.bold,
+                      height: 1.0,
+                    ),
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );
