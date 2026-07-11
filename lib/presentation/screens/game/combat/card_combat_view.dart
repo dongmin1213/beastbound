@@ -78,13 +78,11 @@ class CardCombatView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // ── 상단: 적 영역 (멀티몹 + 의도) ──
-        _buildEnemyPanel(context),
-        // ── 중단: 전투 로그 텍스트 (스크롤) ──
+        // ── 씬 지배: 전투 씬이 상단 대부분을 차지 (포켓몬식 구성) ──
+        Expanded(child: _buildEnemyPanel(context)),
+        // ── 하단 명령창: 메시지(축소) + 상태 + 카드 + 액션 ──
         _buildCombatLogArea(),
-        // ── 하단 상: 플레이어 상태 바 (기세 + HP/AP/덱) ──
         _buildPlayerPanel(context),
-        // ── 하단 하: 카드 선택지 + 액션 버튼 ──
         _buildCardPanel(context),
       ],
     );
@@ -138,18 +136,12 @@ class CardCombatView extends StatelessWidget {
                   borderColor: enemyBorderColor,
                   titleBarColor: enemyTitleBarColor,
                   backgroundColor: floorVisuals.frameBackground,
-                  // Reforged 2단계: 정적 초상화(MultiEnemyAreaWidget) 대신
-                  // Flame 연출 씬 — 플레이어/적이 공격·피격·사망한다.
-                  // 높이는 화면 비례(반응형) — 작은 뷰포트에서도 오버플로우 없음.
-                  // (이후 포켓몬식 씬-지배 구성 전환 시 Expanded로 교체.)
-                  child: SizedBox(
-                    height: (MediaQuery.of(context).size.height * 0.26)
-                        .clamp(150.0, 240.0),
-                    child: FlameCombatScene(
-                      combatBloc: combatBloc,
-                      floorVisuals: floorVisuals,
-                      playerJobId: playerJobId,
-                    ),
+                  expand: true,
+                  // 포켓몬식 씬-지배 — Flame 연출 씬이 프레임을 가득 채운다.
+                  child: FlameCombatScene(
+                    combatBloc: combatBloc,
+                    floorVisuals: floorVisuals,
+                    playerJobId: playerJobId,
                   ),
                 ),
               );
@@ -187,13 +179,14 @@ class CardCombatView extends StatelessWidget {
     );
   }
 
-  /// #2 전투 로그 영역 — 스크롤 텍스트 (GameScreen 주입).
+  /// #2 명령/메시지 영역 — 최근 전투 텍스트 (축소). 씬이 지배하도록 작게.
   Widget _buildCombatLogArea() {
-    return Expanded(
+    return SizedBox(
+      height: 92,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4),
         child: RetroWindowFrame(
-          title: '전투 기록',
+          title: '전투',
           expand: true,
           titleBarColor: floorVisuals.combatUiTint,
           backgroundColor: floorVisuals.frameBackground,
