@@ -46,6 +46,7 @@ import 'package:soul_dungeon/presentation/widgets/combat_ui/combat_flow_manager.
 import 'package:soul_dungeon/presentation/widgets/combat_ui/combat_models.dart';
 import 'package:soul_dungeon/presentation/screens/game/combat/card_combat_view.dart';
 import 'package:soul_dungeon/presentation/screens/game/widgets/party_manage_sheet.dart';
+import 'package:soul_dungeon/presentation/screens/game/widgets/party_hud_widget.dart';
 import 'package:soul_dungeon/presentation/widgets/combat_ui/player_status_bar.dart';
 import 'package:soul_dungeon/presentation/widgets/combat_ui/hp_display_widget.dart';
 import 'package:soul_dungeon/presentation/widgets/combat_ui/momentum_gauge_widget.dart';
@@ -1594,6 +1595,21 @@ class GameScreenState extends State<GameScreen>
                         child: _buildTextScrollArea(context),
                       ),
                     ),
+                    // ── 파티 HUD (장착 동료) — 탐색 중 상시 노출 ──
+                    if (_dungeonBloc != null && !_inCardCombat)
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(
+                          _cachedScreenPadding.left,
+                          2,
+                          _cachedScreenPadding.right,
+                          4,
+                        ),
+                        child: PartyHudWidget(
+                          monsterIds: _cardCombatHandler.runMonsterIds,
+                          maxSlots: CardCombatHandler.maxEquippedMonsters,
+                          onTap: _showPartyManage,
+                        ),
+                      ),
                     // ── 하단 고정: 미니맵 토글 + 선택지 ──
                     if (_dungeonBloc != null) _buildMinimapToggleBar(),
                     _buildBottomChoiceArea(context),
