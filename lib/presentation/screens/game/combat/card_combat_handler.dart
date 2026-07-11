@@ -92,7 +92,11 @@ class CardCombatHandler {
   /// 전투 튜토리얼 모달 표시 콜백 (앱 최초 1회, SharedPreferences 관리).
   final Future<void> Function()? showTutorialModal;
 
-  /// 이번 런 로스터 몬스터 id (스타터 + 길들인). 승리 보상 풀 소스.
+  /// 장착 슬롯 상한 — 이 수만큼만 카드풀+패시브에 기여(동료).
+  static const int maxEquippedMonsters = 3;
+
+  /// 이번 런 장착 몬스터 id (스타터 + 길들여 장착한 동료, 최대 [maxEquippedMonsters]).
+  /// 승리 보상 풀 + 패시브 소스. (도감 전체 기록은 TamedMonsterStore가 별도 관리)
   final List<String> runMonsterIds = <String>[];
 
   /// AP 변동 추적 — 직전 턴의 maxActionPoints.
@@ -702,9 +706,16 @@ class CardCombatHandler {
       case CombatOutcome.victory:
         if (resolved.isTamed && resolved.tamedEnemyId != null) {
           TamedMonsterStore.markTamed(resolved.tamedEnemyId!);
-          // 길들인 몬스터를 이번 런 로스터에 편입 → 이후 보상 풀에 포함.
+          // 빈 동료 슬롯이 있으면 자동 장착 → 이후 보상 풀+패시브에 기여.
+          // 가득 차면 도감에만 기록(동료 관리에서 교체 가능).
           if (!runMonsterIds.contains(resolved.tamedEnemyId)) {
-            runMonsterIds.add(resolved.tamedEnemyId!);
+            if (runMonsterIds.length < maxEquippedMonsters) {
+              runMonsterIds.add(resolved.tamedEnemyId!);
+            } else {
+              runController.completedBlocks.add(const CompletedBlock(
+                text: '동료 슬롯이 가득 찼다 — 도감에 기록됨. (동료 관리에서 교체 가능)',
+              ));
+            }
           }
         }
         runController.completedBlocks.add(CompletedBlock(

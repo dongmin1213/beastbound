@@ -50,6 +50,7 @@ import 'package:soul_dungeon/presentation/widgets/combat_ui/boss_demo_encounter.
 import 'package:soul_dungeon/presentation/widgets/combat_ui/combat_flow_manager.dart';
 import 'package:soul_dungeon/presentation/widgets/combat_ui/combat_models.dart';
 import 'package:soul_dungeon/presentation/screens/game/combat/card_combat_view.dart';
+import 'package:soul_dungeon/presentation/screens/game/widgets/party_manage_sheet.dart';
 import 'package:soul_dungeon/presentation/widgets/combat_ui/player_status_bar.dart';
 import 'package:soul_dungeon/presentation/widgets/combat_ui/hp_display_widget.dart';
 import 'package:soul_dungeon/presentation/widgets/combat_ui/momentum_gauge_widget.dart';
@@ -2096,6 +2097,23 @@ class GameScreenState extends State<GameScreen>
   }
 
   /// 카드 전투 중 하단 고정 액션 버튼 (턴 종료 / 도주).
+  /// 동료(장착 몬스터) 관리 시트 표시. 변경은 다음 전투부터 반영.
+  void _showPartyManage() {
+    showDialog<void>(
+      context: context,
+      barrierColor: Colors.black87,
+      builder: (ctx) => PartyManageSheet(
+        equipped: _cardCombatHandler.runMonsterIds,
+        maxSlots: CardCombatHandler.maxEquippedMonsters,
+        onChanged: (newEquipped) {
+          _cardCombatHandler.runMonsterIds
+            ..clear()
+            ..addAll(newEquipped);
+        },
+      ),
+    );
+  }
+
   Widget _buildCombatActionButtons(BuildContext context) {
     final combatState = _combatBloc.state;
     final isBoss = combatState is CardCombatActive &&
@@ -2174,6 +2192,16 @@ class GameScreenState extends State<GameScreen>
               padding: EdgeInsets.zero,
               onPressed: _showStatusDialog,
               tooltip: '캐릭터 상태',
+            ),
+          ),
+          SizedBox(
+            width: 32,
+            height: 32,
+            child: IconButton(
+              icon: const Icon(Icons.groups, color: Color(0xFF9A8AC0), size: 18),
+              padding: EdgeInsets.zero,
+              onPressed: _showPartyManage,
+              tooltip: '동료',
             ),
           ),
           const SizedBox(width: 4),
