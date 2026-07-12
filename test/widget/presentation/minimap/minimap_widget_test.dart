@@ -60,7 +60,7 @@ void main() {
         ),
       );
 
-      expect(find.text('~ 모험가의 메모 ~'), findsOneWidget);
+      expect(find.text('~ 심층 지도 ~'), findsOneWidget);
     });
 
     testWidgets('심볼 표시 — current/available/typeRevealed locked는 실제 심볼',

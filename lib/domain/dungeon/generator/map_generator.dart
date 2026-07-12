@@ -5,7 +5,7 @@ import 'package:soul_dungeon/core/models/floor_map.dart';
 import 'package:soul_dungeon/core/models/map_node.dart';
 import 'package:soul_dungeon/core/models/game_enums.dart';
 
-/// Slay the Spire 스타일 DAG 맵 생성기.
+/// 분기 노드맵 생성기 — 층마다 여러 갈래 경로가 보스로 수렴.
 /// 순수 함수 클래스 (static 메서드). 방 유형은 미할당 상태로 생성.
 class MapGenerator {
   MapGenerator._();

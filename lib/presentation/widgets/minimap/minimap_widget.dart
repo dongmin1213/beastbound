@@ -87,7 +87,7 @@ class MinimapWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final mapRows = _buildMapRows(context);
     return RetroWindowFrame(
-      title: '~ 모험가의 메모 ~',
+      title: '~ 심층 지도 ~',
       titleBarColor: titleBarColor ?? const Color(0xFF1A1A2E),
       borderColor: AppTheme.minimapBorderColor,
       backgroundColor: frameBackground ?? const Color(0xFF0D0D14),
@@ -249,18 +249,36 @@ class _MinimapLinePainter extends CustomPainter {
         ..color = line.visited
             ? AppTheme.minimapConnectionColor
             : AppTheme.minimapLockedColor
-        ..strokeWidth = 1.2
+        ..strokeWidth = 1.6
+        ..strokeCap = StrokeCap.round
         ..style = PaintingStyle.stroke
         ..isAntiAlias = true;
 
+      // 발자취 트레일 — 부드러운 곡선 대신 점선(dashed)으로 "길"을 표현.
       final path = Path()
         ..moveTo(line.x0, 0)
         ..cubicTo(
-          line.x0, size.height * 0.45,
-          line.x1, size.height * 0.55,
+          line.x0, size.height * 0.5,
+          line.x1, size.height * 0.5,
           line.x1, size.height,
         );
-      canvas.drawPath(path, paint);
+      _drawDashed(canvas, path, paint, dash: 2.5, gap: 2.5);
+    }
+  }
+
+  /// Path를 점선으로 그린다 (dash 길이 / gap 간격).
+  void _drawDashed(Canvas canvas, Path path, Paint paint,
+      {required double dash, required double gap}) {
+    for (final metric in path.computeMetrics()) {
+      var dist = 0.0;
+      while (dist < metric.length) {
+        final next = dist + dash;
+        canvas.drawPath(
+          metric.extractPath(dist, next.clamp(0.0, metric.length)),
+          paint,
+        );
+        dist = next + gap;
+      }
     }
   }
 
