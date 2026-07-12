@@ -7,7 +7,6 @@ import 'package:soul_dungeon/audio/engine/bgm_registry.dart';
 import 'package:soul_dungeon/audio/engine/sfx_registry.dart';
 import 'package:soul_dungeon/audio/engine/sound_layer_manager.dart';
 import 'package:soul_dungeon/core/config/balance_config.dart';
-import 'package:soul_dungeon/core/events/boss_choice_event.dart';
 import 'package:soul_dungeon/core/events/card_played_event.dart';
 import 'package:soul_dungeon/core/events/chain_bonus_event.dart';
 import 'package:soul_dungeon/core/events/combat_ended_event.dart';
@@ -253,11 +252,6 @@ class AudioBloc extends Bloc<AudioEvent, AudioState> {
           } else {
             _playSfxIfReady('event_choice');
           }
-        }),
-
-        // ── 보스 선택 ──
-        _eventBus.on<BossChoiceEvent>().listen((_) {
-          _playSfxIfReady('boss_choice');
         }),
 
         // ── 기세 변화 (티어 변경 시 SFX) ──

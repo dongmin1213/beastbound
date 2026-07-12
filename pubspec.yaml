@@ -81,8 +81,6 @@ flutter:
     - assets/audio/sfx/
     - assets/audio/music/
     - assets/game_icons/
-    - assets/pixel_art/title/
-    - assets/pixel_art/jobs/
     - assets/pixel_art/bosses/
     - assets/pixel_art/cards/
     - assets/pixel_art/ui/

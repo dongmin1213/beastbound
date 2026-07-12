@@ -31,9 +31,7 @@ class SfxRegistry {
     'shop_purchase': 'assets/audio/sfx/shop_purchase.ogg',
     'event_choice': 'assets/audio/sfx/event_choice.ogg',
     'room_enter': 'assets/audio/sfx/room_enter.ogg',
-    'class_change': 'assets/audio/sfx/class_change.ogg',
     'boss_appear': 'assets/audio/sfx/boss_appear.ogg',
-    'boss_choice': 'assets/audio/sfx/boss_choice.ogg',
     'turn_start': 'assets/audio/sfx/turn_start.ogg',
     // Momentum tier change sounds
     'momentum_up': 'assets/audio/sfx/momentum_up.ogg',

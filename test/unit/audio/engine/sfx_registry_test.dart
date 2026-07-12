@@ -123,7 +123,7 @@ void main() {
 
     group('count', () {
       test('total registry count includes narrator', () {
-        expect(SfxRegistry.count, 33); // 30 + 3 narrator
+        expect(SfxRegistry.count, 31); // 28 + 3 narrator
       });
 
       test('matches allIds length', () {

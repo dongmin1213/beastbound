@@ -47,11 +47,9 @@ class CombatSprites {
     );
   }
 
-  /// 직업 id → 플레이어 스프라이트 세트.
+  /// 플레이어 스프라이트 세트 — 전용 아트 없음(idle 없이 트랜스폼 연출).
   static ActorSprites job(String? jobId) {
-    return ActorSprites(
-      idle: jobId != null ? PixelArtAssets.jobSprite(jobId) : null,
-    );
+    return const ActorSprites();
   }
 
   // 새 아트 디렉토리 규칙 (도입 시 사용):

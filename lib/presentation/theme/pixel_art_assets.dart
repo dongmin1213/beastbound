@@ -85,20 +85,6 @@ class PixelArtAssets {
     'dungeon_master': 'bosses/dungeon_master.png',
   };
 
-  // ── 직업 초상화 ──
-
-  static const _jobSprites = <String, String>{
-    'warrior': 'jobs/warrior.png',
-    'sage': 'jobs/sage.png',
-    'assassin': 'jobs/assassin.png',
-    'saint': 'jobs/saint.png',
-    'guardian': 'jobs/guardian.png',
-    'wanderer': 'jobs/wanderer.png',
-    'reaper': 'jobs/reaper.png',
-    'illusionist': 'jobs/illusionist.png',
-    'harmonist': 'jobs/harmonist.png',
-  };
-
   /// 적 ID → 스프라이트 경로. 없으면 null.
   static String? enemySprite(String enemyId) {
     final path = _enemySprites[enemyId];
@@ -108,12 +94,6 @@ class PixelArtAssets {
   /// 보스 ID → 스프라이트 경로. 없으면 null.
   static String? bossSprite(String bossId) {
     final path = _bossSprites[bossId];
-    return path != null ? '$_base/$path' : null;
-  }
-
-  /// 직업 ID → 초상화 경로. 없으면 null.
-  static String? jobSprite(String jobId) {
-    final path = _jobSprites[jobId];
     return path != null ? '$_base/$path' : null;
   }
 
@@ -131,8 +111,4 @@ class PixelArtAssets {
   static const String attackCardIcon = '$_base/cards/attack.png';
   static const String skillCardIcon = '$_base/cards/skill.png';
   static const String powerCardIcon = '$_base/cards/power.png';
-
-  // ── 타이틀 ──
-
-  static const String logo = '$_base/title/soul_dungeon_logo.png';
 }
