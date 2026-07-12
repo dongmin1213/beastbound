@@ -125,7 +125,7 @@ class _MomentumGaugeWidgetState extends State<MomentumGaugeWidget>
     final fontSize = ResponsiveScale.scaleFontSize(context, 12);
 
     return Semantics(
-      label: '기세 ${widget.momentum}, ${tier.displayName}',
+      label: '야성 ${widget.momentum}, ${tier.displayName}',
       child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       child: Column(
@@ -135,7 +135,7 @@ class _MomentumGaugeWidgetState extends State<MomentumGaugeWidget>
           Row(
             children: [
               Text(
-                '기세 ${widget.momentum}',
+                '야성 ${widget.momentum}',
                 style: TextStyle(
                   color: tierColor,
                   fontSize: fontSize,

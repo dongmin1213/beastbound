@@ -330,7 +330,7 @@ class ShopRoomHandler {
         if (item.effectValue != null && item.effectValue! > 0) {
           final amount = item.effectValue!;
           rc.gameEventBus.emit(MomentumGainEvent(amount: amount));
-          rc.appendFeedbackText('기세가 $amount 충전되었다.');
+          rc.appendFeedbackText('야성이 $amount 충전되었다.');
         }
       case 'momentumBonus':
         if (item.effectValue != null && item.effectValue! > 0) {
@@ -338,7 +338,7 @@ class ShopRoomHandler {
           rc.playerRunState = prs.copyWith(
             tempMomentumBonus: prs.tempMomentumBonus + bonus,
           );
-          rc.appendFeedbackText('다음 전투에서 기세가 $bonus 증가한다.');
+          rc.appendFeedbackText('다음 전투에서 야성이 $bonus 증가한다.');
         }
       case 'strength':
         if (item.effectValue != null && item.effectValue! > 0) {

@@ -62,7 +62,7 @@ class RestWidget extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              '선택 시 기세가 초기화됩니다',
+              '선택 시 야성이 초기화됩니다',
               style: TextStyle(
                 color: AppTheme.restDisabledColor,
                 fontSize: ResponsiveScale.scaleFontSize(context, 12),

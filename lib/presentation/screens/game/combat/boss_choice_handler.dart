@@ -75,7 +75,7 @@ class BossChoiceHandler {
         choices.add(ChoiceData(
           id: 'boss_${choice.name}_locked',
           text: '${choice.displayName}'
-              ' (기세 $momentumThreshold 필요)'
+              ' (야성 $momentumThreshold 필요)'
               '\n${choice.description}',
           resultTextBlocks: const [],
           enabled: false,

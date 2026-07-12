@@ -89,7 +89,7 @@ void main() {
     testWidgets('기세 초기화 경고 텍스트 항상 표시 (기세 0 포함, AC 2)', (tester) async {
       await tester.pumpWidget(buildRestWidget());
 
-      expect(find.text('선택 시 기세가 초기화됩니다'), findsOneWidget);
+      expect(find.text('선택 시 야성이 초기화됩니다'), findsOneWidget);
     });
 
     testWidgets('현재 HP/maxHp 표시', (tester) async {

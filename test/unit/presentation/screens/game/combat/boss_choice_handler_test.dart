@@ -92,7 +92,7 @@ void main() {
         final locked = choices.where((c) => c.id.endsWith('_locked'));
         expect(locked, isNotEmpty);
         for (final c in locked) {
-          expect(c.text, contains('기세'));
+          expect(c.text, contains('야성'));
           expect(c.text, contains('50'));
         }
       });

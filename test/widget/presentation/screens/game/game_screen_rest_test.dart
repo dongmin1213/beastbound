@@ -169,7 +169,7 @@ void main() {
 
     // === Story 3-7: 기세 초기화 피드백 ===
 
-    testWidgets('회복 선택 → "기세가 초기화되었다" 피드백 + MomentumBloc 리셋', (tester) async {
+    testWidgets('회복 선택 → "야성이 초기화되었다" 피드백 + MomentumBloc 리셋', (tester) async {
       await pumpGameScreen(tester, gameEventBus: gameEventBus);
 
       // M2: 기세 축적 후 리셋 검증 (end-to-end 통합)
@@ -195,12 +195,12 @@ void main() {
       await tester.pump();
       await tester.pump();
 
-      expect(findRichText('기세가 초기화되었다'), findsOneWidget);
+      expect(findRichText('야성이 초기화되었다'), findsOneWidget);
       // M2: MomentumBloc 실제 리셋 검증
       expect(momentumBloc.state, const MomentumInitial());
     });
 
-    testWidgets('강화 선택 → "기세가 초기화되었다" 피드백 + MomentumBloc 리셋', (tester) async {
+    testWidgets('강화 선택 → "야성이 초기화되었다" 피드백 + MomentumBloc 리셋', (tester) async {
       await pumpGameScreen(tester, gameEventBus: gameEventBus);
 
       // M2: 기세 축적 후 리셋 검증
@@ -226,11 +226,11 @@ void main() {
       await tester.pump();
       await tester.pump();
 
-      expect(findRichText('기세가 초기화되었다'), findsOneWidget);
+      expect(findRichText('야성이 초기화되었다'), findsOneWidget);
       expect(momentumBloc.state, const MomentumInitial());
     });
 
-    testWidgets('full HP 회복 선택 → "잠시 쉬어갔다. 기세가 초기화되었다." 피드백', (tester) async {
+    testWidgets('full HP 회복 선택 → "잠시 쉬어갔다. 야성이 초기화되었다." 피드백', (tester) async {
       await pumpGameScreen(tester, gameEventBus: gameEventBus);
 
       // M2: 기세 축적 후 리셋 검증
@@ -256,8 +256,8 @@ void main() {
       await tester.pump();
       await tester.pump();
 
-      // 3번째 분기: hpRecovered=0, maxHpIncreased=0 → "잠시 쉬어갔다. 기세가 초기화되었다."
-      expect(findRichText('잠시 쉬어갔다. 기세가 초기화되었다.'), findsOneWidget);
+      // 3번째 분기: hpRecovered=0, maxHpIncreased=0 → "잠시 쉬어갔다. 야성이 초기화되었다."
+      expect(findRichText('잠시 쉬어갔다. 야성이 초기화되었다.'), findsOneWidget);
       expect(momentumBloc.state, const MomentumInitial());
     });
 

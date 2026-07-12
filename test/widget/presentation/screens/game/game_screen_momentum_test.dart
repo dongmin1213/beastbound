@@ -107,7 +107,7 @@ void main() {
       // 전투 중: 게이지 표시
       expect(find.byType(MomentumGaugeWidget), findsOneWidget);
       // 초기값 0 표시
-      expect(find.text('기세 0'), findsOneWidget);
+      expect(find.text('야성 0'), findsOneWidget);
     });
 
     testWidgets('행동 전환 → 기세 상승 확인', (tester) async {
@@ -131,7 +131,7 @@ void main() {
       await selectAction(tester, '방어한다');
 
       // 기세 값 확인: 0 + 0(첫턴) + 12(전환) = 12
-      expect(find.text('기세 12'), findsOneWidget);
+      expect(find.text('야성 12'), findsOneWidget);
     });
 
     testWidgets('같은 행동 2연속 → 기세 하락 확인', (tester) async {
@@ -146,12 +146,12 @@ void main() {
       await advanceToCombatChoices(tester);
       await selectAction(tester, '공격한다');
 
-      // Turn 2: 공격 (2연속: -15) → 기세 0 + 0 + (-15) = 0 (클램핑)
+      // Turn 2: 공격 (2연속: -15) → 야성 0 + 0 + (-15) = 0 (클램핑)
       await advanceToNextTurnChoices(tester);
       await selectAction(tester, '공격한다');
 
       // 기세는 0 이하 클램핑 → 0
-      expect(find.text('기세 0'), findsOneWidget);
+      expect(find.text('야성 0'), findsOneWidget);
     });
 
     testWidgets('기세 값 0/100 클램핑 확인', (tester) async {
@@ -181,13 +181,13 @@ void main() {
       await advanceToNextTurnChoices(tester);
       await selectAction(tester, '방어한다');
 
-      expect(find.text('기세 60'), findsOneWidget);
+      expect(find.text('야성 60'), findsOneWidget);
 
       // Turn 3: 공격 (전환: +60) → 120 → 100 (클램핑)
       await advanceToNextTurnChoices(tester);
       await selectAction(tester, '공격한다');
 
-      expect(find.text('기세 100'), findsOneWidget);
+      expect(find.text('야성 100'), findsOneWidget);
     });
 
     testWidgets('서술 선택지 → 기세 무변동 확인', (tester) async {
@@ -329,8 +329,8 @@ void main() {
       await advanceToNextTurnChoices(tester);
       await selectAction(tester, '방어한다');
 
-      // 기세 12 확인 (전환 보너스 적용)
-      expect(find.text('기세 12'), findsOneWidget);
+      // 야성 12 확인 (전환 보너스 적용)
+      expect(find.text('야성 12'), findsOneWidget);
     });
   });
 }

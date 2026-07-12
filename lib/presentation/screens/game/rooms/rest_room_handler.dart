@@ -62,11 +62,11 @@ class RestRoomHandler {
     // 피드백 텍스트 결정
     final String feedbackText;
     if (state.hpRecovered > 0) {
-      feedbackText = '체력이 ${state.hpRecovered} 회복되었다! 기세가 초기화되었다.';
+      feedbackText = '체력이 ${state.hpRecovered} 회복되었다! 야성이 초기화되었다.';
     } else if (state.maxHpIncreased > 0) {
-      feedbackText = '최대 체력이 ${state.maxHpIncreased} 증가했다! 기세가 초기화되었다.';
+      feedbackText = '최대 체력이 ${state.maxHpIncreased} 증가했다! 야성이 초기화되었다.';
     } else {
-      feedbackText = '잠시 쉬어갔다. 기세가 초기화되었다.';
+      feedbackText = '잠시 쉬어갔다. 야성이 초기화되었다.';
     }
 
     // HP 회복 (maxHp 초과 방지)

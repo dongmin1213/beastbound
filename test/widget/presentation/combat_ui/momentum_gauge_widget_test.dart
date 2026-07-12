@@ -26,22 +26,22 @@ void main() {
   }
 
   group('MomentumGaugeWidget', () {
-    testWidgets('0 값 렌더링 — "기세 0" 라벨 표시', (tester) async {
+    testWidgets('0 값 렌더링 — "야성 0" 라벨 표시', (tester) async {
       await tester.pumpWidget(buildTestWidget(momentum: 0));
 
-      expect(find.text('기세 0'), findsOneWidget);
+      expect(find.text('야성 0'), findsOneWidget);
     });
 
     testWidgets('50 값 렌더링 — 수치 표시', (tester) async {
       await tester.pumpWidget(buildTestWidget(momentum: 50));
 
-      expect(find.text('기세 50'), findsOneWidget);
+      expect(find.text('야성 50'), findsOneWidget);
     });
 
     testWidgets('100 값 렌더링 — 수치 표시', (tester) async {
       await tester.pumpWidget(buildTestWidget(momentum: 100));
 
-      expect(find.text('기세 100'), findsOneWidget);
+      expect(find.text('야성 100'), findsOneWidget);
     });
 
     testWidgets('delta 양수 표시 (+15)', (tester) async {
@@ -78,7 +78,7 @@ void main() {
       ));
 
       expect(find.text('+0'), findsNothing);
-      expect(find.text('기세 0'), findsOneWidget); // 수치만 표시
+      expect(find.text('야성 0'), findsOneWidget); // 수치만 표시
     });
 
     testWidgets('delta null → 변동 텍스트 미표시', (tester) async {
@@ -94,8 +94,8 @@ void main() {
     testWidgets('단계별 색상 — low (momentum=0)', (tester) async {
       await tester.pumpWidget(buildTestWidget(momentum: 0));
 
-      // "기세 0" 텍스트가 low 색상으로 표시되는지 확인
-      final textWidget = tester.widget<Text>(find.text('기세 0'));
+      // "야성 0" 텍스트가 low 색상으로 표시되는지 확인
+      final textWidget = tester.widget<Text>(find.text('야성 0'));
       expect(
         (textWidget.style?.color),
         AppTheme.momentumLowColor,
@@ -105,7 +105,7 @@ void main() {
     testWidgets('단계별 색상 — medium (momentum=60)', (tester) async {
       await tester.pumpWidget(buildTestWidget(momentum: 60));
 
-      final textWidget = tester.widget<Text>(find.text('기세 60'));
+      final textWidget = tester.widget<Text>(find.text('야성 60'));
       expect(
         (textWidget.style?.color),
         AppTheme.momentumMediumColor,
@@ -115,7 +115,7 @@ void main() {
     testWidgets('단계별 색상 — high (momentum=80)', (tester) async {
       await tester.pumpWidget(buildTestWidget(momentum: 80));
 
-      final textWidget = tester.widget<Text>(find.text('기세 80'));
+      final textWidget = tester.widget<Text>(find.text('야성 80'));
       expect(
         (textWidget.style?.color),
         AppTheme.momentumHighColor,

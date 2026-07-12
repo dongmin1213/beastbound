@@ -234,7 +234,7 @@ class CardCombatHandler {
     if (!_shownApRulesSummary) {
       _shownApRulesSummary = true;
       runController.completedBlocks.add(CompletedBlock(
-        text: '기세 [저:${cardCombatConfig.apLow}AP / 중:${cardCombatConfig.apMid}AP / 고:${cardCombatConfig.apHigh}AP]\n다양한 유형의 카드를 번갈아 사용하면 기세가 오릅니다.',
+        text: '야성 [저:${cardCombatConfig.apLow}AP / 중:${cardCombatConfig.apMid}AP / 고:${cardCombatConfig.apHigh}AP]\n다양한 유형의 카드를 번갈아 사용하면 야성이 오릅니다.',
         metadata: const {'apRules': true},
       ));
     }

@@ -124,7 +124,7 @@ class NpcRoomHandler {
         if (item.effectValue != null && item.effectValue! > 0) {
           final amount = item.effectValue!;
           rc.gameEventBus.emit(MomentumGainEvent(amount: amount));
-          rc.appendFeedbackText('기세가 $amount 충전되었다.');
+          rc.appendFeedbackText('야성이 $amount 충전되었다.');
         }
       case 'cleanse':
         // 독/약화 해제 → 즉시 HP 5 회복 (전투 외 상태효과 없으므로 HP 보상)
@@ -140,7 +140,7 @@ class NpcRoomHandler {
           rc.playerRunState = prs.copyWith(
             tempMomentumBonus: prs.tempMomentumBonus + bonus,
           );
-          rc.appendFeedbackText('다음 전투에서 기세가 $bonus 증가한다.');
+          rc.appendFeedbackText('다음 전투에서 야성이 $bonus 증가한다.');
         }
       case 'strength':
         if (item.effectValue != null && item.effectValue! > 0) {
