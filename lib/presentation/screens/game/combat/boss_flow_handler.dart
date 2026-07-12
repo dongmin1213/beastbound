@@ -1,18 +1,13 @@
 import 'package:soul_dungeon/core/config/balance_config.dart';
 import 'package:soul_dungeon/core/config/floor_region.dart';
 import 'package:soul_dungeon/core/config/game_hint_manager.dart';
-import 'package:soul_dungeon/core/events/boss_choice_event.dart';
 import 'package:soul_dungeon/core/events/game_event_bus.dart';
 import 'package:soul_dungeon/domain/combat/bloc/combat_bloc.dart';
 import 'package:soul_dungeon/domain/combat/bloc/combat_event.dart';
-import 'package:soul_dungeon/domain/narrative/content/boss_text_variants.dart';
 import 'package:soul_dungeon/domain/progression/soul/soul_calculator.dart';
 import 'package:soul_dungeon/domain/run/run_event.dart';
-import 'package:soul_dungeon/core/models/boss_choice.dart';
-import 'package:soul_dungeon/presentation/screens/game/combat/boss_choice_handler.dart';
 import 'package:soul_dungeon/presentation/screens/game/combat/combat_session_state.dart';
 import 'package:soul_dungeon/presentation/screens/game/game_run_controller.dart';
-import 'package:soul_dungeon/presentation/widgets/combat_ui/boss_encounter_factory.dart';
 import 'package:soul_dungeon/presentation/widgets/combat_ui/combat_flow_manager.dart';
 import 'package:soul_dungeon/presentation/widgets/combat_ui/combat_models.dart';
 import 'package:soul_dungeon/presentation/widgets/choice/choice_data.dart';
@@ -63,31 +58,39 @@ class BossFlowHandler {
     this.soulGainMultiplier = 1.0,
   });
 
-  /// 보스 승리 → 3선택지 (처치/해방/공존) 표시.
+  /// 보스 승리 → 제압한 주인을 길들여 동료로. (선택지 없음 — 보스=자동 테이밍)
+  ///
+  /// 원작의 6선택지(처치/해방/공존/…)는 성향·직업분화·엔딩에 영향을 줬으나 그
+  /// 시스템이 모두 제거되어 순수 잔재였다. BEASTBOUND에선 보스 처치=길들이기이므로
+  /// 선택 없이 "동료 획득 + 층 전환"으로 직행한다.
   void handleVictoryFloorTransition() {
     final floor = runController.playerRunState.currentFloor;
-    final bossId = BossEncounterFactory.bossId(floor);
-    runController.appendFeedbackText('$floor층 보스 처치 완료!');
+    runController.appendFeedbackText('$floor층 영역의 주인 제압!');
     setInCombat(false);
     combatBloc.add(const EndCombat());
 
-    // 보스 보상 선택 대기 상태 저장 — 이어하기 시 보상 화면 복원용
+    if (FloorRegion.isFinalFloor(floor)) {
+      // 최종 층 — 심연의 주인마저 길들였다.
+      showEnding('심연의 주인마저 무릎 꿇리고 길들였다.');
+      return;
+    }
+
+    // 이어하기 시 이 화면(층 전환 대기)을 복원하기 위한 플래그.
     runController.playerRunState = runController.playerRunState.copyWith(
       bossVictoryPending: true,
     );
 
-    final momentum = getMomentumValue();
-    final choices = BossChoiceHandler.buildChoices(
-      floor: floor,
-      bossId: bossId,
-      momentum: momentum,
-    );
-
     setTextBlockData([
       TextBlockData(
-        text: '보스가 쓰러졌다. 이제 선택할 때다.\n'
-            '이 존재를 어떻게 하겠는가?',
-        choices: choices,
+        text: '영역의 주인을 제압해 길들였다. 강력한 동료가 곁에 선다.\n\n'
+            '$floor층을 넘어섰다. 더 깊은 곳으로 향하는 길이 열린다.',
+        choices: [
+          ChoiceData(
+            id: 'advance_floor',
+            text: '${floor + 1}층으로 내려간다',
+            resultTextBlocks: const [],
+          ),
+        ],
       ),
     ], endCombat: false, resetMomentum: true);
   }
@@ -121,69 +124,13 @@ class BossFlowHandler {
     setInCombat(true);
   }
 
-  /// 보스 3선택지 처리 — 처치/해방/공존 + 성향 변경 + 기록 + 층 전환.
+  /// 보스 전투 중 선택 처리 — 다단 페이즈 전환(boss_continue)만 담당.
+  /// (원작의 처치/해방/공존 등 보스 처치 선택지는 제거됨 — 보스=자동 테이밍.)
   void handleBossChoice(ChoiceData choice) {
-    // 잠금 선택지 무시
-    if (choice.id.endsWith('_locked')) return;
-
-    // boss_continue는 페이즈 전환
     if (choice.id == 'boss_continue') {
       handleBossContinue();
-      return;
     }
-
-    final choiceType = BossChoiceHandler.choiceTypeFromId(choice.id);
-    if (choiceType == null) return;
-
-    // 보스 보상 선택 완료 — pending 상태 해제
-    runController.playerRunState = runController.playerRunState.copyWith(
-      bossVictoryPending: false,
-    );
-
-    final floor = runController.playerRunState.currentFloor;
-    final bossId = BossEncounterFactory.bossId(floor);
-    final playerJobId = runController.playerRunState.currentJobId;
-
-    // 보스 선택 기록
-    runController.runBloc.add(RecordBossChoice(BossChoice(
-      floor: floor,
-      bossId: bossId,
-      choiceType: choiceType,
-    )));
-
-    // BossChoiceEvent 브로드캐스트 (크로스 시스템 반응용)
-    gameEventBus.emit(BossChoiceEvent(
-      floor: floor,
-      bossId: bossId,
-      choiceType: choiceType.name,
-      playerJobId: playerJobId,
-    ));
-
-    // 결과 텍스트 — 보스/직업별 변형 적용
-    final resultText = BossTextVariants.choiceResultText(
-      bossId,
-      choiceType,
-      jobId: playerJobId,
-    );
-
-    if (FloorRegion.isFinalFloor(floor)) {
-      // 최종 층 클리어 — 심연의 주인마저 제압.
-      showEnding(resultText);
-    } else {
-      setTextBlockData([
-        TextBlockData(
-          text: '$resultText\n\n'
-              '$floor층을 넘어섰다. 더 깊은 곳으로 향하는 길이 열린다.',
-          choices: [
-            ChoiceData(
-              id: 'advance_floor',
-              text: '${floor + 1}층으로 내려간다',
-              resultTextBlocks: const [],
-            ),
-          ],
-        ),
-      ], endCombat: false, resetMomentum: true);
-    }
+    // 그 외 boss_* 선택지는 더 이상 생성되지 않음.
   }
 
   /// 엔딩 화면 표시 — 보스 선택 결과 텍스트 + 엔딩 텍스트 + 재시작 선택지.

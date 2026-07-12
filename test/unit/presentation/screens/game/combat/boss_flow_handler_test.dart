@@ -103,24 +103,14 @@ void main() {
   }
 
   group('BossFlowHandler — 5층 보스 버그 수정 검증', () {
-    test('10층(최종)에서 handleBossChoice 시 showEnding을 호출한다', () {
-      final existingChoices = [
-        const BossChoice(floor: 1, bossId: 'boss_ash', choiceType: BossChoiceType.slay),
-        const BossChoice(floor: 2, bossId: 'boss_tide', choiceType: BossChoiceType.slay),
-        const BossChoice(floor: 3, bossId: 'boss_thorn', choiceType: BossChoiceType.slay),
-        const BossChoice(floor: 4, bossId: 'boss_void', choiceType: BossChoiceType.slay),
-      ];
-      setupHandler(floor: 10, existingBossChoices: existingChoices);
+    test('10층(최종)에서 보스 승리 시 showEnding을 호출한다', () {
+      setupHandler(floor: 10);
 
-      handler.handleBossChoice(const ChoiceData(
-        id: 'boss_slay',
-        text: '처치한다',
-        resultTextBlocks: [],
-      ));
+      handler.handleVictoryFloorTransition();
 
       // showEnding이 호출되어 엔딩 텍스트 블록이 설정되어야 한다
       expect(capturedTextBlocks, isNotEmpty,
-          reason: '5층 보스 선택 후 텍스트 블록이 설정되어야 한다');
+          reason: '최종 층 보스 승리 후 텍스트 블록이 설정되어야 한다');
 
       // 마지막 텍스트 블록에 restart_run 선택지가 있어야 한다 (엔딩 화면)
       final lastBlocks = capturedTextBlocks.last;
@@ -134,14 +124,10 @@ void main() {
           reason: '런 완료 기록이 남아야 한다');
     });
 
-    test('1~4층에서는 advance_floor 선택지가 표시된다 (showEnding 아님)', () {
+    test('1~9층에서는 advance_floor 선택지가 표시된다 (showEnding 아님)', () {
       setupHandler(floor: 3);
 
-      handler.handleBossChoice(const ChoiceData(
-        id: 'boss_slay',
-        text: '처치한다',
-        resultTextBlocks: [],
-      ));
+      handler.handleVictoryFloorTransition();
 
       expect(capturedTextBlocks, isNotEmpty);
       final lastBlocks = capturedTextBlocks.last;

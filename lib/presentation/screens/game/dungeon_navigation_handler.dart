@@ -18,10 +18,10 @@ import 'package:soul_dungeon/domain/dungeon/bloc/dungeon_bloc.dart';
 import 'package:soul_dungeon/domain/dungeon/bloc/dungeon_event.dart';
 import 'package:soul_dungeon/domain/dungeon/bloc/dungeon_state.dart';
 import 'package:soul_dungeon/core/models/game_enums.dart';
+import 'package:soul_dungeon/core/config/floor_region.dart';
 import 'package:soul_dungeon/core/models/map_node.dart';
 import 'package:soul_dungeon/presentation/screens/game/combat/boss_flow_handler.dart';
 import 'package:soul_dungeon/presentation/screens/game/combat/combat_session_state.dart';
-import 'package:soul_dungeon/domain/narrative/content/boss_text_variants.dart';
 import 'package:soul_dungeon/presentation/screens/game/game_run_controller.dart';
 import 'package:soul_dungeon/presentation/screens/game/path_description_generator.dart';
 import 'package:soul_dungeon/presentation/widgets/choice/choice_data.dart';
@@ -351,19 +351,10 @@ class DungeonNavigationHandler {
   /// 보스 노드에서 DungeonFloorReady로 복귀한 경우 층 진행 선택지를 표시한다.
   void _showAdvanceFloorAfterBoss() {
     final floor = runController.playerRunState.currentFloor;
-    if (floor >= 5) {
-      // 최종 층 — 전직 UI로 엔딩 텍스트가 유실된 경우 엔딩 재표시.
-      // handleAdvanceFloor()는 6층 생성을 시도하여 게임 프리즈를 유발하므로 금지.
-      final bossChoices = runController.playerRunState.bossChoices;
-      if (bossChoices.isNotEmpty) {
-        final lastChoice = bossChoices.last;
-        final resultText = BossTextVariants.choiceResultText(
-          lastChoice.bossId,
-          lastChoice.choiceType,
-          jobId: runController.playerRunState.currentJobId,
-        );
-        bossFlowHandler.showEnding(resultText);
-      }
+    if (FloorRegion.isFinalFloor(floor)) {
+      // 최종 층 — 엔딩 재표시(복원 경로). handleAdvanceFloor()는 다음 층 생성을
+      // 시도해 프리즈를 유발하므로 금지.
+      bossFlowHandler.showEnding('심연의 주인마저 무릎 꿇리고 길들였다.');
       return;
     }
     setTextBlockData([
@@ -421,6 +412,12 @@ class DungeonNavigationHandler {
   /// 층 진행 처리 — 자동 저장, 상태 리셋, 새 층 맵 생성.
   void handleAdvanceFloor() {
     final nextFloor = runController.playerRunState.currentFloor + 1;
+
+    // 보스 승리 대기 해제 (다음 층 진행 확정) — 저장 전에 클리어.
+    if (runController.playerRunState.bossVictoryPending) {
+      runController.playerRunState = runController.playerRunState
+          .copyWith(bossVictoryPending: false);
+    }
 
     // 층 전환 자동 저장
     autoSave();
