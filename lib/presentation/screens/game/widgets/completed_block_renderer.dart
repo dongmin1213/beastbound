@@ -36,8 +36,6 @@ class CompletedBlockRenderer {
       TextBlockType.environmentNarration ||
       TextBlockType.environmentDiscovery =>
         _buildEnvironment(context, block),
-      TextBlockType.dispositionHint => _buildDispositionHint(context, block),
-      TextBlockType.classChange => _buildClassChange(context, block),
       TextBlockType.normal => _buildNormal(context, block),
     };
   }
@@ -377,33 +375,6 @@ class CompletedBlockRenderer {
       child: Text(
         block.text,
         style: TextBlockStyle.turnDivider(context),
-      ),
-    );
-  }
-
-  static Widget _buildDispositionHint(
-    BuildContext context,
-    CompletedBlock block,
-  ) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: ResponsiveScale.scaleVerticalPadding(context, 4),
-      ),
-      child: Text(
-        block.text,
-        style: TextBlockStyle.dispositionHint(context),
-      ),
-    );
-  }
-
-  static Widget _buildClassChange(BuildContext context, CompletedBlock block) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: ResponsiveScale.scaleVerticalPadding(context, 8),
-      ),
-      child: Text(
-        block.text,
-        style: TextBlockStyle.classChange(context),
       ),
     );
   }

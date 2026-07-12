@@ -42,8 +42,6 @@ enum TextBlockType {
   combatOutcome,
   environmentNarration,
   environmentDiscovery,
-  dispositionHint,
-  classChange,
 }
 
 class TextBlockData {

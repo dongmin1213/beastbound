@@ -9,18 +9,6 @@ import 'package:soul_dungeon/presentation/theme/responsive_scale.dart';
 class TextBlockStyle {
   const TextBlockStyle._();
 
-  static TextStyle classChange(BuildContext context) => TextStyle(
-        fontWeight: FontWeight.bold,
-        color: Colors.amber,
-        fontSize: ResponsiveScale.scaleFontSize(context, 13),
-      );
-
-  static TextStyle dispositionHint(BuildContext context) => TextStyle(
-        fontStyle: FontStyle.italic,
-        color: Colors.white54,
-        fontSize: ResponsiveScale.scaleFontSize(context, 13),
-      );
-
   static TextStyle turnDivider(BuildContext context) => TextStyle(
         color: AppTheme.turnDividerColor,
         fontSize: ResponsiveScale.scaleFontSize(context, 13),

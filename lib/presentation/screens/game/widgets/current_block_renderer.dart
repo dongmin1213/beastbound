@@ -49,36 +49,8 @@ class CurrentBlockRenderer extends StatelessWidget {
       TextBlockType.environmentNarration ||
       TextBlockType.environmentDiscovery =>
         _buildEnvironmentNarration(context),
-      TextBlockType.dispositionHint => _buildDispositionHint(context),
-      TextBlockType.classChange => _buildClassChange(context),
       TextBlockType.normal => _buildNormal(context),
     };
-  }
-
-  Widget _buildClassChange(BuildContext context) {
-    return TypewriterWidget(
-      key: typewriterKey,
-      text: blockData.text,
-      style: TextBlockStyle.classChange(context),
-      speed: speed,
-      charsPerSecondSlow: charsPerSecondSlow,
-      charsPerSecondNormal: charsPerSecondNormal,
-      charsPerSecondFast: charsPerSecondFast,
-      onComplete: onComplete,
-    );
-  }
-
-  Widget _buildDispositionHint(BuildContext context) {
-    return TypewriterWidget(
-      key: typewriterKey,
-      text: blockData.text,
-      style: TextBlockStyle.dispositionHint(context),
-      speed: speed,
-      charsPerSecondSlow: charsPerSecondSlow,
-      charsPerSecondNormal: charsPerSecondNormal,
-      charsPerSecondFast: charsPerSecondFast,
-      onComplete: onComplete,
-    );
   }
 
   Widget _buildNormal(BuildContext context) {

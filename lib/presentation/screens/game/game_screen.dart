@@ -948,8 +948,6 @@ class GameScreenState extends State<GameScreen>
         });
       case TextBlockType.environmentNarration:
       case TextBlockType.environmentDiscovery:
-      case TextBlockType.dispositionHint:
-      case TextBlockType.classChange:
       case TextBlockType.normal:
         break;
     }
