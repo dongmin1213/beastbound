@@ -86,22 +86,6 @@ void main() {
     });
   });
 
-  group('BossDisposition', () {
-    test('has exactly 5 values', () {
-      expect(BossDisposition.values.length, 5);
-    });
-
-    test('contains all expected values', () {
-      expect(BossDisposition.values, containsAll([
-        BossDisposition.slayer,
-        BossDisposition.liberator,
-        BossDisposition.coexister,
-        BossDisposition.mixed,
-        BossDisposition.none,
-      ]));
-    });
-  });
-
   group('NarrativeLayer', () {
     test('has exactly 3 values', () {
       expect(NarrativeLayer.values.length, 3);

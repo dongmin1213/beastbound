@@ -11,26 +11,21 @@ class EventRoomGenerator {
   /// 이벤트 방 데이터 생성.
   /// [floor] 현재 층 (향후 층별 이벤트 풀 확장용).
   /// [eventConfig] 보상/페널티 값.
-  /// [dispositionConfig] 성향 보상 값.
   /// [seed] PRNG 시드 — 같은 시드 = 같은 이벤트.
-  /// [playerJobId] 플레이어 직업 ID — 직업별 추가 선택지 제공.
   /// [unlockedMemoryCount] 해금된 기억 수 — 히든 이벤트 조건.
   /// [hasCurses] 저주 활성 여부 — 히든 이벤트 조건.
   static EventRoomData generate({
     required int floor,
     required EventConfig eventConfig,
-    DispositionConfig dispositionConfig = const DispositionConfig(),
     int? seed,
-    String? playerJobId,
     int unlockedMemoryCount = 0,
     bool hasCurses = false,
   }) {
     // 층별 보상 스케일링: 1층=1.0x, 2층=1.15x, 3층=1.3x, 4층=1.45x, 5층=1.6x
     final scaledConfig = eventConfig.scaledForFloor(floor);
-    final events = _buildEventPool(scaledConfig, dispositionConfig);
+    final events = _buildEventPool(scaledConfig);
     final hiddenEvents = _buildHiddenEventPool(
       scaledConfig,
-      dispositionConfig,
       floor,
       unlockedMemoryCount: unlockedMemoryCount,
       hasCurses: hasCurses,
@@ -49,9 +44,8 @@ class EventRoomGenerator {
   }
 
   /// 이벤트 풀 19개.
-  /// EventConfig에서 보상/페널티 값, DispositionConfig에서 성향 보상 값 참조.
-  static List<EventRoomData> _buildEventPool(
-      EventConfig config, DispositionConfig dConfig) {
+  /// EventConfig에서 보상/페널티 값 참조.
+  static List<EventRoomData> _buildEventPool(EventConfig config) {
     return [
       // 이벤트 1: 길을 잃은 여행자
       EventRoomData(
@@ -464,7 +458,6 @@ class EventRoomGenerator {
   /// 히든 이벤트 풀 — 조건부 출현 (층/기억/저주).
   static List<EventRoomData> _buildHiddenEventPool(
     EventConfig config,
-    DispositionConfig dConfig,
     int floor, {
     int unlockedMemoryCount = 0,
     bool hasCurses = false,

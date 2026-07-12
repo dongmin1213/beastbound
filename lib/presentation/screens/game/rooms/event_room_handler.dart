@@ -25,7 +25,6 @@ import 'package:soul_dungeon/presentation/widgets/choice/choice_data.dart';
 class EventRoomHandler {
   final RoomContext _ctx;
   final EventConfig eventConfig;
-  final DispositionConfig dispositionConfig;
   final EconomyConfig economyConfig;
   final double soulGainMultiplier;
 
@@ -38,7 +37,6 @@ class EventRoomHandler {
   EventRoomHandler({
     required RoomContext context,
     required this.eventConfig,
-    required this.dispositionConfig,
     this.economyConfig = const EconomyConfig(),
     this.soulGainMultiplier = 1.0,
   }) : _ctx = context;
@@ -55,7 +53,6 @@ class EventRoomHandler {
     final eventData = EventRoomGenerator.generate(
       floor: floorNumber,
       eventConfig: eventConfig,
-      dispositionConfig: dispositionConfig,
       seed: seed,
     );
 

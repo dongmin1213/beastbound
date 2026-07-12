@@ -485,40 +485,6 @@ void main() {
     });
 
 
-    // === Story 4-3: SetJobId ===
-
-    group('SetJobId', () {
-      blocTest<RunBloc, RunState>(
-        'sets currentJobId on RunActive state',
-        build: () => RunBloc(gameEventBus: eventBus),
-        seed: () => RunActive(
-          playerRunState: PlayerRunState.initial(maxHp: 100),
-        ),
-        act: (bloc) => bloc.add(const SetJobId('warrior')),
-        expect: () => [
-          RunActive(
-            playerRunState: PlayerRunState.initial(maxHp: 100)
-                .copyWith(currentJobId: 'warrior'),
-          ),
-        ],
-      );
-
-      blocTest<RunBloc, RunState>(
-        'ResetRun clears currentJobId to null',
-        build: () => RunBloc(gameEventBus: eventBus),
-        seed: () => RunActive(
-          playerRunState: PlayerRunState.initial(maxHp: 100)
-              .copyWith(currentJobId: 'sage'),
-        ),
-        act: (bloc) => bloc.add(const ResetRun(maxHp: 100)),
-        expect: () => [
-          RunActive(
-            playerRunState: PlayerRunState.initial(maxHp: 100),
-          ),
-        ],
-      );
-    });
-
     group('ApplyCurse', () {
       blocTest<RunBloc, RunState>(
         'ApplyCurse adds curseId to activeCurseIds',

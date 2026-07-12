@@ -6,7 +6,6 @@ import 'package:soul_dungeon/domain/dungeon/event/event_room_generator.dart';
 void main() {
   group('EventRoomGenerator extended pool', () {
     const eventConfig = EventConfig();
-    const dispositionConfig = DispositionConfig();
 
     /// 모든 시드(0~999)를 돌려 유니크 이벤트 타이틀 수집.
     List<EventRoomData> collectAllUniqueEvents() {
@@ -16,7 +15,6 @@ void main() {
         final event = EventRoomGenerator.generate(
           floor: 1,
           eventConfig: eventConfig,
-          dispositionConfig: dispositionConfig,
           seed: seed,
         );
         if (seen.add(event.title)) {
@@ -59,13 +57,11 @@ void main() {
       final event1 = EventRoomGenerator.generate(
         floor: 1,
         eventConfig: eventConfig,
-        dispositionConfig: dispositionConfig,
         seed: 777,
       );
       final event2 = EventRoomGenerator.generate(
         floor: 1,
         eventConfig: eventConfig,
-        dispositionConfig: dispositionConfig,
         seed: 777,
       );
 

@@ -113,22 +113,9 @@
     "hp_reward": 7,
     "hp_penalty": 5
   },
-  "disposition": {
-    "event_major_reward": 4,
-    "event_minor_reward": 1,
-    "event_medium_reward": 2,
-    "elite_challenge_reward": 2,
-    "elite_avoid_reward": 1,
-    "hint_min_threshold": 3,
-    "hint_cooldown_rooms": 2
-  },
   "build": {
-    "class_change_threshold": 5,
     "wanderer_min_total": 10,
-    "wanderer_max_deviation": 2,
-    "advanced_job_threshold": 10,
-    "combo_job_primary_threshold": 8,
-    "combo_job_secondary_threshold": 5
+    "wanderer_max_deviation": 2
   },
   "prep": {
     "starting_gold_bonus": 15,
@@ -243,13 +230,7 @@
   ],
   "meta_progression": {
     "soul_clear_bonus": 50,
-    "soul_death_multiplier": 1,
-    "ghost_npc": {
-      "guarantee_run": 2,
-      "spawn_probability": 0.3,
-      "similarity_familiar": 0.7,
-      "similarity_curious": 0.3
-    }
+    "soul_death_multiplier": 1
   },
   "audio": {
     "master_volume": 0.8,

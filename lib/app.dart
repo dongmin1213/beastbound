@@ -289,7 +289,6 @@ class _SoulDungeonAppState extends State<SoulDungeonApp> {
                 npcConfig: widget.balanceConfig.npc,
                 restConfig: widget.balanceConfig.rest,
                 eventConfig: widget.balanceConfig.event,
-                dispositionConfig: widget.balanceConfig.disposition,
                 buildConfig: widget.balanceConfig.build,
                 prepConfig: widget.balanceConfig.prep,
                 rarityConfig: widget.balanceConfig.rarity,

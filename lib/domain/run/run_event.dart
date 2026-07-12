@@ -58,12 +58,6 @@ final class ResetRun extends RunEvent {
   const ResetRun({required this.maxHp});
 }
 
-/// 직업 ID 설정 — 세이브 로드 복원 등.
-final class SetJobId extends RunEvent {
-  final String jobId;
-  const SetJobId(this.jobId);
-}
-
 /// 축복 획득 — 상점/NPC 구매 시 축복 ID 추가.
 final class AcquireBlessing extends RunEvent {
   final String blessingId;

@@ -129,7 +129,6 @@ class GameScreen extends StatefulWidget {
   final NpcConfig npcConfig;
   final RestConfig restConfig;
   final EventConfig eventConfig;
-  final DispositionConfig dispositionConfig;
   final BuildConfig buildConfig;
   final PrepConfig prepConfig;
   final RarityConfig rarityConfig;
@@ -169,7 +168,6 @@ class GameScreen extends StatefulWidget {
     this.npcConfig = const NpcConfig(),
     this.restConfig = const RestConfig(),
     this.eventConfig = const EventConfig(),
-    this.dispositionConfig = const DispositionConfig(),
     this.buildConfig = const BuildConfig(),
     this.prepConfig = const PrepConfig(),
     this.rarityConfig = const RarityConfig(),
@@ -434,7 +432,6 @@ class GameScreenState extends State<GameScreen>
     _eventHandler = EventRoomHandler(
       context: _roomContext,
       eventConfig: widget.eventConfig,
-      dispositionConfig: widget.dispositionConfig,
       economyConfig: widget.economyConfig,
       soulGainMultiplier: soulGainMult,
     );

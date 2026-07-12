@@ -650,81 +650,31 @@ void main() {
     });
   });
 
-  group('DispositionConfig', () {
-    test('fromJson uses defaults for missing fields', () {
-      final config = DispositionConfig.fromJson({});
-
-      expect(config.eventMajorReward, 4);
-      expect(config.eventMinorReward, 1);
-      expect(config.eventMediumReward, 2);
-      expect(config.eliteChallengeReward, 2);
-      expect(config.eliteAvoidReward, 1);
-    });
-
-    test('fromJson parses custom values', () {
-      final config = DispositionConfig.fromJson({
-        'event_major_reward': 5,
-        'event_minor_reward': 2,
-        'event_medium_reward': 3,
-        'elite_challenge_reward': 2,
-        'elite_avoid_reward': 2,
-      });
-
-      expect(config.eventMajorReward, 5);
-      expect(config.eventMinorReward, 2);
-      expect(config.eventMediumReward, 3);
-      expect(config.eliteChallengeReward, 2);
-      expect(config.eliteAvoidReward, 2);
-    });
-
-    test('hintMinThreshold/hintCooldownRooms uses defaults for missing fields', () {
-      final config = DispositionConfig.fromJson({});
-
-      expect(config.hintMinThreshold, 3);
-      expect(config.hintCooldownRooms, 2);
-    });
-
-    test('hintMinThreshold/hintCooldownRooms parses custom values', () {
-      final config = DispositionConfig.fromJson({
-        'hint_min_threshold': 5,
-        'hint_cooldown_rooms': 4,
-      });
-
-      expect(config.hintMinThreshold, 5);
-      expect(config.hintCooldownRooms, 4);
-    });
-  });
-
   group('BuildConfig', () {
     test('fromJson uses defaults for missing fields', () {
       final config = BuildConfig.fromJson({});
 
-      expect(config.classChangeThreshold, 5);
       expect(config.wandererMinTotal, 10);
       expect(config.wandererMaxDeviation, 2);
     });
 
     test('fromJson parses custom values', () {
       final config = BuildConfig.fromJson({
-        'class_change_threshold': 10,
         'wanderer_min_total': 15,
         'wanderer_max_deviation': 3,
       });
 
-      expect(config.classChangeThreshold, 10);
       expect(config.wandererMinTotal, 15);
       expect(config.wandererMaxDeviation, 3);
     });
 
     test('fromJson clamps out-of-range values to defaults', () {
       final config = BuildConfig.fromJson({
-        'class_change_threshold': 0,
         'wanderer_min_total': -5,
         'wanderer_max_deviation': 999,
       });
 
       // clampInt returns fallback (not clamped edge) for out-of-range
-      expect(config.classChangeThreshold, 5);
       expect(config.wandererMinTotal, 10);
       expect(config.wandererMaxDeviation, 2);
     });

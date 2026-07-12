@@ -421,38 +421,6 @@ class RestConfig {
   }
 }
 
-class DispositionConfig {
-  final int eventMajorReward;
-  final int eventMinorReward;
-  final int eventMediumReward;
-  final int eliteChallengeReward;
-  final int eliteAvoidReward;
-  final int hintMinThreshold;
-  final int hintCooldownRooms;
-
-  const DispositionConfig({
-    this.eventMajorReward = 4,
-    this.eventMinorReward = 1,
-    this.eventMediumReward = 2,
-    this.eliteChallengeReward = 2,
-    this.eliteAvoidReward = 1,
-    this.hintMinThreshold = 3,
-    this.hintCooldownRooms = 2,
-  });
-
-  factory DispositionConfig.fromJson(Map<String, dynamic> json) {
-    return DispositionConfig(
-      eventMajorReward: clampInt(json['event_major_reward'], 0, 100, 4, 'event_major_reward'),
-      eventMinorReward: clampInt(json['event_minor_reward'], 0, 100, 1, 'event_minor_reward'),
-      eventMediumReward: clampInt(json['event_medium_reward'], 0, 100, 2, 'event_medium_reward'),
-      eliteChallengeReward: clampInt(json['elite_challenge_reward'], 0, 100, 2, 'elite_challenge_reward'),
-      eliteAvoidReward: clampInt(json['elite_avoid_reward'], 0, 100, 1, 'elite_avoid_reward'),
-      hintMinThreshold: clampInt(json['hint_min_threshold'], 1, 100, 3, 'hint_min_threshold'),
-      hintCooldownRooms: clampInt(json['hint_cooldown_rooms'], 0, 100, 2, 'hint_cooldown_rooms'),
-    );
-  }
-}
-
 class EventConfig {
   final int goldReward;
   final int hpReward;
@@ -484,36 +452,18 @@ class EventConfig {
 }
 
 class BuildConfig {
-  final int classChangeThreshold;
   final int wandererMinTotal;
   final int wandererMaxDeviation;
 
-  /// 2차 전직 — 상위직 임계값 (같은 축 심화).
-  final int advancedJobThreshold;
-
-  /// 2차 전직 — 조합직 주축 임계값.
-  final int comboJobPrimaryThreshold;
-
-  /// 2차 전직 — 조합직 부축 임계값.
-  final int comboJobSecondaryThreshold;
-
   const BuildConfig({
-    this.classChangeThreshold = 5,
     this.wandererMinTotal = 10,
     this.wandererMaxDeviation = 2,
-    this.advancedJobThreshold = 10,
-    this.comboJobPrimaryThreshold = 8,
-    this.comboJobSecondaryThreshold = 5,
   });
 
   factory BuildConfig.fromJson(Map<String, dynamic> json) {
     return BuildConfig(
-      classChangeThreshold: clampInt(json['class_change_threshold'], 1, 100, 5, 'class_change_threshold'),
       wandererMinTotal: clampInt(json['wanderer_min_total'], 1, 100, 10, 'wanderer_min_total'),
       wandererMaxDeviation: clampInt(json['wanderer_max_deviation'], 0, 100, 2, 'wanderer_max_deviation'),
-      advancedJobThreshold: clampInt(json['advanced_job_threshold'], 1, 100, 10, 'advanced_job_threshold'),
-      comboJobPrimaryThreshold: clampInt(json['combo_job_primary_threshold'], 1, 100, 8, 'combo_job_primary_threshold'),
-      comboJobSecondaryThreshold: clampInt(json['combo_job_secondary_threshold'], 1, 100, 5, 'combo_job_secondary_threshold'),
     );
   }
 }
@@ -645,13 +595,9 @@ class MetaProgressionConfig {
   /// 사망 시 소울 보상 배율 (층 x base x multiplier).
   final int soulDeathMultiplier;
 
-  /// 유령 NPC 설정.
-  final GhostNpcConfig ghostNpc;
-
   const MetaProgressionConfig({
     this.soulClearBonus = 50,
     this.soulDeathMultiplier = 1,
-    this.ghostNpc = const GhostNpcConfig(),
   });
 
   factory MetaProgressionConfig.fromJson(Map<String, dynamic> json) {
@@ -660,45 +606,6 @@ class MetaProgressionConfig {
           json['soul_clear_bonus'], 0, 9999, 50, 'soul_clear_bonus'),
       soulDeathMultiplier: clampInt(
           json['soul_death_multiplier'], 0, 100, 1, 'soul_death_multiplier'),
-      ghostNpc: json['ghost_npc'] is Map<String, dynamic>
-          ? GhostNpcConfig.fromJson(
-              json['ghost_npc'] as Map<String, dynamic>)
-          : const GhostNpcConfig(),
-    );
-  }
-}
-
-/// 유령 NPC 밸런스 설정.
-class GhostNpcConfig {
-  /// 확정 등장 런 번호 (이 런의 2층에서 무조건 등장).
-  final int guaranteeRun;
-
-  /// 확률 등장 비율 (0.0~1.0).
-  final double spawnProbability;
-
-  /// familiar 반응 임계값.
-  final double similarityFamiliar;
-
-  /// curious 반응 임계값.
-  final double similarityCurious;
-
-  const GhostNpcConfig({
-    this.guaranteeRun = 2,
-    this.spawnProbability = 0.3,
-    this.similarityFamiliar = 0.7,
-    this.similarityCurious = 0.3,
-  });
-
-  factory GhostNpcConfig.fromJson(Map<String, dynamic> json) {
-    return GhostNpcConfig(
-      guaranteeRun:
-          clampInt(json['guarantee_run'], 1, 100, 2, 'guarantee_run'),
-      spawnProbability:
-          clampDouble(json['spawn_probability'], 0.0, 1.0, 0.3, 'spawn_probability'),
-      similarityFamiliar:
-          clampDouble(json['similarity_familiar'], 0.0, 1.0, 0.7, 'similarity_familiar'),
-      similarityCurious:
-          clampDouble(json['similarity_curious'], 0.0, 1.0, 0.3, 'similarity_curious'),
     );
   }
 }
@@ -717,7 +624,6 @@ class BalanceConfig {
   final NpcConfig npc;
   final RestConfig rest;
   final EventConfig event;
-  final DispositionConfig disposition;
   final BuildConfig build;
   final PrepConfig prep;
   final RarityConfig rarity;
@@ -740,7 +646,6 @@ class BalanceConfig {
     this.npc = const NpcConfig(),
     this.rest = const RestConfig(),
     this.event = const EventConfig(),
-    this.disposition = const DispositionConfig(),
     this.build = const BuildConfig(),
     this.prep = const PrepConfig(),
     this.rarity = const RarityConfig(),
@@ -765,7 +670,6 @@ class BalanceConfig {
       npc: npc,
       rest: rest,
       event: event,
-      disposition: disposition,
       build: build,
       prep: prep,
       rarity: rarity,
@@ -819,10 +723,6 @@ class BalanceConfig {
       event: json['event'] is Map<String, dynamic>
           ? EventConfig.fromJson(json['event'] as Map<String, dynamic>)
           : const EventConfig(),
-      disposition: json['disposition'] is Map<String, dynamic>
-          ? DispositionConfig.fromJson(
-              json['disposition'] as Map<String, dynamic>)
-          : const DispositionConfig(),
       build: json['build'] is Map<String, dynamic>
           ? BuildConfig.fromJson(json['build'] as Map<String, dynamic>)
           : const BuildConfig(),

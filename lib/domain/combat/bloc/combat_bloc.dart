@@ -1313,9 +1313,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     // 연쇄 보너스는 공격(데미지)에만 적용 — 방어(블록)에는 적용하지 않음
 
     // 상태 효과 적용
-    final regenCap = current.playerRunState.currentJobId == 'highPriest'
-        ? null
-        : combatConfig.maxRegenStacks;
+    final regenCap = combatConfig.maxRegenStacks;
     var playerStatuses = List<StatusEffect>.from(current.playerStatuses);
     for (final s in result.newPlayerStatuses) {
       playerStatuses = StatusEffectProcessor.addEffect(playerStatuses, s,
@@ -2659,17 +2657,15 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
 
     // 11.51 healPerTurn Power: 매 턴 HP 회복 + 재생 뱃지 누적
     if (current.powerEffects.healPerTurn > 0) {
-      final isHighPriest =
-          current.playerRunState.currentJobId == 'highPriest';
-      final cap = isHighPriest ? null : combatConfig.maxRegenStacks;
+      final cap = combatConfig.maxRegenStacks;
       final currentRegenStacks = StatusEffectProcessor.stacks(
         playerStatuses,
         StatusEffectType.regenerate,
       );
       final healAmount = current.powerEffects.healPerTurn;
       playerHp = (playerHp + healAmount).clamp(0, current.playerMaxHp);
-      // 재생 스택 누적 (대사제는 캡 없음, 나머지는 cap 초과 시 추가 안 함)
-      if (cap == null || currentRegenStacks < cap) {
+      // 재생 스택 누적 (cap 초과 시 추가 안 함)
+      if (currentRegenStacks < cap) {
         playerStatuses = StatusEffectProcessor.addEffect(
           playerStatuses,
           StatusEffect(
@@ -3462,8 +3458,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     }
 
     // 카드 보상 생성 (승리 시) — 저주 감소 적용
-    // 유령 PvP: rewardJobOverride가 있으면 유령 직업 카드 보상.
-    final jobId = current.rewardJobOverride ?? current.playerRunState.currentJobId ?? 'warrior';
+    // rewardJobOverride가 있으면 해당 카드 보상, 없으면 기본값.
+    final jobId = current.rewardJobOverride ?? 'warrior';
     final ownedIds = current.playerRunState.masterDeck.map((c) => c.id).toSet();
     final victoryCurses = CurseModifierPool.resolveIds(
       current.playerRunState.activeCurseIds,

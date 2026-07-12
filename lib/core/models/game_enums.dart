@@ -55,15 +55,6 @@ enum FloorTheme {
   abyss;
 }
 
-/// 보스 처리 방식 — 플레이어의 보스 대응 성향.
-enum BossDisposition {
-  slayer,
-  liberator,
-  coexister,
-  mixed,
-  none;
-}
-
 /// 서사 레이어 — 텍스트 콘텐츠의 깊이 단계.
 enum NarrativeLayer {
   l1,

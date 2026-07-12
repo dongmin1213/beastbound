@@ -29,7 +29,6 @@ class RunBloc extends Bloc<RunEvent, RunState> {
     on<SyncFromCombat>(_onSyncFromCombat);
     on<SetPlayerRunState>(_onSetPlayerRunState);
     on<ResetRun>(_onResetRun);
-    on<SetJobId>(_onSetJobId);
     on<AcquireBlessing>(_onAcquireBlessing);
     on<AcquireRelic>(_onAcquireRelic);
     on<ApplyCurse>(_onApplyCurse);
@@ -114,16 +113,6 @@ class RunBloc extends Bloc<RunEvent, RunState> {
   void _onResetRun(ResetRun event, Emitter<RunState> emit) {
     emit(RunActive(
       playerRunState: PlayerRunState.initial(maxHp: event.maxHp),
-    ));
-  }
-
-  void _onSetJobId(SetJobId event, Emitter<RunState> emit) {
-    final current = state;
-    if (current is! RunActive) return;
-    emit(RunActive(
-      playerRunState: current.playerRunState.copyWith(
-        currentJobId: event.jobId,
-      ),
     ));
   }
 
