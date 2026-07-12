@@ -179,19 +179,23 @@ class CardCombatView extends StatelessWidget {
     );
   }
 
-  /// #2 명령/메시지 영역 — 최근 전투 텍스트 (축소). 씬이 지배하도록 작게.
+  /// #2 명령/메시지 스트립 — 최근 전투 한 줄 (프레임 제거, 씬 지배 강화).
+  ///
+  /// 원작의 텍스트 로그라이크식 92px "전투" 창을 얇은 단일 라인 바로 축소.
+  /// 카드 보상 드래프트 프롬프트·보스 전환 텍스트가 여전히 이 영역으로 흐르므로
+  /// 제거하지 않고 얇은 스트립으로 유지한다.
   Widget _buildCombatLogArea() {
-    return SizedBox(
-      height: 92,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4),
-        child: RetroWindowFrame(
-          title: '전투',
-          expand: true,
-          titleBarColor: floorVisuals.combatUiTint,
-          backgroundColor: floorVisuals.frameBackground,
-          child: textScrollArea,
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(4, 2, 4, 0),
+      child: Container(
+        height: 34,
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        alignment: Alignment.centerLeft,
+        decoration: BoxDecoration(
+          color: floorVisuals.combatUiTint,
+          borderRadius: BorderRadius.circular(6),
         ),
+        child: textScrollArea,
       ),
     );
   }
