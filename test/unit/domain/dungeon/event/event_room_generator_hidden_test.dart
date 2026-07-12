@@ -7,7 +7,7 @@ void main() {
 
   group('EventRoomGenerator hidden events', () {
     // Test: floor 1, no memory, no curses → only 15 base events possible
-    // (기존 12 + 갈림길의 석상/독 웅덩이/잠든 수호자)
+    // (기존 12 + 갈림길의 석상/독 웅덩이/잠든 야수)
     test('floor 1 has no hidden events', () {
       final titles = <String>{};
       for (var seed = 0; seed < 100; seed++) {
@@ -22,7 +22,7 @@ void main() {
       expect(titles.contains('차원의 균열'), isFalse);
       expect(titles.contains('잊혀진 제단'), isFalse);
       expect(titles.contains('시간의 방'), isFalse);
-      expect(titles.contains('영혼의 거울'), isFalse);
+      expect(titles.contains('야성의 거울'), isFalse);
       expect(titles.contains('사신의 문'), isFalse);
       expect(titles.contains('환영의 미궁'), isFalse);
       // 신규 hidden events (2층+ 조건)
@@ -63,8 +63,8 @@ void main() {
       expect(titles.contains('잊혀진 제단'), isTrue);
     });
 
-    // Test: floor 4 enables 영혼의 거울
-    test('floor 4 enables 영혼의 거울', () {
+    // Test: floor 4 enables 야성의 거울
+    test('floor 4 enables 야성의 거울', () {
       final titles = <String>{};
       for (var seed = 0; seed < 200; seed++) {
         final event = EventRoomGenerator.generate(
@@ -75,7 +75,7 @@ void main() {
         );
         titles.add(event.title);
       }
-      expect(titles.contains('영혼의 거울'), isTrue);
+      expect(titles.contains('야성의 거울'), isTrue);
     });
 
     // Test: floor 3 WITHOUT enough memory → no 차원의 균열
@@ -101,7 +101,7 @@ void main() {
         '차원의 균열',
         '잊혀진 제단',
         '시간의 방',
-        '영혼의 거울',
+        '야성의 거울',
         '사신의 문',
         '환영의 미궁'
       ];

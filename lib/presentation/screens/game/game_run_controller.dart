@@ -172,7 +172,7 @@ class GameRunController {
           messages.add('${relic.name}: +$gold 골드');
         case 'momentumGain':
           gameEventBus.emit(MomentumGainEvent(amount: relic.effectValue));
-          messages.add('${relic.name}: 기세 +${relic.effectValue}');
+          messages.add('${relic.name}: 야성 +${relic.effectValue}');
         case 'maxHpPerFloor':
           final bonus = relic.effectValue;
           playerRunState = playerRunState.copyWith(

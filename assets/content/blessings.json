@@ -36,8 +36,8 @@
     },
     {
       "id": "blessing_005",
-      "name": "기세의 축복",
-      "description": "전투 시작 시 기세 +10",
+      "name": "야성의 축복",
+      "description": "전투 시작 시 야성 +10",
       "rarity": "rare",
       "effect_type": "momentumOnCombatStart",
       "effect_value": 10
@@ -77,7 +77,7 @@
     {
       "id": "npc_blessing_002",
       "name": "여행자의 부적",
-      "description": "전투 시작 시 기세 +5",
+      "description": "전투 시작 시 야성 +5",
       "rarity": "rare",
       "effect_type": "momentumBonus",
       "effect_value": 5
@@ -133,7 +133,7 @@
     {
       "id": "devil_blessing_003",
       "name": "심연의 눈",
-      "description": "전투 시작 시 기세 +10",
+      "description": "전투 시작 시 야성 +10",
       "rarity": "cursed",
       "effect_type": "momentumBonus",
       "effect_value": 10

@@ -97,7 +97,7 @@ void main() {
       expect(titles, contains('저주받은 카드'));
       expect(titles, contains('은둔 스승'));
       expect(titles, contains('잊혀진 보물상자'));
-      expect(titles, contains('영혼의 샘'));
+      expect(titles, contains('생명의 샘'));
       expect(titles, contains('전사의 유령'));
       expect(titles, contains('붕괴하는 길'));
       expect(titles, contains('이상한 거래'));

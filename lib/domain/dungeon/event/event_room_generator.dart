@@ -196,10 +196,10 @@ class EventRoomGenerator {
           ),
         ],
       ),
-      // 이벤트 8: 영혼의 샘
+      // 이벤트 8: 생명의 샘
       EventRoomData(
-        title: '영혼의 샘',
-        narrativeText: '영롱한 빛을 내는 샘물이 고여 있다. 영혼의 기운이 느껴진다.',
+        title: '생명의 샘',
+        narrativeText: '영롱한 빛을 내는 샘물이 고여 있다. 야성의 기운이 느껴진다.',
         choices: [
           EventChoice(
             label: '마신다',
@@ -343,9 +343,9 @@ class EventRoomGenerator {
           ),
         ],
       ),
-      // 이벤트 15: 잠든 수호자
+      // 이벤트 15: 잠든 야수
       EventRoomData(
-        title: '잠든 수호자',
+        title: '잠든 야수',
         narrativeText: '거대한 골렘이 문 앞에서 잠들어 있다. 깨우지 않고 지나갈 수 있을까.',
         choices: [
           EventChoice(
@@ -543,10 +543,10 @@ class EventRoomGenerator {
       ));
     }
 
-    // 히든 4: 영혼의 거울 — 4층+
+    // 히든 4: 야성의 거울 — 4층+
     if (floor >= 4) {
       events.add(EventRoomData(
-        title: '영혼의 거울',
+        title: '야성의 거울',
         narrativeText:
             '거대한 거울이 서 있다. 거울 속 자신이 다른 선택을 한 평행 세계의 모습을 보여준다.',
         choices: [
@@ -650,7 +650,7 @@ class EventRoomGenerator {
         choices: [
           EventChoice(
             label: '서명한다',
-            outcomeText: '피가 끓어오르며 엄청난 힘이 솟구친다. 하지만 영혼이 무거워진다.',
+            outcomeText: '피가 끓어오르며 엄청난 힘이 솟구친다. 하지만 야성이 탁해진다.',
             goldChange: 30,
             hpChange: -15,
             upgradeRandomCard: true,
@@ -756,7 +756,7 @@ class EventRoomGenerator {
           ),
           EventChoice(
             label: '묵념한다',
-            outcomeText: '망자들의 영혼이 감사를 전한다. 따뜻한 기운이 상처를 치유한다.',
+            outcomeText: '쓰러진 야수들의 넋이 감사를 전한다. 따뜻한 기운이 상처를 치유한다.',
             goldChange: 0,
             hpChange: 15,
           ),

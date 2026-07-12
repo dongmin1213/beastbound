@@ -13,7 +13,7 @@
     {
       "id": "curse_002",
       "name": "둔감",
-      "description": "기세 획득량 20% 감소",
+      "description": "야성 획득량 20% 감소",
       "rarity": "cursed",
       "effect_type": "momentumGainPenalty",
       "effect_value": 20
@@ -45,7 +45,7 @@
     {
       "id": "curse_006",
       "name": "소모",
-      "description": "기세 감쇠 속도 50% 증가",
+      "description": "야성 감쇠 속도 50% 증가",
       "rarity": "cursed",
       "effect_type": "momentumDecayPenalty",
       "effect_value": 50
@@ -103,7 +103,7 @@
     {
       "id": "devil_blessing_003",
       "name": "심연의 눈",
-      "description": "전투 시작 시 기세 +10",
+      "description": "전투 시작 시 야성 +10",
       "rarity": "cursed",
       "effect_type": "momentumBonus",
       "effect_value": 10
@@ -151,7 +151,7 @@
       "blessing_id": "devil_blessing_001",
       "curse_id": "curse_006",
       "cost": 0,
-      "flavor_text": "공격의 극한. 대가는 기세의 소모."
+      "flavor_text": "공격의 극한. 대가는 야성의 소모."
     },
     {
       "id": "deal_006",

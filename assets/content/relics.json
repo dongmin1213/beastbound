@@ -5,7 +5,7 @@
     {
       "id": "relic_001",
       "name": "녹슨 부적",
-      "description": "전투 시작 시 기세 5 회복",
+      "description": "전투 시작 시 야성 5 회복",
       "rarity": "common",
       "condition_type": "combatStart",
       "passive_effect": "momentumGain",
@@ -41,7 +41,7 @@
     {
       "id": "relic_005",
       "name": "바람의 깃털",
-      "description": "기세 60 이상일 때 공격력 8 증가",
+      "description": "야성 60 이상일 때 공격력 8 증가",
       "rarity": "rare",
       "condition_type": "momentumThreshold",
       "passive_effect": "attackBonus",
@@ -59,7 +59,7 @@
     {
       "id": "relic_007",
       "name": "탐험가의 나침반",
-      "description": "방 이동 시 기세 3 회복",
+      "description": "방 이동 시 야성 3 회복",
       "rarity": "rare",
       "condition_type": "roomEnter",
       "passive_effect": "momentumGain",
@@ -86,7 +86,7 @@
     {
       "id": "relic_010",
       "name": "고대의 반지",
-      "description": "전투 시작 시 기세 15 회복",
+      "description": "전투 시작 시 야성 15 회복",
       "rarity": "legendary",
       "condition_type": "combatStart",
       "passive_effect": "momentumGain",
