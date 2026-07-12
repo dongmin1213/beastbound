@@ -477,8 +477,8 @@ class CardCombatHandler {
         // AP 변동 텍스트 (턴 구분선 직전에 삽입)
         if (_lastTurnMaxAp > 0 && newState.maxActionPoints != _lastTurnMaxAp) {
           final arrow = newState.maxActionPoints > _lastTurnMaxAp
-              ? '기세 상승!'
-              : '기세 하락!';
+              ? '야성 상승!'
+              : '야성 하락!';
           runController.completedBlocks.add(CompletedBlock(
             text: '$arrow ${_lastTurnMaxAp}AP → ${newState.maxActionPoints}AP',
             metadata: const {'apChange': true},
@@ -600,8 +600,8 @@ class CardCombatHandler {
         // AP 변동 텍스트
         if (_lastTurnMaxAp > 0 && newState.maxActionPoints != _lastTurnMaxAp) {
           final arrow = newState.maxActionPoints > _lastTurnMaxAp
-              ? '기세 상승!'
-              : '기세 하락!';
+              ? '야성 상승!'
+              : '야성 하락!';
           runController.completedBlocks.add(CompletedBlock(
             text: '$arrow ${_lastTurnMaxAp}AP → ${newState.maxActionPoints}AP',
             metadata: const {'apChange': true},
