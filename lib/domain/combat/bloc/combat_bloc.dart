@@ -440,7 +440,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     // 로스터 몬스터 패시브 → 초기 PowerEffects로 주입 (매 턴 지속 효과).
     final rosterPassive = MonsterPassives.aggregate(event.rewardMonsterIds);
 
-    // 초기 AP는 event.momentumTier 대신 실제 초기 기세값에서 산출 (첫 턴 불일치 수정)
+    // 초기 AP는 event.momentumTier 대신 실제 초기 야성값에서 산출 (첫 턴 불일치 수정)
     // totalMomentumBonus는 아래에서 계산되므로, 우선 event.momentumTier를 임시 사용
     // → 최종 AP는 totalMomentumBonus 확정 후 재산출
     var ap = cardCombatConfig.apForTier(event.momentumTier);
@@ -561,7 +561,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
           // blessing_004 생명의 축복: 전투 시작 시 HP 회복
           initialPlayerHp = (initialPlayerHp + rb.effectValue).clamp(0, initialMaxHp);
         case 'momentumOnCombatStart':
-          // blessing_005 기세의 축복: 전투 시작 시 기세 +N
+          // blessing_005 야성의 축복: 전투 시작 시 야성 +N
           totalMomentumBonus += rb.effectValue;
         case 'bonusApFirstTurn':
           // blessing_007 집중의 축복: 전투 시작 시 AP +N (첫 턴만)
@@ -599,7 +599,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       }
     }
 
-    // ── 런레벨 유물 momentumThreshold 효과 (기세 ≥ 60일 때) ──
+    // ── 런레벨 유물 momentumThreshold 효과 (야성 ≥ 60일 때) ──
     for (final rr in runRelics.where((r) => r.conditionType == 'momentumThreshold')) {
       if (event.currentMomentum >= 60) {
         switch (rr.passiveEffect) {
@@ -624,8 +624,8 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       }
     }
 
-    // 초기 기세값 기반 AP 재산출 — event.momentumTier는 MomentumBloc 초기화 전의
-    // 잘못된 값일 수 있으므로, 실제 초기 기세(initialValue + totalMomentumBonus)로 보정.
+    // 초기 야성값 기반 AP 재산출 — event.momentumTier는 MomentumBloc 초기화 전의
+    // 잘못된 값일 수 있으므로, 실제 초기 야성(initialValue + totalMomentumBonus)로 보정.
     final actualInitialMomentum = (momentumConfig.initialValue + totalMomentumBonus)
         .clamp(momentumConfig.min, momentumConfig.max);
     final correctTier = actualInitialMomentum >= momentumConfig.thresholdHigh
@@ -822,7 +822,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
           // blessing_004 생명의 축복: 전투 시작 시 HP 회복
           bossInitPlayerHp = (bossInitPlayerHp + rb.effectValue).clamp(0, bossInitMaxHp);
         case 'momentumOnCombatStart':
-          // blessing_005 기세의 축복: 전투 시작 시 기세 +N
+          // blessing_005 야성의 축복: 전투 시작 시 야성 +N
           bossTotalMomentumBonus += rb.effectValue;
         case 'bonusApFirstTurn':
           // blessing_007 집중의 축복: 전투 시작 시 AP +N (첫 턴만)
@@ -845,7 +845,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       }
     }
 
-    // ── 런레벨 유물 momentumThreshold 효과 (보스 전투, 기세 ≥ 60) ──
+    // ── 런레벨 유물 momentumThreshold 효과 (보스 전투, 야성 ≥ 60) ──
     for (final rr in bossRunRelics.where((r) => r.conditionType == 'momentumThreshold')) {
       if (event.currentMomentum >= 60) {
         switch (rr.passiveEffect) {
@@ -888,7 +888,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       }
     }
 
-    // 초기 기세값 기반 AP 재산출 (일반 전투와 동일)
+    // 초기 야성값 기반 AP 재산출 (일반 전투와 동일)
     final bossActualMomentum = (momentumConfig.initialValue + bossTotalMomentumBonus)
         .clamp(momentumConfig.min, momentumConfig.max);
     final bossCorrectTier = bossActualMomentum >= momentumConfig.thresholdHigh
@@ -1545,12 +1545,12 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       newEnemyDrainBlockedTurns += result.drainNullifyTurns;
     }
 
-    // momentumGain: GameEventBus 경유 기세 증가
+    // momentumGain: GameEventBus 경유 야성 증가
     if (result.momentumGainAmount > 0) {
       gameEventBus.emit(MomentumGainEvent(amount: result.momentumGainAmount));
     }
 
-    // 연쇄 기세 보너스
+    // 연쇄 야성 보너스
     final chainMomentum = ChainBonus.momentumBonus(newChainCount, chainBonusConfig);
     if (chainMomentum > 0) {
       gameEventBus.emit(MomentumGainEvent(amount: chainMomentum));
@@ -1893,16 +1893,16 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       }
     }
 
-    // ── 기세 High 전환 감지 (cb_momentum_burst, cr_destruction_hammer) ──
+    // ── 야성 High 전환 감지 (cb_momentum_burst, cr_destruction_hammer) ──
     var updatedHighBonusDmg = current.momentumHighBonusDamage;
     if (event.momentumTier >= 3 && current.lastMomentumTier < 3) {
-      // cb_momentum_burst: 기세 High 진입 시 즉시 적 데미지
+      // cb_momentum_burst: 야성 High 진입 시 즉시 적 데미지
       for (final b in current.activeBlessings) {
         if (b.effectType == 'momentumHighDamage') {
           newEnemyHp -= b.effectValue;
         }
       }
-      // cr_destruction_hammer: 기세 High 진입 시 다음 Attack 데미지 보너스 설정
+      // cr_destruction_hammer: 야성 High 진입 시 다음 Attack 데미지 보너스 설정
       for (final r in current.activeRelics) {
         if (r.effectType == 'bonusAttackDamage') {
           updatedHighBonusDmg += r.effectValue;
@@ -2155,7 +2155,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
       var eBlock = enemyPhase.enemyBlock;
       var eStrength = enemyPhase.enemyStrength;
 
-      // Phase 3-B: 회피 성공 시 기세 획득
+      // Phase 3-B: 회피 성공 시 야성 획득
       if (enemyPhase.dodged && current.powerEffects.momentumGainOnDodge > 0) {
         gameEventBus.emit(MomentumGainEvent(
           amount: current.powerEffects.momentumGainOnDodge,
@@ -2370,7 +2370,7 @@ class CombatBloc extends Bloc<CombatEvent, CombatState> {
     if (playerHp > current.playerMaxHp) playerHp = current.playerMaxHp;
     playerStatuses = StatusEffectProcessor.removeExpired(playerTick.effects);
 
-    // 6.7 기세 High 전환 감지 (턴 종료 시점) — 전체 살아있는 적에게 적용
+    // 6.7 야성 High 전환 감지 (턴 종료 시점) — 전체 살아있는 적에게 적용
     var updatedHighBonusDmg = current.momentumHighBonusDamage;
     if (momentumTier >= 3 && current.lastMomentumTier < 3) {
       for (final b in current.activeBlessings) {

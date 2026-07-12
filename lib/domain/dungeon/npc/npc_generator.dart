@@ -15,7 +15,7 @@ class NpcGenerator {
   // NPC 전용 아이템 풀 (trader 거래용)
   static const _npcBlessingPool = [
     ('npc_blessing_001', '은둔자의 부적', '전투 시작 시 블록 +2'),
-    ('npc_blessing_002', '여행자의 부적', '전투 시작 시 기세 +5'),
+    ('npc_blessing_002', '여행자의 부적', '전투 시작 시 야성 +5'),
     ('npc_blessing_003', '전사의 완장', '전투 시작 시 힘 +1'),
     ('npc_blessing_004', '치유의 부적', '전투 시작 시 HP 3 회복'),
     ('npc_blessing_005', '행운의 동전', '전투 시작 시 랜덤 카드 1장 생성'),
@@ -32,7 +32,7 @@ class NpcGenerator {
     ('npc_supply_007', '카드 교환권', '덱에서 카드 1장을 랜덤 무색 카드로 교체', 'cardExchange', 1, 1.5),
     ('npc_supply_008', '정화의 물', '저주 1개 제거', 'removeCurse', 1, 2.0),
     ('npc_supply_009', '강화 망치', '랜덤 카드 1장 업그레이드', 'upgradeRandomCard', 1, 1.8),
-    ('npc_supply_010', '기세의 부적', '다음 전투 시작 기세 +15', 'momentumBonus', 15, 1.0),
+    ('npc_supply_010', '야성의 부적', '다음 전투 시작 야성 +15', 'momentumBonus', 15, 1.0),
     ('npc_supply_011', '생명의 과일', '최대 HP +5 (영구)', 'maxHpBonus', 5, 2.5),
   ];
 

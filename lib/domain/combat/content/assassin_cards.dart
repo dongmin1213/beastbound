@@ -122,7 +122,7 @@ class AssassinCards {
     targetType: CardTargetType.all,
   );
 
-  /// 그림자 걸음 — 1AP, 블록 6 + 이번 턴 60% 피격 회피 + 회피 시 기세 +10. 보상.
+  /// 그림자 걸음 — 1AP, 블록 6 + 이번 턴 60% 피격 회피 + 회피 시 야성 +10. 보상.
   static const shadowStep = CardData(
     id: 'assassin_shadow_step',
     name: '그림자 걸음',
@@ -130,7 +130,7 @@ class AssassinCards {
     type: CardType.skill,
     apCost: 1,
     block: 6,
-    description: '블록 6 + 이번 턴 60% 피격 회피 + 회피 시 기세 +10',
+    description: '블록 6 + 이번 턴 60% 피격 회피 + 회피 시 야성 +10',
     effects: [
       CardEffect(type: CardEffectType.dodgeChance, value: 60),
       CardEffect(type: CardEffectType.momentumGainOnDodge, value: 10),
@@ -387,7 +387,7 @@ class AssassinCards {
     type: CardType.skill,
     apCost: 1,
     block: 8,
-    description: '블록 8 + 이번 턴 70% 피격 회피 + 회피 시 기세 +15',
+    description: '블록 8 + 이번 턴 70% 피격 회피 + 회피 시 야성 +15',
     upgraded: true,
     effects: [
       CardEffect(type: CardEffectType.dodgeChance, value: 70),

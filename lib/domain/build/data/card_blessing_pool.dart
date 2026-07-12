@@ -164,11 +164,11 @@ class CardBlessingPool {
     secondaryValue: 5,
   );
 
-  /// 15. 기세 폭발 — 기세 High 진입 시 적 15 데미지.
+  /// 15. 야성 폭발 — 야성 High 진입 시 적 15 데미지.
   static const momentumBurst = CardBlessingData(
     id: 'cb_momentum_burst',
-    name: '기세 폭발',
-    description: '기세 High 진입 시 적 15 데미지',
+    name: '야성 폭발',
+    description: '야성 High 진입 시 적 15 데미지',
     rarity: Rarity.rare,
     trigger: BlessingTrigger.passive,
     effectType: 'momentumHighDamage',
@@ -245,11 +245,11 @@ class CardBlessingPool {
     effectValue: 5,
   );
 
-  /// 28. 기세의 달인 — 기세 변동량 +30%.
+  /// 28. 야성의 달인 — 야성 변동량 +30%.
   static const momentumMaster = CardBlessingData(
     id: 'cb_momentum_master',
-    name: '기세의 달인',
-    description: '기세 변동량 +30%',
+    name: '야성의 달인',
+    description: '야성 변동량 +30%',
     rarity: Rarity.rare,
     trigger: BlessingTrigger.passive,
     effectType: 'momentumAmplify',

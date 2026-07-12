@@ -124,17 +124,17 @@ class ColorlessCards {
     type: CardType.attack,
     apCost: 1,
     damage: 12,
-    description: '12 데미지. 기세 High 시 24',
+    description: '12 데미지. 야성 High 시 24',
     effects: [CardEffect(type: CardEffectType.highMomentumBonus, value: 0)],
   );
 
-  // ── 12. 기세 충전 ──
+  // ── 12. 야성 충전 ──
   static const momentumCharge = CardData(
     id: 'colorless_momentum_charge',
-    name: '기세 충전',
+    name: '야성 충전',
     type: CardType.skill,
     apCost: 1,
-    description: '기세 +20. 소진',
+    description: '야성 +20. 소진',
     keywords: {CardKeyword.exhaust},
     effects: [CardEffect(type: CardEffectType.momentumGain, value: 20)],
   );
@@ -334,7 +334,7 @@ class ColorlessCards {
     type: CardType.skill,
     apCost: 1,
     block: 8,
-    description: '블록 8 + 기세 +15 + 1장 드로우.',
+    description: '블록 8 + 야성 +15 + 1장 드로우.',
     effects: [
       CardEffect(type: CardEffectType.momentumGain, value: 15),
       CardEffect(type: CardEffectType.draw, value: 1),
@@ -508,17 +508,17 @@ class ColorlessCards {
     type: CardType.attack,
     apCost: 1,
     damage: 18,
-    description: '18 데미지. 기세 High 시 36',
+    description: '18 데미지. 야성 High 시 36',
     upgraded: true,
     effects: [CardEffect(type: CardEffectType.highMomentumBonus, value: 0)],
   );
 
   static const momentumChargePlus = CardData(
     id: 'colorless_momentum_charge+',
-    name: '기세 충전+',
+    name: '야성 충전+',
     type: CardType.skill,
     apCost: 1,
-    description: '기세 +30. 소진',
+    description: '야성 +30. 소진',
     upgraded: true,
     keywords: {CardKeyword.exhaust},
     effects: [CardEffect(type: CardEffectType.momentumGain, value: 30)],
@@ -718,7 +718,7 @@ class ColorlessCards {
     type: CardType.skill,
     apCost: 1,
     block: 12,
-    description: '블록 12 + 기세 +20 + 2장 드로우.',
+    description: '블록 12 + 야성 +20 + 2장 드로우.',
     upgraded: true,
     effects: [
       CardEffect(type: CardEffectType.momentumGain, value: 20),

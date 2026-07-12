@@ -14,7 +14,7 @@ import 'package:soul_dungeon/core/models/momentum_types.dart';
 export 'momentum_event.dart';
 export 'momentum_state.dart';
 
-/// 기세 상태를 관리하는 Bloc.
+/// 야성 상태를 관리하는 Bloc.
 ///
 /// 생성자 주입: [GameEventBus] + [MomentumConfig].
 /// 크로스도메인 통신은 [GameEventBus]를 통해 [MomentumChangedEvent] 발행.

@@ -11,7 +11,7 @@ final class EnterRest extends RestEvent {
   const EnterRest({required this.currentHp, required this.maxHp});
 }
 
-/// HP 회복 선택 — healAmount=0이어도 처리 (Story 3-7 기세 리셋 대비).
+/// HP 회복 선택 — healAmount=0이어도 처리 (Story 3-7 야성 리셋 대비).
 final class ChooseHeal extends RestEvent {
   const ChooseHeal();
 }

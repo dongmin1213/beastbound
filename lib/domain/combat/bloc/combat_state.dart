@@ -439,11 +439,11 @@ final class CardCombatActive extends CombatState {
   final List<CardRelicData> activeRelics;
   final int perfectFormDisabledTurns;
 
-  // ── 기세 High 전환 추적 ──
+  // ── 야성 High 전환 추적 ──
   final int lastMomentumTier;
   final int momentumHighBonusDamage;
 
-  // ── 전투 시작 기세 초기 보너스 (presentation에서 RestoreMomentum에 사용) ──
+  // ── 전투 시작 야성 초기 보너스 (presentation에서 RestoreMomentum에 사용) ──
   final int initialMomentumBonus;
 
   // ── Phase 3-B 지속 상태 ──

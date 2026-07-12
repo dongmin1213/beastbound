@@ -215,7 +215,7 @@ class CardEffectResolver {
           break;
         case CardEffectType.conditionalDamage:
           if (effect.condition == 'momentumTier') {
-            // 기세 티어 × value 데미지
+            // 야성 티어 × value 데미지
             damageResult = _calcDamage(
               baseDamage: momentumTier * effect.value,
               strength: playerStrength,
@@ -403,7 +403,7 @@ class CardEffectResolver {
           }
           break;
         case CardEffectType.highMomentumBonus:
-          // 기세 High(3)일 때 데미지 2배 → 기본 데미지에 반영
+          // 야성 High(3)일 때 데미지 2배 → 기본 데미지에 반영
           if (momentumTier >= 3 && card.damage != null) {
             var baseDmg = card.damage! * 2;
             if (doubleNextAttack && card.type == CardType.attack) baseDmg *= 2;
@@ -440,7 +440,7 @@ class CardEffectResolver {
           // 적 의도 공개 — CombatBloc에서 처리
           break;
         case CardEffectType.momentumGain:
-          // 기세 증가 — CombatBloc에서 GameEventBus 경유
+          // 야성 증가 — CombatBloc에서 GameEventBus 경유
           momentumGainAmount += effect.value;
           break;
         case CardEffectType.setFleeGuaranteed:
@@ -832,7 +832,7 @@ class CardEffectResolver {
           cooldownTurns = effect.value;
           break;
         case CardEffectType.momentumGainOnDodge:
-          // Power: 회피 성공 시 기세 N — CombatBloc에서 처리
+          // Power: 회피 성공 시 야성 N — CombatBloc에서 처리
           momentumGainOnDodgeValue += effect.value;
           break;
         case CardEffectType.poisonDamageReduction:

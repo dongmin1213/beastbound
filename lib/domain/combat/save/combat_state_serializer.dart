@@ -69,7 +69,7 @@ class CombatStateSerializer {
       'activeRelicIds': state.activeRelics.map((r) => r.id).toList(),
       'perfectFormDisabledTurns': state.perfectFormDisabledTurns,
 
-      // 기세
+      // 야성
       'lastMomentumTier': state.lastMomentumTier,
       'momentumHighBonusDamage': state.momentumHighBonusDamage,
       'initialMomentumBonus': state.initialMomentumBonus,
@@ -159,7 +159,7 @@ class CombatStateSerializer {
         perfectFormDisabledTurns:
             (json['perfectFormDisabledTurns'] as int?) ?? 0,
 
-        // 기세
+        // 야성
         lastMomentumTier: (json['lastMomentumTier'] as int?) ?? 1,
         momentumHighBonusDamage:
             (json['momentumHighBonusDamage'] as int?) ?? 0,

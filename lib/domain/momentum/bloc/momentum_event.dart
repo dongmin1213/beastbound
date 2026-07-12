@@ -6,7 +6,7 @@ sealed class MomentumEvent extends Equatable {
   const MomentumEvent();
 }
 
-/// 플레이어가 행동을 수행함 → 기세 변동 계산 트리거
+/// 플레이어가 행동을 수행함 → 야성 변동 계산 트리거
 final class ActionPerformed extends MomentumEvent {
   final ActionType actionType;
 
@@ -16,7 +16,7 @@ final class ActionPerformed extends MomentumEvent {
   List<Object?> get props => [actionType];
 }
 
-/// 카드 플레이됨 → 카드 전투 기세 변동 (동일 유형 페널티 없음)
+/// 카드 플레이됨 → 카드 전투 야성 변동 (동일 유형 페널티 없음)
 final class CardPlayed extends MomentumEvent {
   final CardType cardType;
 
@@ -26,7 +26,7 @@ final class CardPlayed extends MomentumEvent {
   List<Object?> get props => [cardType];
 }
 
-/// 기세 직접 증가 (기세 충전 카드 등)
+/// 야성 직접 증가 (야성 충전 카드 등)
 final class DirectMomentumGain extends MomentumEvent {
   final int amount;
 
@@ -36,7 +36,7 @@ final class DirectMomentumGain extends MomentumEvent {
   List<Object?> get props => [amount];
 }
 
-/// 기세 초기화 (전투 시작 시 / 휴식 방 선택 시)
+/// 야성 초기화 (전투 시작 시 / 휴식 방 선택 시)
 final class MomentumReset extends MomentumEvent {
   const MomentumReset();
 
@@ -44,7 +44,7 @@ final class MomentumReset extends MomentumEvent {
   List<Object?> get props => [];
 }
 
-/// 저장된 기세 상태 복원 (이어하기 시)
+/// 저장된 야성 상태 복원 (이어하기 시)
 final class RestoreMomentum extends MomentumEvent {
   final int value;
   final int consecutiveCount;

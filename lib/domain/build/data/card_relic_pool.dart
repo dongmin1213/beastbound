@@ -72,11 +72,11 @@ class CardRelicPool {
     effectValue: 5,
   );
 
-  /// 7. 파괴의 망치 — 기세 High 진입: 다음 Attack 데미지 +8.
+  /// 7. 파괴의 망치 — 야성 High 진입: 다음 Attack 데미지 +8.
   static const destructionHammer = CardRelicData(
     id: 'cr_destruction_hammer',
     name: '파괴의 망치',
-    description: '기세 High 진입 시 다음 Attack 데미지 +8',
+    description: '야성 High 진입 시 다음 Attack 데미지 +8',
     rarity: Rarity.legendary,
     trigger: RelicTrigger.onMomentumHigh,
     effectType: 'bonusAttackDamage',
@@ -163,11 +163,11 @@ class CardRelicPool {
     effectValue: 1,
   );
 
-  /// 15. 기세의 보석 — 전투 시작 시 기세 +10.
+  /// 15. 야성의 보석 — 전투 시작 시 야성 +10.
   static const momentumGem = CardRelicData(
     id: 'cr_momentum_gem',
-    name: '기세의 보석',
-    description: '전투 시작 시 기세 +10',
+    name: '야성의 보석',
+    description: '전투 시작 시 야성 +10',
     rarity: Rarity.rare,
     trigger: RelicTrigger.combatStart,
     effectType: 'momentumBonus',

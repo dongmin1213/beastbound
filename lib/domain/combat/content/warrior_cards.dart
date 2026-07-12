@@ -43,14 +43,14 @@ class WarriorCards {
     ],
   );
 
-  /// 맹공 — 1AP, 기세 티어 × 5 데미지 + 기세 +5. 시작.
+  /// 맹공 — 1AP, 야성 티어 × 5 데미지 + 야성 +5. 시작.
   static const onslaught = CardData(
     id: 'warrior_onslaught',
     name: '맹공',
     jobId: 'warrior',
     type: CardType.attack,
     apCost: 1,
-    description: '기세 티어 × 5 데미지 + 기세 +5',
+    description: '야성 티어 × 5 데미지 + 야성 +5',
     effects: [
       CardEffect(type: CardEffectType.conditionalDamage, value: 5, condition: 'momentumTier'),
       CardEffect(type: CardEffectType.momentumGain, value: 5),
@@ -285,7 +285,7 @@ class WarriorCards {
     jobId: 'warrior',
     type: CardType.attack,
     apCost: 1,
-    description: '기세 티어 × 7 데미지 + 기세 +8',
+    description: '야성 티어 × 7 데미지 + 야성 +8',
     upgraded: true,
     effects: [
       CardEffect(type: CardEffectType.conditionalDamage, value: 7, condition: 'momentumTier'),

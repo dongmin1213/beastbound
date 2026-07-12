@@ -14,7 +14,7 @@ class ShopItem {
   /// 아이템 효과 타입 (예: 'heal', 'momentum', 'blessing').
   final String? effectType;
 
-  /// 효과 수치 (heal=HP양, momentum=기세양 등).
+  /// 효과 수치 (heal=HP양, momentum=야성양 등).
   final int? effectValue;
 
   /// 카드 아이템일 때 참조할 카드 ID.

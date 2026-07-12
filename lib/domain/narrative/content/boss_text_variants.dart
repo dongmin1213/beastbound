@@ -70,7 +70,7 @@ class BossTextVariants {
     'boss_orc_general_coexist':
         '대장군이 무기를 거두고 네 옆에 선다. 거대한 힘이 함께 걷는다.',
     'boss_orc_general_study':
-        '대장군의 맹공에서 전투의 본능을 배운다. 그 기세가 몸에 새겨진다.',
+        '대장군의 맹공에서 전투의 본능을 배운다. 그 야성가 몸에 새겨진다.',
     'boss_orc_general_consume':
         '대장군의 분노를 받아들인다. 억누를 수 없는 힘이 맥동한다.',
     'boss_orc_general_protect':

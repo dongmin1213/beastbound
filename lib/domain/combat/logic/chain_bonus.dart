@@ -5,7 +5,7 @@ import 'package:soul_dungeon/core/models/game_enums.dart';
 ///
 /// 수치는 balance.json chain_bonus 섹션에서 설정.
 /// 2연쇄: +20% 데미지, +1 드로우.
-/// 3연쇄+: +45% 데미지, +1 드로우, +10 기세.
+/// 3연쇄+: +45% 데미지, +1 드로우, +10 야성.
 /// 공격(attack) 카드에만 적용 — 스킬/파워는 연쇄 끊김.
 class ChainBonus {
   ChainBonus._();
@@ -39,7 +39,7 @@ class ChainBonus {
     return chainCount >= 2 ? config.chainDrawBonus : 0;
   }
 
-  /// 연쇄 기세 보너스 — 3연쇄+ → chain3MomentumBonus.
+  /// 연쇄 야성 보너스 — 3연쇄+ → chain3MomentumBonus.
   static int momentumBonus(int chainCount, ChainBonusConfig config) {
     return chainCount >= 3 ? config.chain3MomentumBonus : 0;
   }

@@ -70,7 +70,7 @@ class StarterCards {
       CardEffect(type: CardEffectType.draw, value: 1),
       CardEffect(type: CardEffectType.momentumGain, value: 5),
     ],
-    description: '1장 드로우 + 기세 +5. 소진',
+    description: '1장 드로우 + 야성 +5. 소진',
   );
 
   /// 공통 시작 덱 (7장).
@@ -126,7 +126,7 @@ class StarterCards {
       CardEffect(type: CardEffectType.draw, value: 2),
       CardEffect(type: CardEffectType.momentumGain, value: 8),
     ],
-    description: '2장 드로우 + 기세 +8. 소진',
+    description: '2장 드로우 + 야성 +8. 소진',
     upgraded: true,
   );
 }

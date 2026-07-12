@@ -45,13 +45,13 @@ class BlessingPool {
     BlessingData(id: 'blessing_003', name: '속도의 축복', description: '전투 시작 시 드로우 +1', rarity: Rarity.common, effectType: 'bonusDraw', effectValue: 1),
     BlessingData(id: 'blessing_004', name: '생명의 축복', description: '전투 시작 시 HP 5 회복', rarity: Rarity.common, effectType: 'healOnCombatStart', effectValue: 5),
     // 희귀 축복 (상점)
-    BlessingData(id: 'blessing_005', name: '기세의 축복', description: '전투 시작 시 기세 +10', rarity: Rarity.rare, effectType: 'momentumOnCombatStart', effectValue: 10),
+    BlessingData(id: 'blessing_005', name: '야성의 축복', description: '전투 시작 시 야성 +10', rarity: Rarity.rare, effectType: 'momentumOnCombatStart', effectValue: 10),
     BlessingData(id: 'blessing_006', name: '회피의 축복', description: '첫 피격 시 데미지 50% 감소', rarity: Rarity.rare, effectType: 'firstHitReduction', effectValue: 50),
     BlessingData(id: 'blessing_007', name: '집중의 축복', description: '전투 시작 시 AP +1 (첫 턴만)', rarity: Rarity.rare, effectType: 'bonusApFirstTurn', effectValue: 1),
     BlessingData(id: 'blessing_008', name: '재생의 축복', description: '매 턴 시작 시 HP 2 회복', rarity: Rarity.rare, effectType: 'healPerTurn', effectValue: 2),
     // NPC 전용 축복
     BlessingData(id: 'npc_blessing_001', name: '은둔자의 부적', description: '전투 시작 시 블록 +2', rarity: Rarity.rare, effectType: 'defenseBonus', effectValue: 2),
-    BlessingData(id: 'npc_blessing_002', name: '여행자의 부적', description: '전투 시작 시 기세 +5', rarity: Rarity.rare, effectType: 'momentumBonus', effectValue: 5),
+    BlessingData(id: 'npc_blessing_002', name: '여행자의 부적', description: '전투 시작 시 야성 +5', rarity: Rarity.rare, effectType: 'momentumBonus', effectValue: 5),
     BlessingData(id: 'npc_blessing_003', name: '전사의 완장', description: '전투 시작 시 힘 +1', rarity: Rarity.rare, effectType: 'attackBonus', effectValue: 1),
     BlessingData(id: 'npc_blessing_004', name: '치유의 부적', description: '전투 시작 시 HP 3 회복', rarity: Rarity.rare, effectType: 'healBonus', effectValue: 3),
     BlessingData(id: 'npc_blessing_005', name: '행운의 동전', description: '전투 시작 시 카드 1장 추가 드로우', rarity: Rarity.rare, effectType: 'bonusDraw', effectValue: 1),
@@ -59,7 +59,7 @@ class BlessingPool {
     // 악마의 축복 (devil deal 전용)
     BlessingData(id: 'devil_blessing_001', name: '피의 계약', description: '전투 시작 시 힘 +3', rarity: Rarity.cursed, effectType: 'attackBonus', effectValue: 3),
     BlessingData(id: 'devil_blessing_002', name: '그림자 갑옷', description: '전투 시작 시 블록 +5', rarity: Rarity.cursed, effectType: 'defenseBonus', effectValue: 5),
-    BlessingData(id: 'devil_blessing_003', name: '심연의 눈', description: '전투 시작 시 기세 +10', rarity: Rarity.cursed, effectType: 'momentumBonus', effectValue: 10),
+    BlessingData(id: 'devil_blessing_003', name: '심연의 눈', description: '전투 시작 시 야성 +10', rarity: Rarity.cursed, effectType: 'momentumBonus', effectValue: 10),
     BlessingData(id: 'devil_blessing_004', name: '광기의 힘', description: '전투 시작 시 힘 +2, 블록 +3', rarity: Rarity.cursed, effectType: 'attackAndDefenseBonus', effectValue: 2),
   ];
 

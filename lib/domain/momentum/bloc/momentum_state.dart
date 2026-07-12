@@ -18,7 +18,7 @@ final class MomentumInitial extends MomentumState {
   String toString() => 'MomentumInitial()';
 }
 
-/// 기세 업데이트됨
+/// 야성 업데이트됨
 final class MomentumUpdated extends MomentumState {
   final int value;
   final MomentumTier tier;

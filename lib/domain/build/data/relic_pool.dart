@@ -40,18 +40,18 @@ class RelicPool {
 
   static const _defaults = <RelicData>[
     // === 일반 유물 (common) ===
-    RelicData(id: 'relic_001', name: '녹슨 부적', description: '전투 시작 시 기세 5 회복', rarity: Rarity.common, conditionType: 'combatStart', passiveEffect: 'momentumGain', effectValue: 5),
+    RelicData(id: 'relic_001', name: '녹슨 부적', description: '전투 시작 시 야성 5 회복', rarity: Rarity.common, conditionType: 'combatStart', passiveEffect: 'momentumGain', effectValue: 5),
     RelicData(id: 'relic_002', name: '치유의 돌', description: '방 이동 시 HP 2 회복', rarity: Rarity.common, conditionType: 'roomEnter', passiveEffect: 'hpRegen', effectValue: 2),
     RelicData(id: 'relic_003', name: '행운의 동전', description: '전투 승리 시 골드 5 추가 획득', rarity: Rarity.common, conditionType: 'combatEnd', passiveEffect: 'goldBonus', effectValue: 5),
     RelicData(id: 'relic_004', name: '강화 가죽', description: '전투 시작 시 블록 3 획득', rarity: Rarity.common, conditionType: 'combatStart', passiveEffect: 'defenseBonus', effectValue: 3),
     // === 희귀 유물 (rare) ===
-    RelicData(id: 'relic_005', name: '바람의 깃털', description: '기세 60 이상일 때 공격력 8 증가', rarity: Rarity.rare, conditionType: 'momentumThreshold', passiveEffect: 'attackBonus', effectValue: 8),
+    RelicData(id: 'relic_005', name: '바람의 깃털', description: '야성 60 이상일 때 공격력 8 증가', rarity: Rarity.rare, conditionType: 'momentumThreshold', passiveEffect: 'attackBonus', effectValue: 8),
     RelicData(id: 'relic_006', name: '치유의 샘물', description: '층 이동 시 HP 10 회복', rarity: Rarity.rare, conditionType: 'floorTransition', passiveEffect: 'hpRegen', effectValue: 10),
-    RelicData(id: 'relic_007', name: '탐험가의 나침반', description: '방 이동 시 기세 3 회복', rarity: Rarity.rare, conditionType: 'roomEnter', passiveEffect: 'momentumGain', effectValue: 3),
+    RelicData(id: 'relic_007', name: '탐험가의 나침반', description: '방 이동 시 야성 3 회복', rarity: Rarity.rare, conditionType: 'roomEnter', passiveEffect: 'momentumGain', effectValue: 3),
     RelicData(id: 'relic_008', name: '고대 주화 주머니', description: '전투 승리 시 골드 10 추가 획득', rarity: Rarity.rare, conditionType: 'combatEnd', passiveEffect: 'goldBonus', effectValue: 10),
     // === 전설 유물 (legendary) ===
     RelicData(id: 'relic_009', name: '불사조의 깃털', description: 'HP 20% 이하일 때 피해 15 감소', rarity: Rarity.legendary, conditionType: 'hpThreshold', passiveEffect: 'damageReduction', effectValue: 15),
-    RelicData(id: 'relic_010', name: '고대의 반지', description: '전투 시작 시 기세 15 회복', rarity: Rarity.legendary, conditionType: 'combatStart', passiveEffect: 'momentumGain', effectValue: 15),
+    RelicData(id: 'relic_010', name: '고대의 반지', description: '전투 시작 시 야성 15 회복', rarity: Rarity.legendary, conditionType: 'combatStart', passiveEffect: 'momentumGain', effectValue: 15),
     // === 추가 희귀 유물 ===
     RelicData(id: 'relic_011', name: '모험가의 지도', description: '미스터리 방 결과 2개 중 선택', rarity: Rarity.rare, conditionType: 'mysteryRoom', passiveEffect: 'mysteryChoice', effectValue: 2),
     RelicData(id: 'relic_012', name: '장인의 망치', description: '상점 카드 업그레이드 비용 -50%', rarity: Rarity.rare, conditionType: 'shop', passiveEffect: 'upgradeDiscount', effectValue: 50),

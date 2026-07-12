@@ -17,7 +17,7 @@ class ShopItemGenerator {
     ('blessing_002', '방어의 축복', '전투 시작 시 블록 +3'),
     ('blessing_003', '속도의 축복', '전투 시작 시 드로우 +1'),
     ('blessing_004', '생명의 축복', '전투 시작 시 HP 5 회복'),
-    ('blessing_005', '기세의 축복', '전투 시작 시 기세 +10'),
+    ('blessing_005', '야성의 축복', '전투 시작 시 야성 +10'),
     ('blessing_006', '회피의 축복', '첫 피격 시 데미지 50% 감소'),
     ('blessing_007', '집중의 축복', '전투 시작 시 AP +1 (첫 턴만)'),
     ('blessing_008', '재생의 축복', '매 턴 시작 시 HP 2 회복'),
@@ -26,12 +26,12 @@ class ShopItemGenerator {
   /// Supply 아이템 데이터 — (id, name, description, effectType, effectValue, priceMultiplier).
   static const _supplyPool = [
     ('supply_001', '치유의 물약', 'HP 20 회복', 'heal', 20, 1.3),
-    ('supply_002', '기세의 대부적', '다음 전투 시작 기세 +30', 'momentumBonus', 30, 1.3),
+    ('supply_002', '야성의 대부적', '다음 전투 시작 야성 +30', 'momentumBonus', 30, 1.3),
     ('supply_005', '응급 붕대', 'HP 10 회복', 'heal', 10, 0.7),
     ('supply_007', '카드 교환권', '덱에서 카드 1장을 랜덤 무색 카드로 교체', 'cardExchange', 1, 1.5),
     ('supply_008', '정화의 물', '저주 1개 제거', 'removeCurse', 1, 2.0),
     ('supply_009', '강화 망치', '랜덤 카드 1장 업그레이드', 'upgradeRandomCard', 1, 1.8),
-    ('supply_010', '기세의 부적', '다음 전투 시작 기세 +15', 'momentumBonus', 15, 1.0),
+    ('supply_010', '야성의 부적', '다음 전투 시작 야성 +15', 'momentumBonus', 15, 1.0),
     ('supply_011', '생명의 과일', '최대 HP +5 (영구)', 'maxHpBonus', 5, 2.5),
   ];
 
@@ -44,7 +44,7 @@ class ShopItemGenerator {
 
   /// 유물 데이터 — (id, name, description). common 유물만 상점 풀.
   static const _relicPool = [
-    ('relic_001', '녹슨 부적', '전투 시작 시 기세 5 회복'),
+    ('relic_001', '녹슨 부적', '전투 시작 시 야성 5 회복'),
     ('relic_002', '치유의 돌', '방 이동 시 HP 3 회복'),
     ('relic_003', '행운의 동전', '전투 승리 시 골드 5 추가 획득'),
     ('relic_004', '강화 가죽', '전투 시작 시 블록 3 획득'),
