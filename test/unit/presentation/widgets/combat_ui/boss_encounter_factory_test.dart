@@ -21,28 +21,28 @@ void main() {
       expect(names.length, 5);
     });
 
-    test('1층 보스 — 재(灰)의 수호자', () {
+    test('1층 보스 — 재(灰)의 주인', () {
       final encounter = BossEncounterFactory.create(floor: 1);
       expect(encounter.enemyName, contains('재'));
       expect(encounter.introText, contains('재'));
     });
 
-    test('2층 보스 — 무(無)의 수호자', () {
+    test('2층 보스 — 무(無)의 주인', () {
       final encounter = BossEncounterFactory.create(floor: 2);
       expect(encounter.enemyName, contains('무'));
     });
 
-    test('3층 보스 — 경(鏡)의 수호자', () {
+    test('3층 보스 — 경(鏡)의 주인', () {
       final encounter = BossEncounterFactory.create(floor: 3);
       expect(encounter.enemyName, contains('경'));
     });
 
-    test('4층 보스 — 안(安)의 수호자', () {
+    test('4층 보스 — 안(安)의 주인', () {
       final encounter = BossEncounterFactory.create(floor: 4);
       expect(encounter.enemyName, contains('안'));
     });
 
-    test('5층 보스 — 근(根)의 수호자', () {
+    test('5층 보스 — 근(根)의 주인', () {
       final encounter = BossEncounterFactory.create(floor: 5);
       expect(encounter.enemyName, contains('근'));
     });
